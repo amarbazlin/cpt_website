@@ -11,7 +11,7 @@ export const Route = createFileRoute("/about")({
       {
         name: "description",
         content:
-          "The story of Ceylon Platinum Trading (PVT) Ltd — a family-built hardware distributor in Kotuwegoda, Matara, serving builders across Southern Sri Lanka.",
+          "The story of Ceylon Platinum Trading (PVT) Ltd — a family-built hardware in Kotuwegoda, Matara, serving builders across Southern Sri Lanka.",
       },
       { property: "og:title", content: "About Ceylon Platinum Trading (PVT) Ltd" },
       {
