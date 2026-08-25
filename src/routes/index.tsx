@@ -14,7 +14,7 @@ export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
       {
-        title: "Ceylon Platinum Trading (PVT) Ltd | Hardware Distributors in Matara, Sri Lanka",
+        title: "Ceylon Platinum Trading (PVT) Ltd",
       },
       {
         name: "description",

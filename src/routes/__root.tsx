@@ -139,7 +139,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       {
         name: "description",
         content:
-          "Hardware distribution in Matara, Sri Lanka. Power tools, paints, hardware, machinery and sealants from Bosch, Tolsen, Humhon and more.",
+          "Power tools, paints, hardware, machinery and sealants from Bosch, Tolsen, Humhon and more.",
       },
       { name: "author", content: business.name },
       { property: "og:site_name", content: business.name },
