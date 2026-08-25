@@ -89,8 +89,8 @@ function About() {
           <Reveal delay={120}>
             <figure>
               <img
-                src={photos.showroom}
-                alt="The Ceylon Platinum Trading showroom floor in Matara, lined with Tolsen, Bosch and Lesso hardware displays"
+                src={photos.whoWeAre}
+                alt="The Ceylon Platinum Trading team and facility at the Matara showroom"
                 loading="lazy"
                 className="w-full object-cover shadow-lift"
               />
@@ -160,7 +160,7 @@ function About() {
         </Reveal>
         <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {[
-            { src: photos.showroom, alt: "Ceylon Platinum Trading showroom aisle in Matara" },
+            { src: photos.showroomExterior, alt: "Exterior of the Ceylon Platinum Trading showroom in Matara" },
             { src: photos.handTools, alt: "Hand tool wall display at the CPT Matara showroom" },
             { src: photos.powerTools, alt: "Power tools stocked at Ceylon Platinum Trading" },
             { src: photos.paints, alt: "Paint and coatings shelving at the CPT showroom" },
