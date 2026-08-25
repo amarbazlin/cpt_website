@@ -8,9 +8,11 @@ export function SiteFooter() {
       <div className="mx-auto grid max-w-7xl gap-10 px-4 py-14 sm:grid-cols-2 lg:grid-cols-4">
         <div>
           <div className="flex items-center gap-3">
-            <span className="grid size-10 shrink-0 place-items-center bg-primary font-display font-extrabold text-primary-foreground">
-              CPT
-            </span>
+            <img
+              src="/brands/company-logo.png"
+              alt="Ceylon Platinum Trading (PVT) Ltd logo"
+              className="h-11 w-auto shrink-0"
+            />
             <span className="font-display text-lg font-extrabold">Ceylon Platinum Trading</span>
           </div>
           <p className="mt-4 text-sm text-charcoal-muted">
