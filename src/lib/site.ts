@@ -14,6 +14,41 @@ export const photos = {
   paintMixing: "/images/paint-mixing.jpg",
 };
 
+export type HeroSlide = {
+  image: string;
+  alt: string;
+  /** Brand filter applied when the slide is clicked (null links to the full catalogue). */
+  brand: string | null;
+  /** Accessible label for the slide's click target and navigation controls. */
+  label: string;
+};
+
+/**
+ * Auto-rotating hero banners (promo-style, e.g. Bosch / Giant campaigns).
+ * Swap the image paths here to change a slide — the carousel picks these up
+ * automatically. Keep the same number of entries, as arrows/dots adapt to it.
+ */
+export const heroSlides: HeroSlide[] = [
+  {
+    image: photos.hero,
+    alt: "Bosch power tools promotion — Ceylon Platinum Trading, Matara",
+    brand: "Bosch",
+    label: "Shop Bosch products",
+  },
+  {
+    image: photos.powerTools,
+    alt: "Giant machinery promotion — Ceylon Platinum Trading, Matara",
+    brand: "Giant",
+    label: "Shop Giant products",
+  },
+  {
+    image: photos.machinery,
+    alt: "Explore the full Ceylon Platinum Trading hardware catalogue",
+    brand: null,
+    label: "Browse the full catalogue",
+  },
+];
+
 export const business = {
   name: "Ceylon Platinum Trading (PVT) Ltd",
   shortName: "Ceylon Platinum Trading",
