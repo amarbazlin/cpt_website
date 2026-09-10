@@ -1,6 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { Search, ShoppingCart } from "lucide-react";
-import { useMemo } from "react";
+import { ChevronDown, Search, ShoppingCart } from "lucide-react";
+import { useMemo, useState } from "react";
 import { z } from "zod";
 import { Reveal } from "@/components/Reveal";
 import { Button } from "@/components/ui/button";
@@ -12,7 +12,11 @@ import { cn } from "@/lib/utils";
 const searchSchema = z.object({
   q: z.string().optional().catch(undefined),
   category: z.string().optional().catch(undefined),
+  brand: z.string().optional().catch(undefined),
 });
+
+/** Brands shown in the "Browse by brand" list on the products page. */
+const browseBrands = ["Bosch", "Humhon", "Tolsen", "Wokin", "Giant", "Wipro"];
 
 export const Route = createFileRoute("/products/")({
   validateSearch: searchSchema,
@@ -42,6 +46,8 @@ function Products() {
   const search = Route.useSearch();
   const q = search.q ?? "";
   const category = search.category ?? "all";
+  const brand = search.brand ?? "all";
+  const [brandOpen, setBrandOpen] = useState(false);
   const navigate = Route.useNavigate();
   const { add, setOpen } = useCart();
 
@@ -49,14 +55,15 @@ function Products() {
     const needle = q.trim().toLowerCase();
     return products.filter((p) => {
       const inCat = category === "all" || p.category === category;
+      const inBrand = brand === "all" || p.brand === brand;
       const inSearch =
-        !needle ||
-        `${p.name} ${p.brand} ${p.summary}`.toLowerCase().includes(needle);
-      return inCat && inSearch;
+        !needle || `${p.name} ${p.brand} ${p.summary}`.toLowerCase().includes(needle);
+      return inCat && inBrand && inSearch;
     });
-  }, [q, category]);
+  }, [q, category, brand]);
 
   const activeCategory = categories.find((c) => c.slug === category);
+  const activeBrand = brand !== "all" ? brand : null;
 
   return (
     <>
@@ -117,6 +124,52 @@ function Products() {
                 </button>
               ))}
             </div>
+
+            <h2 className="mt-6 font-display text-sm font-bold tracking-widest uppercase">
+              Brands
+            </h2>
+            <button
+              type="button"
+              aria-expanded={brandOpen}
+              onClick={() => setBrandOpen((v) => !v)}
+              className={cn(
+                "mt-3 flex w-full items-center justify-between gap-2 border px-3 py-2 text-left font-display text-sm font-semibold transition-colors",
+                activeBrand
+                  ? "border-primary bg-primary text-primary-foreground"
+                  : "border-border bg-card text-foreground hover:border-primary hover:text-primary",
+              )}
+            >
+              {activeBrand ? `Browse by brand · ${activeBrand}` : "Browse by brand"}
+              <ChevronDown
+                className={cn("size-4 shrink-0 transition-transform", brandOpen && "rotate-180")}
+              />
+            </button>
+            {brandOpen && (
+              <div className="mt-2 flex flex-wrap gap-2 lg:flex-col">
+                {[
+                  { slug: "all", name: "All brands" },
+                  ...browseBrands.map((b) => ({ slug: b, name: b })),
+                ].map((b) => (
+                  <button
+                    key={b.slug}
+                    onClick={() =>
+                      navigate({
+                        search: (prev) => ({ ...prev, brand: b.slug }),
+                        replace: true,
+                      })
+                    }
+                    className={cn(
+                      "border px-3 py-2 text-left font-display text-sm font-semibold transition-colors",
+                      brand === b.slug
+                        ? "border-primary bg-primary text-primary-foreground"
+                        : "border-border bg-card text-foreground hover:border-primary hover:text-primary",
+                    )}
+                  >
+                    {b.name}
+                  </button>
+                ))}
+              </div>
+            )}
           </aside>
 
           {/* Grid */}
@@ -124,6 +177,7 @@ function Products() {
             <p className="text-sm text-muted-foreground">
               Showing {filtered.length} product{filtered.length === 1 ? "" : "s"}
               {activeCategory ? ` in ${activeCategory.name}` : ""}
+              {activeBrand ? ` · ${activeBrand}` : ""}
               {q.trim() ? ` for “${q.trim()}”` : ""}.
             </p>
 
