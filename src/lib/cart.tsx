@@ -91,11 +91,18 @@ export function useCart() {
   return ctx;
 }
 
-export function buildWhatsAppMessage(lines: CartLine[], location: string, note: string) {
+export function buildWhatsAppMessage(
+  lines: CartLine[],
+  location: string,
+  name: string,
+  contact: string,
+  nic: string,
+  note: string,
+) {
   const items = lines.map((l, i) => {
     const p = products.find((x) => x.slug === l.slug);
-    const name = p ? `${p.name}${p.brand !== "To be confirmed" ? ` (${p.brand})` : ""}` : l.slug;
-    return `${i + 1}. ${name} — Qty: ${l.qty}`;
+    const productName = p ? `${p.name}${p.brand !== "To be confirmed" ? ` (${p.brand})` : ""}` : l.slug;
+    return `${i + 1}. ${productName} — Qty: ${l.qty}`;
   });
 
   const parts = [
@@ -104,6 +111,10 @@ export function buildWhatsAppMessage(lines: CartLine[], location: string, note: 
     "*Items:*",
     ...items,
     "",
+    "*Customer details:*",
+    `*Name:* ${name.trim() || "Not provided"}`,
+    `*Contact No.:* ${contact.trim() || "Not provided"}`,
+    `*NIC No.:* ${nic.trim() || "Not provided"}`,
     `*Delivery location:* ${location.trim() || "Not provided"}`,
   ];
   if (note.trim()) parts.push(`*Notes:* ${note.trim()}`);

@@ -22,8 +22,8 @@ export const business = {
   phone: "041-222-3298",
   phoneIntl: "+94412223298",
   email: "ceylonglobal.hq@gmail.com",
-  whatsapp: "94766016005",
-  whatsappDisplay: "076 601 6005",
+  whatsapp: "94760556075",
+  whatsappDisplay: "076 055 6075",
   street: "167/B1 Old Tangalle Road, Kotuwegoda",
   city: "Matara",
   postalCode: "81000",
@@ -240,7 +240,7 @@ export const faqs = [
   },
   {
     q: "Where is Ceylon Platinum Trading located?",
-    a: "Our showroom and office are at 167/B1 Old Tangalle Road, Kotuwegoda, Matara 81000, Sri Lanka, in the Southern Province. You can call 041-222-3298 or message 076 601 6005 on WhatsApp.",
+    a: "Our showroom and office are at 167/B1 Old Tangalle Road, Kotuwegoda, Matara 81000, Sri Lanka, in the Southern Province. You can call 041-222-3298 or message 076 055 6075 on WhatsApp.",
   },
   {
     q: "What are your opening hours?",
@@ -252,7 +252,7 @@ export const faqs = [
   },
   {
     q: "How do I place an order?",
-    a: "Browse the product catalogue on this site, add items to your cart, enter your delivery location at checkout and send the order straight to our WhatsApp Business number (076 601 6005). Our team confirms availability, pricing and delivery with you directly.",
+    a: "Browse the product catalogue on this site, add items to your cart, enter your delivery location at checkout and send the order straight to our WhatsApp Business number (076 055 6075). Our team confirms availability, pricing and delivery with you directly.",
   },
   {
     q: "Do you deliver outside Matara?",

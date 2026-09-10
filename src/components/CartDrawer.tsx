@@ -11,17 +11,23 @@ import { business, products } from "@/lib/site";
 
 export function CartDrawer() {
   const { lines, open, setOpen, setQty, remove, clear } = useCart();
+  const [name, setName] = useState("");
+  const [contact, setContact] = useState("");
+  const [nic, setNic] = useState("");
   const [location, setLocation] = useState("");
   const [note, setNote] = useState("");
   const [touched, setTouched] = useState(false);
 
   const empty = lines.length === 0;
+  const nameMissing = name.trim().length < 2;
+  const contactMissing = contact.trim().length < 7;
+  const nicMissing = nic.trim().length < 8;
   const locationMissing = location.trim().length < 3;
 
   function checkout() {
     setTouched(true);
-    if (empty || locationMissing) return;
-    const url = whatsappUrl(buildWhatsAppMessage(lines, location, note));
+    if (empty || nameMissing || contactMissing || nicMissing || locationMissing) return;
+    const url = whatsappUrl(buildWhatsAppMessage(lines, location, name, contact, nic, note));
     window.open(url, "_blank", "noopener,noreferrer");
   }
 
@@ -99,6 +105,46 @@ export function CartDrawer() {
 
               <div className="mt-5 space-y-4">
                 <div>
+                  <Label htmlFor="cart-name">Name *</Label>
+                  <Input
+                    id="cart-name"
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                    placeholder="e.g. Kamal Perera"
+                    className="mt-1.5"
+                  />
+                  {touched && nameMissing && (
+                    <p className="mt-1 text-xs text-destructive">Please enter your name.</p>
+                  )}
+                </div>
+                <div>
+                  <Label htmlFor="cart-contact">Contact No. *</Label>
+                  <Input
+                    id="cart-contact"
+                    type="tel"
+                    value={contact}
+                    onChange={(e) => setContact(e.target.value)}
+                    placeholder="e.g. 077 123 4567"
+                    className="mt-1.5"
+                  />
+                  {touched && contactMissing && (
+                    <p className="mt-1 text-xs text-destructive">Please enter a valid contact number.</p>
+                  )}
+                </div>
+                <div>
+                  <Label htmlFor="cart-nic">NIC No. *</Label>
+                  <Input
+                    id="cart-nic"
+                    value={nic}
+                    onChange={(e) => setNic(e.target.value)}
+                    placeholder="e.g. 983451237V or 200045601234"
+                    className="mt-1.5"
+                  />
+                  {touched && nicMissing && (
+                    <p className="mt-1 text-xs text-destructive">Please enter your NIC number.</p>
+                  )}
+                </div>
+                <div>
                   <Label htmlFor="cart-location">Delivery location / address *</Label>
                   <Input
                     id="cart-location"
@@ -119,7 +165,7 @@ export function CartDrawer() {
                     id="cart-note"
                     value={note}
                     onChange={(e) => setNote(e.target.value)}
-                    placeholder="Contact name, preferred delivery date, specifications…"
+                    placeholder="Preferred delivery date, specifications…"
                     className="mt-1.5"
                     rows={3}
                   />
