@@ -80,11 +80,11 @@ function Home() {
   return (
     <>
       {/* Hero — full-width image carousel that slides to the left every 5s.
-          Banner is designed at 2170×725 (≈ 3:1). On desktop it is capped at
-          that exact size and centered; on smaller screens the height scales
-          down so it always fits comfortably and stays mobile-friendly. */}
+          The banner is designed at 2170×725 (ratio ≈ 3:1). The container uses
+          that exact aspect ratio so the full image always fits — no left/right
+          cropping — and it scales to fit any screen width (mobile included). */}
       <section className="w-full overflow-hidden bg-charcoal">
-        <div className="relative mx-auto h-[clamp(200px,38vw,725px)] w-full max-w-[2170px] overflow-hidden">
+        <div className="relative mx-auto aspect-[2170/725] w-full max-w-[2170px] overflow-hidden">
           <div
             className={cn(
               "flex h-full w-full ease-out",
