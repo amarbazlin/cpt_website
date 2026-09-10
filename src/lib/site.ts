@@ -24,28 +24,22 @@ export type HeroSlide = {
 };
 
 /**
- * Auto-rotating hero banners (promo-style, e.g. Bosch / Giant campaigns).
+ * Auto-rotating hero banners (full-width promo images shown in the hero).
  * Swap the image paths here to change a slide — the carousel picks these up
- * automatically. Keep the same number of entries, as arrows/dots adapt to it.
+ * automatically and slides to the left every 5 seconds.
  */
 export const heroSlides: HeroSlide[] = [
   {
-    image: photos.hero,
-    alt: "Bosch power tools promotion — Ceylon Platinum Trading, Matara",
+    image: "/hero01.png",
+    alt: "Ceylon Platinum Trading promotion banner",
     brand: "Bosch",
     label: "Shop Bosch products",
   },
   {
-    image: photos.powerTools,
-    alt: "Giant machinery promotion — Ceylon Platinum Trading, Matara",
+    image: "/hero02.png",
+    alt: "Ceylon Platinum Trading promotion banner",
     brand: "Giant",
     label: "Shop Giant products",
-  },
-  {
-    image: photos.machinery,
-    alt: "Explore the full Ceylon Platinum Trading hardware catalogue",
-    brand: null,
-    label: "Browse the full catalogue",
   },
 ];
 

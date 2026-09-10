@@ -1,14 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import {
-  ArrowRight,
-  ChevronLeft,
-  ChevronRight,
-  Clock,
-  MapPin,
-  MessageCircle,
-  Phone,
-} from "lucide-react";
-import { useCallback, useEffect, useState } from "react";
+import { ArrowRight, Clock, MapPin, Phone } from "lucide-react";
+import { useEffect, useState } from "react";
 import { Reveal } from "@/components/Reveal";
 import { Button } from "@/components/ui/button";
 import {
@@ -49,132 +41,76 @@ export const Route = createFileRoute("/")({
 });
 
 function Home() {
-  const [active, setActive] = useState(0);
-  const [paused, setPaused] = useState(false);
+  // Raw hero banners; we append a clone of the first so the carousel can slide
+  // continuously to the left forever without a visible jump back to the start.
+  const heroImages = heroSlides.map((s) => s.image);
+  const trackSlides = [...heroImages, heroImages[0]];
 
-  const goTo = useCallback(
-    (i: number) => setActive(((i % heroSlides.length) + heroSlides.length) % heroSlides.length),
-    [],
-  );
-  const next = useCallback(() => setActive((a) => (a + 1) % heroSlides.length), []);
-  const prev = useCallback(
-    () => setActive((a) => (a - 1 + heroSlides.length) % heroSlides.length),
-    [],
-  );
+  const [index, setIndex] = useState(0); // position along trackSlides
+  const [noTransition, setNoTransition] = useState(false);
 
-  // Auto-advance every 5s. Because `active` is in the dependency array, the
-  // interval restarts whenever the user changes slides manually (dots/arrows),
-  // which effectively resets the 5-second timer. Cleaned up on unmount.
+  // Slide to the left every 5 seconds.
   useEffect(() => {
-    if (paused) return undefined;
-    const id = window.setInterval(() => {
-      setActive((a) => (a + 1) % heroSlides.length);
-    }, 5000);
+    const id = window.setInterval(() => setIndex((i) => i + 1), 5000);
     return () => window.clearInterval(id);
-  }, [paused, active]);
+  }, [index]);
+
+  // When we reach the cloned first slide, snap back to the real first slide
+  // silently (no transition) so the leftward loop is seamless.
+  useEffect(() => {
+    if (index === heroImages.length) {
+      const t = window.setTimeout(() => {
+        setNoTransition(true);
+        setIndex(0);
+      }, 700);
+      return () => window.clearTimeout(t);
+    }
+    return undefined;
+  }, [index, heroImages.length]);
+
+  // Re-enable the transition right after the silent snap-back.
+  useEffect(() => {
+    if (index === 0) {
+      const raf = requestAnimationFrame(() => setNoTransition(false));
+      return () => cancelAnimationFrame(raf);
+    }
+    return undefined;
+  }, [index]);
 
   return (
     <>
-      {/* Hero */}
-      <section
-        className="relative isolate overflow-hidden bg-charcoal text-charcoal-foreground"
-        onMouseEnter={() => setPaused(true)}
-        onMouseLeave={() => setPaused(false)}
-      >
-        {/* Carousel slides — each links to its (brand-filtered) catalogue page */}
-        <div className="absolute inset-0">
-          {heroSlides.map((slide, i) => (
-            <Link
-              key={slide.image}
-              to="/products"
-              search={{ q: "", category: "all", brand: slide.brand ?? "all" }}
-              aria-label={slide.label}
-              title={slide.label}
-              className={cn(
-                "absolute inset-0 block transition-opacity duration-700 ease-out sm:duration-[800ms]",
-                i === active ? "opacity-100" : "pointer-events-none opacity-0",
-              )}
-            >
-              <img
-                src={slide.image}
-                alt={slide.alt}
-                fetchPriority={i === 0 ? "high" : undefined}
-                loading={i === 0 ? undefined : "lazy"}
-                className="size-full object-cover object-center max-sm:object-top"
-              />
-            </Link>
-          ))}
-        </div>
-
-        {/* Gradient overlay for text legibility on top of the slides */}
-        <div className="pointer-events-none absolute inset-0 bg-gradient-to-r from-charcoal via-charcoal/95 to-charcoal/45" />
-
-        {/* Left / Right arrows */}
-        <button
-          type="button"
-          onClick={prev}
-          aria-label="Previous slide"
-          className="absolute top-1/2 left-3 z-20 hidden -translate-y-1/2 items-center justify-center rounded-full border border-charcoal-muted/40 bg-charcoal/60 p-2 text-charcoal-foreground/80 transition hover:bg-charcoal/80 hover:text-charcoal-foreground sm:flex"
-        >
-          <ChevronLeft className="size-5" />
-        </button>
-        <button
-          type="button"
-          onClick={next}
-          aria-label="Next slide"
-          className="absolute top-1/2 right-3 z-20 hidden -translate-y-1/2 items-center justify-center rounded-full border border-charcoal-muted/40 bg-charcoal/60 p-2 text-charcoal-foreground/80 transition hover:bg-charcoal/80 hover:text-charcoal-foreground sm:flex"
-        >
-          <ChevronRight className="size-5" />
-        </button>
-
-        {/* Dot / pagination indicators */}
-        <div className="absolute bottom-4 left-1/2 z-20 flex -translate-x-1/2 items-center gap-2 sm:bottom-5">
-          {heroSlides.map((slide, i) => (
-            <button
-              key={slide.image}
-              type="button"
-              onClick={() => goTo(i)}
-              aria-label={`Go to slide ${i + 1}`}
-              aria-current={i === active}
-              className={cn(
-                "h-2 rounded-full transition-all duration-300",
-                i === active
-                  ? "w-7 bg-primary-foreground"
-                  : "w-2 bg-primary-foreground/40 hover:bg-primary-foreground/75",
-              )}
-            />
-          ))}
-        </div>
-
-        {/* Hero content — container clicks fall through to the slide link;
-            only the buttons re-enable pointer events (full-width touch targets on mobile). */}
-        <div className="relative pointer-events-none mx-auto max-w-7xl px-4 pt-16 pb-24 sm:py-28 sm:pb-32 lg:py-36">
-          <Reveal className="max-w-3xl">
-            <p className="inline-flex items-center gap-2 bg-primary px-3 py-1.5 font-display text-xs font-bold tracking-[0.18em] text-primary-foreground uppercase">
-              <MapPin className="size-3.5" /> Matara, Sri Lanka
-            </p>
-            <h1 className="mt-6 font-display text-4xl leading-[1.05] font-extrabold sm:text-5xl lg:text-6xl">
-              Complete Hardware Solutions
-              <span className="block text-primary-foreground/70">Under One Roof</span>
-            </h1>
-            <div className="pointer-events-auto mt-8 flex flex-col gap-3 sm:flex-row">
-              <Button asChild size="lg">
-                <Link to="/products">
-                  Browse the catalogue <ArrowRight className="size-4" />
+      {/* Hero — full-width image carousel that slides to the left every 5s */}
+      <section className="w-full overflow-hidden bg-charcoal">
+        <div className="relative aspect-[4/3] w-full overflow-hidden sm:aspect-[21/9]">
+          <div
+            className={cn(
+              "flex h-full w-full ease-out",
+              noTransition ? "" : "transition-transform duration-[700ms]",
+            )}
+            style={{ transform: `translateX(${-index * 100}%)` }}
+          >
+            {trackSlides.map((src, i) => {
+              const meta = heroSlides[i % heroSlides.length]!;
+              return (
+                <Link
+                  key={`${meta.image}-${i}`}
+                  to="/products"
+                  search={{ q: "", category: "all", brand: meta.brand ?? "all" }}
+                  aria-label={meta.label}
+                  title={meta.label}
+                  className="block h-full w-full shrink-0"
+                >
+                  <img
+                    src={src}
+                    alt={meta.alt}
+                    fetchPriority={i === 0 ? "high" : undefined}
+                    loading={i === 0 ? undefined : "lazy"}
+                    className="h-full w-full object-cover object-center"
+                  />
                 </Link>
-              </Button>
-              <Button
-                asChild
-                size="lg"
-                variant="outline"
-                className="border-charcoal-muted/40 bg-transparent text-charcoal-foreground hover:bg-charcoal-foreground/10 hover:text-charcoal-foreground"
-              >
-                <a href={`https://wa.me/${business.whatsapp}`}>
-                  <MessageCircle className="size-4" /> WhatsApp us
-                </a>
-              </Button>
-            </div>
-          </Reveal>
+              );
+            })}
+          </div>
         </div>
       </section>
 
