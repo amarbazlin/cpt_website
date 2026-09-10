@@ -16,7 +16,7 @@ const searchSchema = z.object({
 });
 
 /** Brands shown in the "Browse by brand" list on the products page. */
-const browseBrands = ["Bosch", "Humhon", "Tolsen", "Wokin", "Giant", "Wipro"];
+const browseBrands = ["Bosch", "Humhon", "Tolsen", "Wokin", "Giant", "Wipro", "ZRM"];
 
 export const Route = createFileRoute("/products/")({
   validateSearch: searchSchema,

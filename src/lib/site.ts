@@ -41,6 +41,12 @@ export const heroSlides: HeroSlide[] = [
     brand: "Giant",
     label: "Shop Giant products",
   },
+  {
+    image: "/hero03.png",
+    alt: "Ceylon Platinum Trading promotion banner",
+    brand: "ZRM",
+    label: "Shop ZRM products",
+  },
 ];
 
 export const business = {
