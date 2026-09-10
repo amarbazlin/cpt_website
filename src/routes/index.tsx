@@ -59,12 +59,6 @@ function Home() {
               Complete Hardware Solutions
               <span className="block text-primary-foreground/70">Under One Roof</span>
             </h1>
-            <p className="mt-6 max-w-2xl text-base text-charcoal-muted sm:text-lg">
-              Ceylon Platinum Trading (PVT) Ltd is a hardware distribution company based at 167/B1
-              Old Tangalle Road, Kotuwegoda, Matara. We supply power tools, hand tools, paints,
-              door and window hardware, machinery and sealants to homeowners, contractors, builders
-              and hardware retailers across Sri Lanka.
-            </p>
             <div className="mt-8 flex flex-col gap-3 sm:flex-row">
               <Button asChild size="lg">
                 <Link to="/products">
