@@ -117,23 +117,6 @@ function Home() {
         </div>
       </section>
 
-      {/* Stat strip */}
-      <section className="border-b border-border bg-surface">
-        <div className="mx-auto grid max-w-7xl grid-cols-2 gap-px px-4 py-8 sm:grid-cols-4">
-          {[
-            { k: "15+", v: "Brands distributed" },
-            { k: "10+", v: "Product categories" },
-            { k: "Island-wide", v: "Delivery from Matara" },
-            { k: "Mon–Sat", v: "9:00 AM – 5:00 PM" },
-          ].map((s, i) => (
-            <Reveal key={s.v} delay={i * 70} className="px-2 text-center sm:text-left">
-              <p className="font-display text-2xl font-extrabold text-primary sm:text-3xl">{s.k}</p>
-              <p className="mt-1 text-xs text-muted-foreground sm:text-sm">{s.v}</p>
-            </Reveal>
-          ))}
-        </div>
-      </section>
-
       {/* Featured products */}
       <section className="bg-surface py-16 sm:py-24">
         <div className="mx-auto max-w-7xl px-4">
