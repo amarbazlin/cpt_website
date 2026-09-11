@@ -84,6 +84,33 @@ function Home() {
   const goNext = () => setIndex((i) => Math.min(i + 1, n + 1));
   const goPrev = () => setIndex((i) => Math.max(i - 1, 0));
 
+  // Brand logo strip used twice in the marquee (two copies make the -50%
+  // translate loop seamless). Each logo links to that brand's products.
+  const brandStrip = (ariaHidden: boolean) => (
+    <div
+      className="flex w-max shrink-0 items-center gap-6 pr-6"
+      aria-hidden={ariaHidden || undefined}
+    >
+      {brands.map((b) => (
+        <Link
+          key={b.name}
+          to="/products"
+          search={{ q: "", category: "all", brand: b.name }}
+          aria-label={`Shop ${b.name} products`}
+          title={`Shop ${b.name} products`}
+          className="flex h-20 w-40 shrink-0 items-center justify-center rounded-xl border border-charcoal-muted/15 bg-card px-4 shadow-card transition hover:border-primary/50 hover:shadow-lift focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none"
+        >
+          <img
+            src={b.logo}
+            alt={`${b.name} logo`}
+            loading="lazy"
+            className="max-h-12 max-w-full object-contain"
+          />
+        </Link>
+      ))}
+    </div>
+  );
+
   return (
     <>
       {/* Hero — full-width image carousel that slides to the left every 5s.
@@ -191,21 +218,15 @@ function Home() {
               Distributed brands you already trust
             </h2>
           </Reveal>
-          <div className="mt-10 grid grid-cols-2 gap-px bg-charcoal-muted/20 sm:grid-cols-3 lg:grid-cols-6">
-            {brands.map((b, i) => (
-              <Reveal
-                key={b.name}
-                delay={(i % 6) * 60}
-                className="flex min-h-28 items-center justify-center bg-white px-6 py-6"
-              >
-                <img
-                  src={b.logo}
-                  alt={`${b.name} logo`}
-                  loading="lazy"
-                  className="max-h-16 max-w-full object-contain"
-                />
-              </Reveal>
-            ))}
+          <div className="brand-marquee relative mt-10 overflow-hidden">
+            {/* Edge fade masks so logos appear to slide in/out cleanly. */}
+            <div className="pointer-events-none absolute inset-y-0 left-0 z-10 w-12 bg-gradient-to-r from-charcoal to-transparent sm:w-24" />
+            <div className="pointer-events-none absolute inset-y-0 right-0 z-10 w-12 bg-gradient-to-l from-charcoal to-transparent sm:w-24" />
+            {/* Two copies of the logo strip so the right-to-left loop is seamless. */}
+            <div className="brand-marquee-track flex w-max will-change-transform">
+              {brandStrip(false)}
+              {brandStrip(true)}
+            </div>
           </div>
         </div>
       </section>
