@@ -133,9 +133,14 @@ function ProductDetail() {
             </h1>
             <p className="mt-4 text-muted-foreground">{product.description}</p>
 
-            <p className="mt-6 font-display text-xl font-extrabold">Price on request</p>
+            <p className="mt-6 font-display text-xl font-extrabold">
+              {product.price
+                ? `Rs. ${product.price.toLocaleString("en-LK")}`
+                : "Price on request"}
+            </p>
             <p className="text-sm text-muted-foreground">
-              Prices are confirmed by our Matara team when your WhatsApp order is received.
+              Prices are inclusive of the current selling rates and confirmed by our Matara team when
+              your WhatsApp order is received. Prices may change without notice.
             </p>
 
             <div className="mt-6 grid grid-cols-[auto_minmax(0,1fr)] items-center gap-3 sm:flex">

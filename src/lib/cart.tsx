@@ -102,7 +102,8 @@ export function buildWhatsAppMessage(
   const items = lines.map((l, i) => {
     const p = products.find((x) => x.slug === l.slug);
     const productName = p ? `${p.name}${p.brand !== "To be confirmed" ? ` (${p.brand})` : ""}` : l.slug;
-    return `${i + 1}. ${productName} — Qty: ${l.qty}`;
+    const price = p?.price ? ` @ Rs. ${p.price.toLocaleString("en-LK")}` : "";
+    return `${i + 1}. ${productName}${price} — Qty: ${l.qty}`;
   });
 
   const parts = [

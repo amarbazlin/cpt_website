@@ -219,7 +219,11 @@ function Products() {
                         </Link>
                       </h3>
                       <p className="mt-2 flex-1 text-sm text-muted-foreground">{p.summary}</p>
-                      <p className="mt-3 text-sm font-semibold">Price on request</p>
+                      <p className="mt-3 text-sm font-semibold">
+                        {p.price
+                          ? `Rs. ${p.price.toLocaleString("en-LK")}`
+                          : "Price on request"}
+                      </p>
                       <div className="mt-4 grid grid-cols-[minmax(0,1fr)_auto] gap-2">
                         <Button
                           onClick={() => {
