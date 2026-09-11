@@ -78,18 +78,21 @@ export type Brand = {
 
 /** Brand logos distributed by Ceylon Platinum Trading (client's original logos). */
 export const brands: Brand[] = [
-  { name: "Bosch", logo: "/brands/bosch.png" },
-  { name: "Kevin", logo: "/brands/kevin.png" },
+  { name: "Asian Paints", logo: "/brands/asianpaints.png" },
   { name: "Bellucci", logo: "/brands/bellucci.png" },
+  { name: "Bosch", logo: "/brands/bosch.png" },
+  { name: "Giant", logo: "/brands/giant.png" },
+  { name: "Hasky", logo: "/brands/hasky.png" },
   { name: "Humhon", logo: "/brands/humhon.png" },
+  { name: "Kevin", logo: "/brands/kevin.png" },
   { name: "Melwa", logo: "/brands/melwa.png" },
+  { name: "Multibond", logo: "/brands/multibond.jpg" },
   { name: "National PVC", logo: "/brands/national-pvc.png" },
   { name: "Rhino", logo: "/brands/rhino.jpg" },
   { name: "S-Lon", logo: "/brands/s-lon.png" },
   { name: "Tolsen", logo: "/brands/tolsen.png" },
   { name: "Wipro", logo: "/brands/wipro.png" },
   { name: "Wokin", logo: "/brands/wokin.jpg" },
-  { name: "Multibond", logo: "/brands/multibond.jpg" },
 ];
 
 export type Category = {
