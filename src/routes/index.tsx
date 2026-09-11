@@ -1,5 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { ArrowRight, Clock, MapPin, Phone } from "lucide-react";
+import { ArrowLeft, ArrowRight, Clock, MapPin, Phone } from "lucide-react";
 import { useEffect, useState } from "react";
 import { Reveal } from "@/components/Reveal";
 import { Button } from "@/components/ui/button";
@@ -41,41 +41,48 @@ export const Route = createFileRoute("/")({
 });
 
 function Home() {
-  // Raw hero banners; we append a clone of the first so the carousel can slide
-  // continuously to the left forever without a visible jump back to the start.
+  // Raw hero banners. The track prepends a clone of the last banner before the
+  // first and appends a clone of the first after the last, so prev/next can
+  // wrap around seamlessly in both directions without a visible jump.
   const heroImages = heroSlides.map((s) => s.image);
-  const trackSlides = [...heroImages, heroImages[0]];
+  const n = heroImages.length;
+  const trackSlides = [heroImages[n - 1], ...heroImages, heroImages[0]];
 
-  const [index, setIndex] = useState(0); // position along trackSlides
+  // Position along trackSlides. Starts at the real first slide (1).
+  const [index, setIndex] = useState(1);
   const [noTransition, setNoTransition] = useState(false);
 
-  // Slide to the left every 5 seconds.
+  // Auto-advance to the next hero image every 5 seconds.
   useEffect(() => {
-    const id = window.setInterval(() => setIndex((i) => i + 1), 5000);
+    const id = window.setInterval(() => setIndex((i) => Math.min(i + 1, n + 1)), 5000);
     return () => window.clearInterval(id);
-  }, [index]);
+  }, [n]);
 
-  // When we reach the cloned first slide, snap back to the real first slide
-  // silently (no transition) so the leftward loop is seamless.
+  // When the track reaches either cloned edge, jump silently (no transition)
+  // to the matching real edge so the wrap-around is seamless.
   useEffect(() => {
-    if (index === heroImages.length) {
+    if (index === n + 1 || index === 0) {
       const t = window.setTimeout(() => {
         setNoTransition(true);
-        setIndex(0);
+        setIndex(index === n + 1 ? 1 : n);
       }, 700);
       return () => window.clearTimeout(t);
     }
     return undefined;
-  }, [index, heroImages.length]);
+  }, [index, n]);
 
-  // Re-enable the transition right after the silent snap-back.
+  // Re-enable the transition right after a silent snap.
   useEffect(() => {
-    if (index === 0) {
+    if (index === 1 || index === n) {
       const raf = requestAnimationFrame(() => setNoTransition(false));
       return () => cancelAnimationFrame(raf);
     }
     return undefined;
-  }, [index]);
+  }, [index, n]);
+
+  // Manual navigation from the arrow buttons.
+  const goNext = () => setIndex((i) => Math.min(i + 1, n + 1));
+  const goPrev = () => setIndex((i) => Math.max(i - 1, 0));
 
   return (
     <>
@@ -93,7 +100,7 @@ function Home() {
             style={{ transform: `translateX(${-index * 100}%)` }}
           >
             {trackSlides.map((src, i) => {
-              const meta = heroSlides[i % heroSlides.length]!;
+              const meta = heroSlides[(((i - 1) % heroSlides.length) + heroSlides.length) % heroSlides.length]!;
               return (
                 <Link
                   key={`${meta.image}-${i}`}
@@ -114,6 +121,24 @@ function Home() {
               );
             })}
           </div>
+
+          {/* Prev/next arrows in small circles to scroll between hero images. */}
+          <button
+            type="button"
+            onClick={goPrev}
+            aria-label="Previous hero image"
+            className="absolute top-1/2 left-4 z-10 flex size-10 -translate-y-1/2 cursor-pointer items-center justify-center rounded-full border border-white/60 bg-black/25 text-white shadow-lg backdrop-blur-sm transition hover:bg-black/45 focus-visible:ring-2 focus-visible:ring-white focus-visible:outline-none sm:left-6"
+          >
+            <ArrowLeft className="size-5" />
+          </button>
+          <button
+            type="button"
+            onClick={goNext}
+            aria-label="Next hero image"
+            className="absolute top-1/2 right-4 z-10 flex size-10 -translate-y-1/2 cursor-pointer items-center justify-center rounded-full border border-white/60 bg-black/25 text-white shadow-lg backdrop-blur-sm transition hover:bg-black/45 focus-visible:ring-2 focus-visible:ring-white focus-visible:outline-none sm:right-6"
+          >
+            <ArrowRight className="size-5" />
+          </button>
         </div>
       </section>
 
