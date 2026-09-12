@@ -265,19 +265,15 @@ function Products() {
                         <p className="mt-3 text-sm font-semibold">
                           {p.price ? `Rs. ${p.price.toLocaleString("en-LK")}` : "Price on request"}
                         </p>
-                        <div className="mt-4 grid gap-2 sm:grid-cols-[minmax(0,1fr)_auto]">
+                        <div className="mt-4">
                           <Button
+                            className="w-full"
                             onClick={() => {
                               add(p.slug);
                               setOpen(true);
                             }}
                           >
                             <ShoppingCart className="size-4" /> Add to cart
-                          </Button>
-                          <Button asChild variant="outline">
-                            <Link to="/products/$slug" params={{ slug: p.slug }}>
-                              Details
-                            </Link>
                           </Button>
                         </div>
                       </div>
