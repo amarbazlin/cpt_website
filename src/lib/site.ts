@@ -4,7 +4,6 @@ export const photos = {
   hero: "/images/hero.jpg",
   showroom: "/images/hand-tools.jpg",
   whoWeAre: "/images/whoweare.jpg",
-  showroomExterior: "/images/exterior.jpg",
   powerTools: "/images/power-tools.jpg",
   handTools: "/images/hand-tools.jpg",
   paints: "/images/paints.jpg",

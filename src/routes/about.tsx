@@ -147,41 +147,6 @@ function About() {
         </div>
       </section>
 
-      <section className="mx-auto max-w-7xl px-4 py-16 sm:py-24">
-        <Reveal className="max-w-2xl">
-          <p className="eyebrow">Inside the facility</p>
-          <h2 className="rule-red mt-4 font-display text-3xl font-extrabold sm:text-4xl">
-            Our Matara showroom
-          </h2>
-          <p className="mt-4 text-muted-foreground">
-            Photography from our Old Tangalle Road showroom and stock floor. More facility and team
-            photos will be added here.
-          </p>
-        </Reveal>
-        <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {[
-            {
-              src: photos.showroomExterior,
-              alt: "Exterior of the Ceylon Platinum Trading showroom in Matara",
-            },
-            { src: photos.handTools, alt: "Hand tool wall display at the CPT Matara showroom" },
-            { src: photos.powerTools, alt: "Power tools stocked at Ceylon Platinum Trading" },
-            { src: photos.paints, alt: "Paint and coatings shelving at the CPT showroom" },
-            { src: photos.hardware, alt: "Door and window hardware stocked at CPT Matara" },
-            { src: photos.machinery, alt: "Compressors and machinery at Ceylon Platinum Trading" },
-          ].map((img, i) => (
-            <Reveal key={img.alt} delay={(i % 3) * 80} className="overflow-hidden">
-              <img
-                src={img.src}
-                alt={img.alt}
-                loading="lazy"
-                className="aspect-[4/3] w-full object-cover transition-transform duration-700 hover:scale-[1.04]"
-              />
-            </Reveal>
-          ))}
-        </div>
-      </section>
-
       <section className="bg-surface py-16 sm:py-24">
         <div className="mx-auto max-w-7xl px-4">
           <Reveal className="max-w-2xl">
