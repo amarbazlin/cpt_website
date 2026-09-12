@@ -1,6 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { ChevronDown, Search, ShoppingCart } from "lucide-react";
-import { useMemo, useState } from "react";
+import { ChevronDown, ChevronLeft, ChevronRight, Search, ShoppingCart } from "lucide-react";
+import { useEffect, useMemo, useState } from "react";
 import { z } from "zod";
 import { Reveal } from "@/components/Reveal";
 import { Button } from "@/components/ui/button";
@@ -75,12 +75,21 @@ function Products() {
   const activeCategory = categories.find((c) => c.slug === category);
   const activeBrand = brand !== "all" ? brand : null;
 
+  const [page, setPage] = useState(1);
+  const PAGE_SIZE = 50;
+  const pageCount = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE));
+  const safePage = Math.min(page, pageCount);
+  const paged = filtered.slice((safePage - 1) * PAGE_SIZE, safePage * PAGE_SIZE);
+  useEffect(() => {
+    setPage(1);
+  }, [q, category, brand]);
+
   return (
     <>
       <section className="border-b border-border bg-surface">
-        <div className="mx-auto max-w-7xl px-4 py-12 sm:py-16">
+        <div className="mx-auto max-w-7xl px-4 py-3 sm:py-5">
           <Reveal className="max-w-3xl">
-            <h1 className="rule-red font-display text-4xl font-extrabold sm:text-5xl">Catalogue</h1>
+            <h1 className="font-display text-3xl font-extrabold sm:text-4xl">Catalogue</h1>
           </Reveal>
         </div>
       </section>
@@ -246,57 +255,87 @@ function Products() {
                 </p>
               </div>
             ) : (
-              <div className="mt-6 grid gap-6 sm:grid-cols-2 xl:grid-cols-3">
-                {filtered.map((p, i) => (
-                  <Reveal
-                    key={p.slug}
-                    delay={(i % 3) * 80}
-                    className="flex h-full flex-col border border-border bg-card shadow-card transition-shadow hover:shadow-lift"
-                  >
-                    <Link
-                      to="/products/$slug"
-                      params={{ slug: p.slug }}
-                      className="group block overflow-hidden p-5"
+              <>
+                <div className="mt-6 grid grid-cols-2 gap-6 sm:grid-cols-2 xl:grid-cols-3">
+                  {paged.map((p, i) => (
+                    <Reveal
+                      key={p.slug}
+                      delay={(i % 3) * 80}
+                      className="flex h-full flex-col border border-border bg-card shadow-card transition-shadow hover:shadow-lift"
                     >
-                      <img
-                        src={p.image}
-                        alt={`${p.name} — available from Ceylon Platinum Trading, Matara`}
-                        loading="lazy"
-                        className="aspect-square w-full object-contain transition-transform duration-700 group-hover:scale-[1.05]"
-                      />
-                    </Link>
-                    <div className="flex flex-1 flex-col px-5 pb-5">
-                      <p className="text-xs font-semibold tracking-wide text-primary uppercase">
-                        {p.brand}
-                      </p>
-                      <h3 className="mt-1 font-display text-lg leading-snug font-extrabold">
-                        <Link to="/products/$slug" params={{ slug: p.slug }}>
-                          {p.name}
-                        </Link>
-                      </h3>
-                      <p className="mt-2 flex-1 text-sm text-muted-foreground">{p.summary}</p>
-                      <p className="mt-3 text-sm font-semibold">
-                        {p.price ? `Rs. ${p.price.toLocaleString("en-LK")}` : "Price on request"}
-                      </p>
-                      <div className="mt-4 grid grid-cols-[minmax(0,1fr)_auto] gap-2">
-                        <Button
-                          onClick={() => {
-                            add(p.slug);
-                            setOpen(true);
-                          }}
-                        >
-                          <ShoppingCart className="size-4" /> Add to cart
-                        </Button>
-                        <Button asChild variant="outline">
+                      <Link
+                        to="/products/$slug"
+                        params={{ slug: p.slug }}
+                        className="group block overflow-hidden p-5"
+                      >
+                        <img
+                          src={p.image}
+                          alt={`${p.name} — available from Ceylon Platinum Trading, Matara`}
+                          loading="lazy"
+                          className="aspect-square w-full object-contain transition-transform duration-700 group-hover:scale-[1.05]"
+                        />
+                      </Link>
+                      <div className="flex flex-1 flex-col px-5 pb-5">
+                        <p className="text-xs font-semibold tracking-wide text-primary uppercase">
+                          {p.brand}
+                        </p>
+                        <h3 className="mt-1 font-display text-lg leading-snug font-extrabold">
                           <Link to="/products/$slug" params={{ slug: p.slug }}>
-                            Details
+                            {p.name}
                           </Link>
-                        </Button>
+                        </h3>
+                        <p className="mt-2 flex-1 text-sm text-muted-foreground">{p.summary}</p>
+                        <p className="mt-3 text-sm font-semibold">
+                          {p.price ? `Rs. ${p.price.toLocaleString("en-LK")}` : "Price on request"}
+                        </p>
+                        <div className="mt-4 grid grid-cols-[minmax(0,1fr)_auto] gap-2">
+                          <Button
+                            onClick={() => {
+                              add(p.slug);
+                              setOpen(true);
+                            }}
+                          >
+                            <ShoppingCart className="size-4" /> Add to cart
+                          </Button>
+                          <Button asChild variant="outline">
+                            <Link to="/products/$slug" params={{ slug: p.slug }}>
+                              Details
+                            </Link>
+                          </Button>
+                        </div>
                       </div>
-                    </div>
-                  </Reveal>
-                ))}
-              </div>
+                    </Reveal>
+                  ))}
+                </div>
+                {pageCount > 1 && (
+                  <nav
+                    aria-label="Product pages"
+                    className="mt-8 flex items-center justify-center gap-3"
+                  >
+                    <Button
+                      variant="outline"
+                      size="icon"
+                      disabled={safePage <= 1}
+                      aria-label="Previous page"
+                      onClick={() => setPage(safePage - 1)}
+                    >
+                      <ChevronLeft className="size-4" />
+                    </Button>
+                    <span className="text-sm text-muted-foreground">
+                      Page {safePage} of {pageCount}
+                    </span>
+                    <Button
+                      variant="outline"
+                      size="icon"
+                      disabled={safePage >= pageCount}
+                      aria-label="Next page"
+                      onClick={() => setPage(safePage + 1)}
+                    >
+                      <ChevronRight className="size-4" />
+                    </Button>
+                  </nav>
+                )}
+              </>
             )}
           </div>
         </div>

@@ -15,7 +15,10 @@ export const Route = createFileRoute("/products/$slug")({
   head: ({ params, loaderData }) => {
     if (!loaderData) {
       return {
-        meta: [{ title: "Product unavailable | Ceylon Platinum Trading" }, { name: "robots", content: "noindex" }],
+        meta: [
+          { title: "Product unavailable | Ceylon Platinum Trading" },
+          { name: "robots", content: "noindex" },
+        ],
       };
     }
     const p = loaderData.product;
@@ -134,13 +137,11 @@ function ProductDetail() {
             <p className="mt-4 text-muted-foreground">{product.description}</p>
 
             <p className="mt-6 font-display text-xl font-extrabold">
-              {product.price
-                ? `Rs. ${product.price.toLocaleString("en-LK")}`
-                : "Price on request"}
+              {product.price ? `Rs. ${product.price.toLocaleString("en-LK")}` : "Price on request"}
             </p>
             <p className="text-sm text-muted-foreground">
-              Prices are inclusive of the current selling rates and confirmed by our Matara team when
-              your WhatsApp order is received. Prices may change without notice.
+              Prices are inclusive of the current selling rates and confirmed by our Matara team
+              when your WhatsApp order is received. Prices may change without notice.
             </p>
 
             <div className="mt-6 grid grid-cols-[auto_minmax(0,1fr)] items-center gap-3 sm:flex">
@@ -198,7 +199,7 @@ function ProductDetail() {
                 More from our catalogue
               </h2>
             </Reveal>
-            <div className="mt-6 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            <div className="mt-6 grid grid-cols-2 gap-6 sm:grid-cols-2 lg:grid-cols-3">
               {related.map((p, i) => (
                 <Reveal key={p.slug} delay={(i % 3) * 80}>
                   <Link
