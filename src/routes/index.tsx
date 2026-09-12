@@ -171,14 +171,40 @@ function Home() {
   const goNext = () => setIndex((i) => Math.min(i + 1, n + 1));
   const goPrev = () => setIndex((i) => Math.max(i - 1, 0));
 
-  // Curated rows for the homepage carousels: "$category" products ordered from
-  // lowest price upwards, capped to show the most affordable options first.
+  // Curated Power Tools row — the exact products requested for the homepage, in order.
+  const powerToolSlugs = [
+    "humhon-drywall-sander-ws180",
+    "humhon-bench-grinder-5-grinder5",
+    "humhon-welding-160a-mma6001",
+    "humhon-demolition-hammer-1050w-dh810",
+    "humhon-polisher-1400w-bcp-9227c",
+    "humhon-industrial-blower-2-eb02",
+    "humhon-rotary-hammer-800w-rh26",
+    "humhon-router-1650w-3612br",
+    "humhon-heat-gun-2000w-hg118v",
+    "humhon-cut-off-2000w-cm14c",
+    "humhon-jigsaw-500w-js6003",
+    "humhon-angle-grinder-4-ag6016",
+    "humhon-cordless-drill-12v-cd505",
+    "humhon-hand-drill-800w-eid525",
+    "bosch-jigsaw-450w-gst650",
+    "bosch-circular-saw-1300w-gks130",
+    "bosch-mixer-1400w-grw140",
+    "bosch-rotary-hammer-1000w-gbh2-26",
+    "bosch-percussion-drill-600w-gsb600",
+    "bosch-angle-grinder-4-5-710w-gws700-115",
+    "bosch-cordless-screwdriver-12v-gsr120",
+  ];
+  const powerTools = powerToolSlugs
+    .map((slug) => products.find((p) => p.slug === slug))
+    .filter((p): p is Product => Boolean(p));
+
+  // Water pumps / machinery rows: category products ordered lowest price first.
   const cheapest = (cat: string, limit: number) =>
     products
       .filter((p) => p.category === cat && p.price)
       .sort((a, b) => (a.price ?? 0) - (b.price ?? 0))
       .slice(0, limit);
-  const powerTools = cheapest("power-tools", 16);
   const waterPumps = cheapest("motors-pumps", 12);
   const machinery = cheapest("machinery-compressors", 12);
 
