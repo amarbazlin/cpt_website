@@ -184,6 +184,7 @@ export const products: Product[] = [
     description:
       "The Bosch GHO650 is a 650W planer for flattening and smoothing timber surfaces. Distributed by Ceylon Platinum Trading (PVT) Ltd, Matara, and available for counter collection or island-wide delivery.",
     specs: [
+      { label: "Warranty", value: "1 year" },
       { label: "Model", value: "GHO650" },
       { label: "Type", value: "Planer" },
       { label: "Power input", value: "650W" },
@@ -217,6 +218,7 @@ export const products: Product[] = [
     description:
       "The Bosch 2608521042 is a 65mm screwdriver bit for power screwdrivers and drills. Distributed by Ceylon Platinum Trading (PVT) Ltd, Matara, and available for counter collection or island-wide delivery.",
     specs: [
+      { label: "Warranty", value: "1 year" },
       { label: "Part no.", value: "2608521042" },
       { label: "Length", value: "65mm" },
       { label: "Type", value: "Screwdriver bit" },
@@ -233,6 +235,7 @@ export const products: Product[] = [
     description:
       "The Bosch 26086152532 is a 4\" (110mm) diamond cutting disc for cutting masonry, concrete and tile. Distributed by Ceylon Platinum Trading (PVT) Ltd, Matara, and available for counter collection or island-wide delivery.",
     specs: [
+      { label: "Warranty", value: "1 year" },
       { label: "Part no.", value: "26086152532" },
       { label: "Disc size", value: "4\" (110mm)" },
       { label: "Type", value: "Diamond cutting disc" },
@@ -249,6 +252,7 @@ export const products: Product[] = [
     description:
       "The Bosch 2608587164 is an 8mm tile drill bit for drilling clean holes in ceramic and porcelain tile. Distributed by Ceylon Platinum Trading (PVT) Ltd, Matara, and available for counter collection or island-wide delivery.",
     specs: [
+      { label: "Warranty", value: "1 year" },
       { label: "Part no.", value: "2608587164" },
       { label: "Diameter", value: "8mm" },
       { label: "Type", value: "Tile drill bit" },
@@ -265,6 +269,7 @@ export const products: Product[] = [
     description:
       "The Bosch 2608587161 is a 6mm tile drill bit for drilling clean holes in ceramic and porcelain tile. Distributed by Ceylon Platinum Trading (PVT) Ltd, Matara, and available for counter collection or island-wide delivery.",
     specs: [
+      { label: "Warranty", value: "1 year" },
       { label: "Part no.", value: "2608587161" },
       { label: "Diameter", value: "6mm" },
       { label: "Type", value: "Tile drill bit" },
@@ -281,6 +286,7 @@ export const products: Product[] = [
     description:
       "The Bosch 2608572253 is a 13mm keyed chuck for drill machines. Distributed by Ceylon Platinum Trading (PVT) Ltd, Matara, and available for counter collection or island-wide delivery.",
     specs: [
+      { label: "Warranty", value: "1 year" },
       { label: "Part no.", value: "2608572253" },
       { label: "Size", value: "13mm" },
       { label: "Type", value: "Keyed chuck" },
@@ -297,6 +303,7 @@ export const products: Product[] = [
     description:
       "The Bosch 2608644308 is a 10\" circular saw blade for clean, accurate cuts in timber and board material. Distributed by Ceylon Platinum Trading (PVT) Ltd, Matara, and available for counter collection or island-wide delivery.",
     specs: [
+      { label: "Warranty", value: "1 year" },
       { label: "Part no.", value: "2608644308" },
       { label: "Blade size", value: "10\"" },
       { label: "Type", value: "Circular saw blade" },
@@ -313,6 +320,7 @@ export const products: Product[] = [
     description:
       "The Bosch 2608644279 is a 7 1/4\" circular saw blade with 60 teeth for smooth, fine cuts in timber. Distributed by Ceylon Platinum Trading (PVT) Ltd, Matara, and available for counter collection or island-wide delivery.",
     specs: [
+      { label: "Warranty", value: "1 year" },
       { label: "Part no.", value: "2608644279" },
       { label: "Blade size", value: "7 1/4\"" },
       { label: "Teeth", value: "60" },
@@ -330,6 +338,7 @@ export const products: Product[] = [
     description:
       "The Bosch 2608637879 is a T119BO jigsaw blade for fine cuts in wood and board material. Distributed by Ceylon Platinum Trading (PVT) Ltd, Matara, and available for counter collection or island-wide delivery.",
     specs: [
+      { label: "Warranty", value: "1 year" },
       { label: "Part no.", value: "2608637879" },
       { label: "Blade type", value: "T119BO" },
       { label: "Type", value: "Jigsaw blade" },
@@ -346,6 +355,7 @@ export const products: Product[] = [
     description:
       "The Bosch 2608637880 is a T144D jigsaw blade for fast cutting of timber and board material. Distributed by Ceylon Platinum Trading (PVT) Ltd, Matara, and available for counter collection or island-wide delivery.",
     specs: [
+      { label: "Warranty", value: "1 year" },
       { label: "Part no.", value: "2608637880" },
       { label: "Blade type", value: "T144D" },
       { label: "Type", value: "Jigsaw blade" },
@@ -362,6 +372,7 @@ export const products: Product[] = [
     description:
       "The Bosch 2608637881 is a T244D HCS jigsaw blade for cutting timber and wood materials. Distributed by Ceylon Platinum Trading (PVT) Ltd, Matara, and available for counter collection or island-wide delivery.",
     specs: [
+      { label: "Warranty", value: "1 year" },
       { label: "Part no.", value: "2608637881" },
       { label: "Blade type", value: "T244D HCS" },
       { label: "Type", value: "Jigsaw blade" },
@@ -378,6 +389,7 @@ export const products: Product[] = [
     description:
       "The Bosch GSS140 is a 220V orbital sander for smooth sanding and finishing of wood and painted surfaces. Distributed by Ceylon Platinum Trading (PVT) Ltd, Matara, and available for counter collection or island-wide delivery.",
     specs: [
+      { label: "Warranty", value: "1 year" },
       { label: "Model", value: "GSS140" },
       { label: "Type", value: "Orbital sander" },
       { label: "Voltage", value: "220V" },
@@ -394,6 +406,7 @@ export const products: Product[] = [
     description:
       "The Bosch GOF-20-12 is a 2000W router for edge profiling, grooving and shaping in wood. Distributed by Ceylon Platinum Trading (PVT) Ltd, Matara, and available for counter collection or island-wide delivery.",
     specs: [
+      { label: "Warranty", value: "1 year" },
       { label: "Model", value: "GOF-20-12" },
       { label: "Type", value: "Router" },
       { label: "Power input", value: "2000W" },
@@ -410,6 +423,7 @@ export const products: Product[] = [
     description:
       "The Bosch GST650 is a 450W jigsaw for curved and straight cuts in wood and board material. Distributed by Ceylon Platinum Trading (PVT) Ltd, Matara, and available for counter collection or island-wide delivery.",
     specs: [
+      { label: "Warranty", value: "1 year" },
       { label: "Model", value: "GST 650" },
       { label: "Type", value: "Jigsaw" },
       { label: "Power input", value: "450W" },
@@ -426,6 +440,7 @@ export const products: Product[] = [
     description:
       "The Bosch GKS130 is a 1300W circular saw for straight, clean cuts in timber and board material. Distributed by Ceylon Platinum Trading (PVT) Ltd, Matara, and available for counter collection or island-wide delivery.",
     specs: [
+      { label: "Warranty", value: "1 year" },
       { label: "Model", value: "GKS130" },
       { label: "Type", value: "Circular saw" },
       { label: "Power input", value: "1300W" },
@@ -442,6 +457,7 @@ export const products: Product[] = [
     description:
       "The Bosch GRW140 is a 1400W mixer for mixing paint, mortar and toppings. Distributed by Ceylon Platinum Trading (PVT) Ltd, Matara, and available for counter collection or island-wide delivery.",
     specs: [
+      { label: "Warranty", value: "1 year" },
       { label: "Model", value: "GRW140" },
       { label: "Type", value: "Mixer" },
       { label: "Power input", value: "1400W" },
@@ -458,6 +474,7 @@ export const products: Product[] = [
     description:
       "The Bosch GAS 15 PS is an 1100W wet/dry vacuum extractor for workshop dust, debris and liquid spills. Distributed by Ceylon Platinum Trading (PVT) Ltd, Matara, and available for counter collection or island-wide delivery.",
     specs: [
+      { label: "Warranty", value: "1 year" },
       { label: "Model", value: "GAS 15 PS" },
       { label: "Type", value: "Wet/dry extractor" },
       { label: "Power input", value: "1100W" },
@@ -474,6 +491,7 @@ export const products: Product[] = [
     description:
       "The Bosch GBL650 is a 650W electric blower for clearing dust, leaves and light debris from workshops and sites. Available for counter collection or island-wide delivery.",
     specs: [
+      { label: "Warranty", value: "1 year" },
       { label: "Model", value: "GBL650" },
       { label: "Type", value: "Blower" },
       { label: "Power input", value: "650W" },
@@ -490,6 +508,7 @@ export const products: Product[] = [
     description:
       "The Bosch GDC140 is a 1400W marble saw for cutting tile, marble and stone. Available for counter collection or island-wide delivery.",
     specs: [
+      { label: "Warranty", value: "1 year" },
       { label: "Model", value: "GDC140" },
       { label: "Type", value: "Marble saw" },
       { label: "Power input", value: "1400W" },
@@ -506,6 +525,7 @@ export const products: Product[] = [
     description:
       "The Bosch GBH 2-26 is a 1000W rotary hammer for hammer drilling and chiselling in concrete and masonry. Available for counter collection or island-wide delivery.",
     specs: [
+      { label: "Warranty", value: "1 year" },
       { label: "Model", value: "GBH 2-26 DRE" },
       { label: "Type", value: "Rotary hammer" },
       { label: "Power input", value: "1000W" },
@@ -522,6 +542,7 @@ export const products: Product[] = [
     description:
       "The Bosch GSH 500 is an 1100W chipping (demolition) hammer for breaking and chasing masonry and concrete. Available for counter collection or island-wide delivery.",
     specs: [
+      { label: "Warranty", value: "1 year" },
       { label: "Model", value: "GSH 500" },
       { label: "Type", value: "Chipping hammer" },
       { label: "Power input", value: "1100W" },
@@ -538,6 +559,7 @@ export const products: Product[] = [
     description:
       "The Bosch GBH 220 is a rotary hammer for drilling and light chiselling in concrete and masonry. Available for counter collection or island-wide delivery.",
     specs: [
+      { label: "Warranty", value: "1 year" },
       { label: "Model", value: "GBH220" },
       { label: "Type", value: "Rotary hammer" },
     ],
@@ -553,6 +575,7 @@ export const products: Product[] = [
     description:
       "The Bosch GSB16RE is a 750W impact drill kit for drilling and driving in wood, metal and masonry. Available for counter collection or island-wide delivery.",
     specs: [
+      { label: "Warranty", value: "1 year" },
       { label: "Model", value: "GSB16RE" },
       { label: "Type", value: "Impact drill kit" },
       { label: "Power input", value: "750W" },
@@ -569,6 +592,7 @@ export const products: Product[] = [
     description:
       "The Bosch GSB 600 is a 600W percussion drill for drilling and driving in wood, metal and masonry. Available for counter collection or island-wide delivery.",
     specs: [
+      { label: "Warranty", value: "1 year" },
       { label: "Model", value: "GSB 600" },
       { label: "Type", value: "Percussion drill" },
       { label: "Power input", value: "600W" },
@@ -585,6 +609,7 @@ export const products: Product[] = [
     description:
       "The Bosch GBM 400 is a 400W drill for general drilling in wood and metal. Available for counter collection or island-wide delivery.",
     specs: [
+      { label: "Warranty", value: "1 year" },
       { label: "Model", value: "GBM 400" },
       { label: "Type", value: "Drill" },
       { label: "Power input", value: "400W" },
@@ -601,6 +626,7 @@ export const products: Product[] = [
     description:
       "The Bosch GPO12 CE is a 1250W polisher for polishing vehicles, stone and surfaces. Available for counter collection or island-wide delivery.",
     specs: [
+      { label: "Warranty", value: "1 year" },
       { label: "Model", value: "GPO12 CE" },
       { label: "Type", value: "Polisher" },
       { label: "Power input", value: "1250W" },
@@ -617,6 +643,7 @@ export const products: Product[] = [
     description:
       "The Bosch GWS 9-115 is a 900W angle grinder with a 115mm disc for cutting and grinding metal and masonry. Available for counter collection or island-wide delivery.",
     specs: [
+      { label: "Warranty", value: "1 year" },
       { label: "Model", value: "GWS 9-115" },
       { label: "Disc size", value: "115mm" },
       { label: "Power input", value: "900W" },
@@ -633,6 +660,7 @@ export const products: Product[] = [
     description:
       "The Bosch GWS 2200-180 is a 2200W angle grinder with a 7\" disc for heavy cutting and grinding. Available for counter collection or island-wide delivery.",
     specs: [
+      { label: "Warranty", value: "1 year" },
       { label: "Model", value: "GWS 2200-180" },
       { label: "Disc size", value: "7\"" },
       { label: "Power input", value: "2200W" },
@@ -649,6 +677,7 @@ export const products: Product[] = [
     description:
       "The Bosch GWS900-100 is a 900W angle grinder with a 4\" disc for cutting and grinding. Available for counter collection or island-wide delivery.",
     specs: [
+      { label: "Warranty", value: "1 year" },
       { label: "Model", value: "GWS900-100" },
       { label: "Disc size", value: "4\"" },
       { label: "Power input", value: "900W" },
@@ -665,6 +694,7 @@ export const products: Product[] = [
     description:
       "The Bosch GWS 700-115 is a 710W angle grinder with a 4 1/2\" disc for cutting and grinding. Available for counter collection or island-wide delivery.",
     specs: [
+      { label: "Warranty", value: "1 year" },
       { label: "Model", value: "GWS 700-115" },
       { label: "Disc size", value: "4 1/2\"" },
       { label: "Power input", value: "710W" },
@@ -681,6 +711,7 @@ export const products: Product[] = [
     description:
       "The Bosch GWS 700-100 is a 710W angle grinder with a 4\" disc for cutting and grinding. Available for counter collection or island-wide delivery.",
     specs: [
+      { label: "Warranty", value: "1 year" },
       { label: "Model", value: "GWS 700-100" },
       { label: "Disc size", value: "4\"" },
       { label: "Power input", value: "710W" },
@@ -717,6 +748,22 @@ export const products: Product[] = [
       { label: "Model", value: "GSR 120" },
       { label: "Voltage", value: "12V" },
       { label: "Type", value: "Cordless screwdriver" },
+      { label: "Warranty", value: "1 year" },
+    ],
+  },
+  {
+    slug: "bosch-laser-measuring-glm400",
+    name: "Bosch Laser Measuring GLM400",
+    brand: "Bosch",
+    category: "power-tools",
+    image: "/products/bosch/GLM400.jpeg",
+    price: 40700,
+    summary: "Laser distance measuring tool for accurate, quick measurement.",
+    description:
+      "The Bosch GLM400 is a laser distance measuring tool for fast, accurate measurement of lengths and areas. Distributed by Ceylon Platinum Trading (PVT) Ltd, Matara, and available for counter collection or island-wide delivery.",
+    specs: [
+      { label: "Model", value: "GLM400" },
+      { label: "Type", value: "Laser distance measure" },
       { label: "Warranty", value: "1 year" },
     ],
   },
