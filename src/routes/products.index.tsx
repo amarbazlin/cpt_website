@@ -70,15 +70,9 @@ function Products() {
       <section className="border-b border-border bg-surface">
         <div className="mx-auto max-w-7xl px-4 py-12 sm:py-16">
           <Reveal className="max-w-3xl">
-            <p className="eyebrow">Catalogue</p>
-            <h1 className="rule-red mt-4 font-display text-4xl font-extrabold sm:text-5xl">
-              Hardware Products
+            <h1 className="rule-red font-display text-4xl font-extrabold sm:text-5xl">
+              Catalogue
             </h1>
-            <p className="mt-5 text-muted-foreground">
-              Every product below is stocked or supplied by Ceylon Platinum Trading (PVT) Ltd,
-              Matara. Add what you need to your cart, enter your delivery location, and the order is
-              sent to our WhatsApp team — there is no online payment.
-            </p>
           </Reveal>
         </div>
       </section>
@@ -145,7 +139,7 @@ function Products() {
               />
             </button>
             {brandOpen && (
-              <div className="mt-2 flex flex-wrap gap-2 lg:flex-col">
+              <div className="mt-2 flex max-h-80 flex-wrap gap-2 overflow-y-auto lg:flex-col lg:pr-1">
                 {[
                   { slug: "all", name: "All brands" },
                   ...browseBrands.map((b) => ({ slug: b, name: b })),
