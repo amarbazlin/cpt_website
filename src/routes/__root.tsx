@@ -108,7 +108,6 @@ const localBusinessSchema = {
     "Bosch",
     "Tolsen",
     "Humhon",
-    "Lesso",
     "Asian Paints",
     "Causeway",
     "Bellucci",

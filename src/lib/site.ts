@@ -116,7 +116,7 @@ export const categories: Category[] = [
     name: "Hand Tools",
     blurb:
       "Complete hand tool sets — spanners, screwdrivers, hammers, pliers, chisels and specialty tools for every trade.",
-    brands: "Tolsen · Lesso",
+    brands: "Tolsen",
     image: photos.handTools,
   },
   {
@@ -2122,7 +2122,7 @@ export const faqs = [
   },
   {
     q: "Which brands does Ceylon Platinum Trading distribute?",
-    a: "We distribute Bosch, Tolsen, Humhon, Lesso, Asian Paints, Causeway, Bellucci, OMAC, Giant, Wipro, Multibond and As-Ron.",
+    a: "We distribute Bosch, Tolsen, Humhon, Asian Paints, Causeway, Bellucci, OMAC, Giant, Wipro, Multibond and As-Ron.",
   },
   {
     q: "How do I place an order?",

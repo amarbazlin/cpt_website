@@ -31,7 +31,7 @@ const directors = [
   {
     name: "Bazlin Salih",
     role: "Chairman",
-    bio: "Bazlin Salih is the founder and Chairman of Ceylon Platinum Trading (PVT) Ltd, bringing decades of entrepreneurial leadership and deep-rooted experience in Sri Lanka's hardware and construction materials sector. With a strong commercial vision, he established CPT to raise the standard of hardware retail in the Southern Province — creating a one-stop destination offering premium brands, expert service, and genuine quality. His leadership has been pivotal in building strategic relationships with international brands including Bosch, Asian Paints, Lesso, and Tolsen, positioning CPT as one of Matara's most trusted hardware destinations since its 2026 launch.",
+    bio: "Bazlin Salih is the founder and Chairman of Ceylon Platinum Trading (PVT) Ltd, bringing decades of entrepreneurial leadership and deep-rooted experience in Sri Lanka's hardware and construction materials sector. With a strong commercial vision, he established CPT to raise the standard of hardware retail in the Southern Province — creating a one-stop destination offering premium brands, expert service, and genuine quality. His leadership has been pivotal in building strategic relationships with international brands including Bosch, Asian Paints, and Tolsen, positioning CPT as one of Matara's most trusted hardware destinations since its 2026 launch.",
   },
   {
     name: "Himaz Bazlin",
