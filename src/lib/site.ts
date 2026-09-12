@@ -152,8 +152,15 @@ export const categories: Category[] = [
     brands: "Multibond · As-Ron",
     image: photos.sealants,
   },
+  {
+    slug: "motors-pumps",
+    name: "Motors & Pumps",
+    blurb:
+      "Water pumps, submersible pumps, trailer pumps, cutter pumps, deepwell pumps, vortex pumps and pressure units from ZRM — for drainage, irrigation and industrial use.",
+    brands: "ZRM",
+    image: photos.machinery,
+  },
 ];
-
 export type Product = {
   slug: string;
   name: string;
