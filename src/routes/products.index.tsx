@@ -16,7 +16,17 @@ const searchSchema = z.object({
 });
 
 /** Brands shown in the "Browse by brand" list on the products page. */
-const browseBrands = ["Asian Paints", "Bosch", "Giant", "Hasky", "Humhon", "Tolsen", "Wokin", "Wipro", "ZRM"];
+const browseBrands = [
+  "Asian Paints",
+  "Bosch",
+  "Giant",
+  "Hasky",
+  "Humhon",
+  "Tolsen",
+  "Wokin",
+  "Wipro",
+  "ZRM",
+];
 
 export const Route = createFileRoute("/products/")({
   validateSearch: searchSchema,
@@ -70,9 +80,7 @@ function Products() {
       <section className="border-b border-border bg-surface">
         <div className="mx-auto max-w-7xl px-4 py-12 sm:py-16">
           <Reveal className="max-w-3xl">
-            <h1 className="rule-red font-display text-4xl font-extrabold sm:text-5xl">
-              Catalogue
-            </h1>
+            <h1 className="rule-red font-display text-4xl font-extrabold sm:text-5xl">Catalogue</h1>
           </Reveal>
         </div>
       </section>
@@ -96,11 +104,65 @@ function Products() {
                 }
               />
             </div>
+            <div className="mt-6 grid gap-3 md:grid-cols-2 lg:hidden">
+              <div>
+                <label
+                  htmlFor="mobile-category"
+                  className="mb-1 block text-sm font-semibold text-muted-foreground"
+                >
+                  Category
+                </label>
+                <select
+                  id="mobile-category"
+                  value={category}
+                  onChange={(e) =>
+                    navigate({
+                      search: (prev) => ({ ...prev, category: e.target.value }),
+                      replace: true,
+                    })
+                  }
+                  className="w-full rounded-md border border-input bg-card px-3 py-2 text-sm font-display font-semibold"
+                >
+                  <option value="all">All products</option>
+                  {categories.map((c) => (
+                    <option key={c.slug} value={c.slug}>
+                      {c.name}
+                    </option>
+                  ))}
+                </select>
+              </div>
+              <div>
+                <label
+                  htmlFor="mobile-brand"
+                  className="mb-1 block text-sm font-semibold text-muted-foreground"
+                >
+                  Brand
+                </label>
+                <select
+                  id="mobile-brand"
+                  value={brand}
+                  onChange={(e) =>
+                    navigate({
+                      search: (prev) => ({ ...prev, brand: e.target.value }),
+                      replace: true,
+                    })
+                  }
+                  className="w-full rounded-md border border-input bg-card px-3 py-2 text-sm font-display font-semibold"
+                >
+                  <option value="all">All brands</option>
+                  {browseBrands.map((b) => (
+                    <option key={b} value={b}>
+                      {b}
+                    </option>
+                  ))}
+                </select>
+              </div>
+            </div>
 
-            <h2 className="mt-6 font-display text-sm font-bold tracking-widest uppercase">
+            <h2 className="mt-6 hidden lg:block font-display text-sm font-bold tracking-widest uppercase">
               Categories
             </h2>
-            <div className="mt-3 flex flex-wrap gap-2 lg:flex-col">
+            <div className="mt-3 hidden flex-wrap gap-2 lg:flex lg:flex-col lg:gap-2">
               {[{ slug: "all", name: "All products" }, ...categories].map((c) => (
                 <button
                   key={c.slug}
@@ -119,7 +181,7 @@ function Products() {
               ))}
             </div>
 
-            <h2 className="mt-6 font-display text-sm font-bold tracking-widest uppercase">
+            <h2 className="mt-6 hidden lg:block font-display text-sm font-bold tracking-widest uppercase">
               Brands
             </h2>
             <button
@@ -127,7 +189,7 @@ function Products() {
               aria-expanded={brandOpen}
               onClick={() => setBrandOpen((v) => !v)}
               className={cn(
-                "mt-3 flex w-full items-center justify-between gap-2 border px-3 py-2 text-left font-display text-sm font-semibold transition-colors",
+                "hidden lg:flex mt-3 flex w-full items-center justify-between gap-2 border px-3 py-2 text-left font-display text-sm font-semibold transition-colors",
                 activeBrand
                   ? "border-primary bg-primary text-primary-foreground"
                   : "border-border bg-card text-foreground hover:border-primary hover:text-primary",
@@ -139,7 +201,7 @@ function Products() {
               />
             </button>
             {brandOpen && (
-              <div className="mt-2 flex max-h-80 flex-wrap gap-2 overflow-y-auto lg:flex-col lg:pr-1">
+              <div className="mt-2 hidden max-h-80 flex-wrap gap-2 overflow-y-auto lg:flex lg:flex-col lg:pr-1 lg:gap-2">
                 {[
                   { slug: "all", name: "All brands" },
                   ...browseBrands.map((b) => ({ slug: b, name: b })),
@@ -214,9 +276,7 @@ function Products() {
                       </h3>
                       <p className="mt-2 flex-1 text-sm text-muted-foreground">{p.summary}</p>
                       <p className="mt-3 text-sm font-semibold">
-                        {p.price
-                          ? `Rs. ${p.price.toLocaleString("en-LK")}`
-                          : "Price on request"}
+                        {p.price ? `Rs. ${p.price.toLocaleString("en-LK")}` : "Price on request"}
                       </p>
                       <div className="mt-4 grid grid-cols-[minmax(0,1fr)_auto] gap-2">
                         <Button
