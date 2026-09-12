@@ -36,12 +36,12 @@ const directors = [
   {
     name: "Himaz Bazlin",
     role: "Director",
-    bio: "Himaz Bazlin serves as Director of Ceylon Platinum Trading, overseeing day-to-day operations and retail management at the Matara showroom. With hands-on involvement in procurement, supplier relations, and customer engagement, Himaz is instrumental in maintaining CPT's high standards of service and product availability. His practical knowledge of the construction trade and genuine commitment to customer satisfaction have made him a trusted figure among the contractors and builders who rely on CPT for their projects across the Southern Province.",
+    bio: "Himaz Bazlin serves as Director of Ceylon Platinum Trading and the founder of KAH-Laban, overseeing day-to-day operations and retail management at the Matara showroom. With hands-on involvement in procurement, supplier relations, and customer engagement, Himaz is instrumental in maintaining CPT's high standards of service and product availability. His practical knowledge of the construction trade and genuine commitment to customer satisfaction have made him a trusted figure among the contractors and builders who rely on CPT for their projects across the Southern Province.",
   },
   {
     name: "Amar Bazlin",
     role: "Director",
-    bio: "Amar Bazlin is a Director of Ceylon Platinum Trading and the founder of Forgera, an AI automation company building intelligent business operations platforms for Sri Lankan SMEs. A Computer Science undergraduate at the University of Colombo (Staffordshire University / APIIT Sri Lanka) and a nationally ranked swimmer, Amar brings a technology-forward perspective to CPT's operations — driving digital presence, brand strategy, and data-driven business improvements. His dual expertise in software development and hardware distribution is shaping CPT's growth into a modern, technology-enabled retail business.",
+    bio: "Amar Bazlin is a Director of Ceylon Platinum Trading and the founder of Forgera, an AI automation company building intelligent business operations platforms for Sri Lankan SMEs. Amar brings a technology-forward perspective to CPT's operations — driving digital presence, brand strategy, and data-driven business improvements. His dual expertise in software development and hardware distribution is shaping CPT's growth into a modern, technology-enabled retail business.",
   },
 ];
 

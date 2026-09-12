@@ -1,6 +1,12 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { ArrowLeft, ArrowRight, Clock, MapPin, Phone } from "lucide-react";
-import { useEffect, useRef, useState } from "react";
+import {
+  useEffect,
+  useRef,
+  useState,
+  type MouseEvent as ReactMouseEvent,
+  type PointerEvent as ReactPointerEvent,
+} from "react";
 import { Reveal } from "@/components/Reveal";
 import { Button } from "@/components/ui/button";
 import {
@@ -129,8 +135,9 @@ function ProductCarousel({ title, items }: { title: string; items: Product[] }) 
 
 function Home() {
   // Raw hero banners. The track prepends a clone of the last banner before the
-  // first and appends a clone of the first after the last, so prev/next can
-  // wrap around seamlessly in both directions without a visible jump.
+  // first and appends a clone of the first after the last, so navigation (drag,
+  // swipe or the 5s auto-advance) can wrap around seamlessly in both directions
+  // without a visible jump.
   const heroImages = heroSlides.map((s) => s.image);
   const n = heroImages.length;
   const trackSlides = [heroImages[n - 1], ...heroImages, heroImages[0]];
@@ -139,9 +146,19 @@ function Home() {
   const [index, setIndex] = useState(1);
   const [noTransition, setNoTransition] = useState(false);
 
-  // Auto-advance to the next hero image every 5 seconds.
+  // Drag-to-scroll: while the visitor holds and drags (finger, pen or mouse),
+  // the track follows the pointer 1:1 and the auto-advance timer stays idle.
+  const [dragX, setDragX] = useState(0);
+  const [dragging, setDragging] = useState(false);
+  const viewportRef = useRef<HTMLDivElement | null>(null);
+  const pointerStart = useRef<{ id: number; x: number; y: number } | null>(null);
+  const draggedRef = useRef(false);
+
+  // Auto-advance to the next hero image every 5 seconds (paused while dragging).
   useEffect(() => {
-    const id = window.setInterval(() => setIndex((i) => Math.min(i + 1, n + 1)), 5000);
+    const id = window.setInterval(() => {
+      if (!pointerStart.current) setIndex((i) => Math.min(i + 1, n + 1));
+    }, 5000);
     return () => window.clearInterval(id);
   }, [n]);
 
@@ -167,9 +184,48 @@ function Home() {
     return undefined;
   }, [index, n]);
 
-  // Manual navigation from the arrow buttons.
-  const goNext = () => setIndex((i) => Math.min(i + 1, n + 1));
-  const goPrev = () => setIndex((i) => Math.max(i - 1, 0));
+  // Drag/swipe navigation — pointer events cover touch, pen and mouse alike.
+  const onPointerDown = (e: ReactPointerEvent<HTMLDivElement>) => {
+    if (e.pointerType === "mouse" && e.button !== 0) return;
+    pointerStart.current = { id: e.pointerId, x: e.clientX, y: e.clientY };
+    draggedRef.current = false;
+    setDragX(0);
+    setDragging(true);
+    // Capture the pointer so the drag keeps tracking even if it leaves the hero.
+    e.currentTarget.setPointerCapture(e.pointerId);
+  };
+
+  const onPointerMove = (e: ReactPointerEvent<HTMLDivElement>) => {
+    const start = pointerStart.current;
+    if (!start || start.id !== e.pointerId) return;
+    const dx = e.clientX - start.x;
+    const dy = e.clientY - start.y;
+    if (Math.abs(dx) > 8 || Math.abs(dy) > 8) draggedRef.current = true;
+    // Follow horizontal drags only, so vertical swipes still scroll the page.
+    if (Math.abs(dx) > Math.abs(dy)) setDragX(dx);
+  };
+
+  const onPointerEnd = (e: ReactPointerEvent<HTMLDivElement>) => {
+    const start = pointerStart.current;
+    if (!start || start.id !== e.pointerId) return;
+    pointerStart.current = null;
+    setDragging(false);
+    setDragX(0);
+    // Snap to the neighbouring slide once the drag passes ~20% of the viewport.
+    const width = viewportRef.current?.clientWidth ?? 0;
+    const dx = e.clientX - start.x;
+    const threshold = Math.max(50, width * 0.2);
+    if (dx <= -threshold) setIndex((i) => Math.min(i + 1, n + 1));
+    else if (dx >= threshold) setIndex((i) => Math.max(i - 1, 0));
+  };
+
+  // A drag must not open the slide link underneath — swallow that click.
+  const onClickCapture = (e: ReactMouseEvent) => {
+    if (!draggedRef.current) return;
+    draggedRef.current = false;
+    e.preventDefault();
+    e.stopPropagation();
+  };
 
   // Curated Power Tools row — the exact products requested for the homepage, in order.
   const powerToolSlugs = [
@@ -237,18 +293,28 @@ function Home() {
 
   return (
     <>
-      {/* Hero — full-width image carousel that slides to the left every 5s.
-          The banner is designed at 2170×725 (ratio ≈ 3:1). The container uses
-          that exact aspect ratio so the full image always fits — no left/right
-          cropping — and it scales to fit any screen width (mobile included). */}
+      {/* Hero — full-width image carousel that slides to the left every 5s and
+          can also be dragged/swiped left or right by hand. The banner is
+          designed at 2170×725 (ratio ≈ 3:1). The container uses that exact
+          aspect ratio so the full image always fits — no left/right cropping —
+          and it scales to fit any screen width (mobile included). */}
       <section className="w-full overflow-hidden bg-charcoal">
-        <div className="relative mx-auto aspect-[2170/725] w-full max-w-[2170px] overflow-hidden">
+        <div
+          ref={viewportRef}
+          onPointerDown={onPointerDown}
+          onPointerMove={onPointerMove}
+          onPointerUp={onPointerEnd}
+          onPointerCancel={onPointerEnd}
+          onClickCapture={onClickCapture}
+          className="relative mx-auto aspect-[2170/725] w-full max-w-[2170px] touch-pan-y overflow-hidden select-none"
+          style={{ cursor: dragging ? "grabbing" : "grab" }}
+        >
           <div
             className={cn(
               "flex h-full w-full ease-out",
-              noTransition ? "" : "transition-transform duration-[700ms]",
+              dragging || noTransition ? "" : "transition-transform duration-[700ms]",
             )}
-            style={{ transform: `translateX(${-index * 100}%)` }}
+            style={{ transform: `translateX(calc(${-index * 100}% + ${dragX}px))` }}
           >
             {trackSlides.map((src, i) => {
               const meta =
@@ -262,6 +328,7 @@ function Home() {
                   search={{ q: "", category: "all", brand: meta.brand ?? "all" }}
                   aria-label={meta.label}
                   title={meta.label}
+                  draggable={false}
                   className="block h-full w-full shrink-0"
                 >
                   <img
@@ -269,30 +336,13 @@ function Home() {
                     alt={meta.alt}
                     fetchPriority={i === 0 ? "high" : undefined}
                     loading={i === 0 ? undefined : "lazy"}
+                    draggable={false}
                     className="h-full w-full object-cover object-center"
                   />
                 </Link>
               );
             })}
           </div>
-
-          {/* Prev/next arrows in small circles to scroll between hero images. */}
-          <button
-            type="button"
-            onClick={goPrev}
-            aria-label="Previous hero image"
-            className="absolute top-1/2 left-4 z-10 flex size-10 -translate-y-1/2 cursor-pointer items-center justify-center rounded-full border border-white/60 bg-black/25 text-white shadow-lg backdrop-blur-sm transition hover:bg-black/45 focus-visible:ring-2 focus-visible:ring-white focus-visible:outline-none sm:left-6"
-          >
-            <ArrowLeft className="size-5" />
-          </button>
-          <button
-            type="button"
-            onClick={goNext}
-            aria-label="Next hero image"
-            className="absolute top-1/2 right-4 z-10 flex size-10 -translate-y-1/2 cursor-pointer items-center justify-center rounded-full border border-white/60 bg-black/25 text-white shadow-lg backdrop-blur-sm transition hover:bg-black/45 focus-visible:ring-2 focus-visible:ring-white focus-visible:outline-none sm:right-6"
-          >
-            <ArrowRight className="size-5" />
-          </button>
         </div>
       </section>
 
