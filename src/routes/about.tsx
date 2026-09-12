@@ -79,7 +79,7 @@ function About() {
               Founded in 2026, CPT was built on the conviction that Southern Sri Lanka deserves
               access to the same premium hardware brands and expert service available in Colombo —
               without the distance. Our {business.street} showroom was designed to reflect that
-              ambition: a professional retail space stocking hundreds of products across six major
+              ambition: a professional retail space stocking hundreds of products across five major
               categories.
             </p>
             <Button asChild className="mt-7">
@@ -160,7 +160,10 @@ function About() {
         </Reveal>
         <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {[
-            { src: photos.showroomExterior, alt: "Exterior of the Ceylon Platinum Trading showroom in Matara" },
+            {
+              src: photos.showroomExterior,
+              alt: "Exterior of the Ceylon Platinum Trading showroom in Matara",
+            },
             { src: photos.handTools, alt: "Hand tool wall display at the CPT Matara showroom" },
             { src: photos.powerTools, alt: "Power tools stocked at Ceylon Platinum Trading" },
             { src: photos.paints, alt: "Paint and coatings shelving at the CPT showroom" },

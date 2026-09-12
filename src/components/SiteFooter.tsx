@@ -17,7 +17,7 @@ export function SiteFooter() {
           </div>
           <p className="mt-4 text-sm text-charcoal-muted">
             {business.name} is a hardware distribution company in Matara, Sri Lanka, supplying power
-            tools, hand tools, paints, door and window hardware, machinery and sealants island-wide.
+            tools, hand tools, paints, door and window hardware, machinery and pumps island-wide.
           </p>
         </div>
 
@@ -77,9 +77,7 @@ export function SiteFooter() {
             </li>
             <li className="flex gap-3">
               <MessageCircle className="mt-0.5 size-4 shrink-0 text-primary" />
-              <a href={`https://wa.me/${business.whatsapp}`}>
-                WhatsApp {business.whatsappDisplay}
-              </a>
+              <a href={`https://wa.me/${business.whatsapp}`}>WhatsApp {business.whatsappDisplay}</a>
             </li>
             <li className="flex gap-3">
               <Mail className="mt-0.5 size-4 shrink-0 text-primary" />

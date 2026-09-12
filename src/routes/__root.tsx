@@ -83,7 +83,7 @@ const localBusinessSchema = {
   name: business.name,
   alternateName: "CPT Matara",
   description:
-    "Ceylon Platinum Trading (PVT) Ltd is a hardware distribution company in Matara, Sri Lanka, supplying power tools, hand tools, paints and coatings, door and window hardware, machinery, compressors, sealants and adhesives to homeowners, contractors, builders and hardware retailers island-wide.",
+    "Ceylon Platinum Trading (PVT) Ltd is a hardware distribution company in Matara, Sri Lanka, supplying power tools, hand tools, paints and coatings, door and window hardware, machinery, compressors, motors and pumps to homeowners, contractors, builders and hardware retailers island-wide.",
   slogan: business.tagline,
   telephone: business.phoneIntl,
   email: business.email,
@@ -139,7 +139,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       {
         name: "description",
         content:
-          "Power tools, paints, hardware, machinery and sealants from Bosch, Tolsen, Humhon and more.",
+          "Power tools, paints, hardware, machinery and pumps from Bosch, Tolsen, Humhon and more.",
       },
       { name: "author", content: business.name },
       { property: "og:site_name", content: business.name },

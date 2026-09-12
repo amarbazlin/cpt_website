@@ -10,7 +10,7 @@ export const photos = {
   paints: "/images/paints.jpg",
   hardware: "/images/hardware.jpg",
   machinery: "/images/machinery.jpg",
-  sealants: "/images/sealants.jpg",
+  motorsPumps: "/images/motors-pumps.jpg",
   paintMixing: "/images/paint-mixing.jpg",
 };
 
@@ -145,20 +145,12 @@ export const categories: Category[] = [
     image: photos.machinery,
   },
   {
-    slug: "sealants-adhesives",
-    name: "Sealants & Adhesives",
-    blurb:
-      "Silicone sealants, weatherproofing compounds, adhesives, and specialty chemicals for all construction needs.",
-    brands: "Multibond · As-Ron",
-    image: photos.sealants,
-  },
-  {
     slug: "motors-pumps",
     name: "Motors & Pumps",
     blurb:
       "Water pumps, submersible pumps, trailer pumps, cutter pumps, deepwell pumps, vortex pumps and pressure units from ZRM — for drainage, irrigation and industrial use.",
     brands: "ZRM",
-    image: photos.machinery,
+    image: photos.motorsPumps,
   },
 ];
 export type Product = {
@@ -2126,7 +2118,7 @@ export const services = [
 export const faqs = [
   {
     q: "What is Ceylon Platinum Trading (PVT) Ltd?",
-    a: "Ceylon Platinum Trading (PVT) Ltd is a hardware and construction products distributor based at 167/B1 Old Tangalle Road, Kotuwegoda, Matara, Sri Lanka. We supply power tools, hand tools, paints and coatings, door and window hardware, machinery and compressors, and sealants and adhesives to homeowners, contractors, builders and hardware retailers.",
+    a: "Ceylon Platinum Trading (PVT) Ltd is a hardware and construction products distributor based at 167/B1 Old Tangalle Road, Kotuwegoda, Matara, Sri Lanka. We supply power tools, hand tools, paints and coatings, door and window hardware, machinery and compressors to homeowners, contractors, builders and hardware retailers.",
   },
   {
     q: "Where is Ceylon Platinum Trading located?",

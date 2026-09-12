@@ -36,7 +36,7 @@ export const Route = createFileRoute("/products/")({
       {
         name: "description",
         content:
-          "Browse the Ceylon Platinum Trading hardware catalogue: power tools, hand tools, paints, door hardware, machinery and sealants. Order via WhatsApp from Matara, Sri Lanka.",
+          "Browse the Ceylon Platinum Trading hardware catalogue: power tools, hand tools, paints, door hardware, machinery and pumps. Order via WhatsApp from Matara, Sri Lanka.",
       },
       { property: "og:title", content: "Hardware Product Catalogue | Ceylon Platinum Trading" },
       {

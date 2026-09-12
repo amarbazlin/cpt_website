@@ -30,7 +30,7 @@ export const Route = createFileRoute("/")({
       {
         name: "description",
         content:
-          "Ceylon Platinum Trading (PVT) Ltd supplies power tools, hand tools, paints, door hardware, machinery and sealants from Matara, Sri Lanka. Complete hardware solutions under one roof.",
+          "Ceylon Platinum Trading (PVT) Ltd supplies power tools, hand tools, paints, door hardware, machinery and pumps from Matara, Sri Lanka. Complete hardware solutions under one roof.",
       },
       {
         property: "og:title",
@@ -338,7 +338,7 @@ function Home() {
             </p>
             <p className="mt-4 text-muted-foreground">
               Our Old Tangalle Road showroom was designed to reflect that ambition: a professional
-              retail space stocking hundreds of products across six major categories, backed by a
+              retail space stocking hundreds of products across five major categories, backed by a
               team that understands what construction actually demands.
             </p>
             <div className="mt-7 flex flex-wrap gap-3">
@@ -375,7 +375,7 @@ function Home() {
             Featured product categories
           </h2>
           <p className="mt-4 text-muted-foreground">
-            From power tools to paints, structural hardware to sealants — six categories covering a
+            From power tools to paints, structural hardware to pumps — five categories covering a
             complete build.
           </p>
         </Reveal>
