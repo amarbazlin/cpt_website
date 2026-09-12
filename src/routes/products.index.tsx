@@ -1,5 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { ChevronDown, ChevronLeft, ChevronRight, Search, ShoppingCart } from "lucide-react";
+import { ChevronLeft, ChevronRight, Search, ShoppingCart } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
 import { z } from "zod";
 import { Reveal } from "@/components/Reveal";
@@ -57,7 +57,6 @@ function Products() {
   const q = search.q ?? "";
   const category = search.category ?? "all";
   const brand = search.brand ?? "all";
-  const [brandOpen, setBrandOpen] = useState(false);
   const navigate = Route.useNavigate();
   const { add, setOpen } = useCart();
 
@@ -193,48 +192,24 @@ function Products() {
             <h2 className="mt-6 hidden lg:block font-display text-sm font-bold tracking-widest uppercase">
               Brands
             </h2>
-            <button
-              type="button"
-              aria-expanded={brandOpen}
-              onClick={() => setBrandOpen((v) => !v)}
-              className={cn(
-                "hidden lg:flex mt-3 flex w-full items-center justify-between gap-2 border px-3 py-2 text-left font-display text-sm font-semibold transition-colors",
-                activeBrand
-                  ? "border-primary bg-primary text-primary-foreground"
-                  : "border-border bg-card text-foreground hover:border-primary hover:text-primary",
-              )}
+            <select
+              aria-label="Filter by brand"
+              value={brand}
+              onChange={(e) =>
+                navigate({
+                  search: (prev) => ({ ...prev, brand: e.target.value }),
+                  replace: true,
+                })
+              }
+              className="mt-3 hidden w-full rounded-md border border-input bg-card px-3 py-2 text-sm font-display font-semibold lg:block"
             >
-              {activeBrand ? `Browse by brand · ${activeBrand}` : "Browse by brand"}
-              <ChevronDown
-                className={cn("size-4 shrink-0 transition-transform", brandOpen && "rotate-180")}
-              />
-            </button>
-            {brandOpen && (
-              <div className="mt-2 hidden max-h-80 flex-wrap gap-2 overflow-y-auto lg:flex lg:flex-col lg:pr-1 lg:gap-2">
-                {[
-                  { slug: "all", name: "All brands" },
-                  ...browseBrands.map((b) => ({ slug: b, name: b })),
-                ].map((b) => (
-                  <button
-                    key={b.slug}
-                    onClick={() =>
-                      navigate({
-                        search: (prev) => ({ ...prev, brand: b.slug }),
-                        replace: true,
-                      })
-                    }
-                    className={cn(
-                      "border px-3 py-2 text-left font-display text-sm font-semibold transition-colors",
-                      brand === b.slug
-                        ? "border-primary bg-primary text-primary-foreground"
-                        : "border-border bg-card text-foreground hover:border-primary hover:text-primary",
-                    )}
-                  >
-                    {b.name}
-                  </button>
-                ))}
-              </div>
-            )}
+              <option value="all">All brands</option>
+              {browseBrands.map((b) => (
+                <option key={b} value={b}>
+                  {b}
+                </option>
+              ))}
+            </select>
           </aside>
 
           {/* Grid */}
