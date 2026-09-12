@@ -1,6 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { ArrowLeft, ArrowRight, Clock, MapPin, Phone } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Reveal } from "@/components/Reveal";
 import { Button } from "@/components/ui/button";
 import {
@@ -9,7 +9,16 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
-import { brands, business, categories, faqs, heroSlides, photos, products } from "@/lib/site";
+import {
+  brands,
+  business,
+  categories,
+  faqs,
+  heroSlides,
+  photos,
+  products,
+  type Product,
+} from "@/lib/site";
 import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/")({
@@ -39,6 +48,84 @@ export const Route = createFileRoute("/")({
   }),
   component: Home,
 });
+
+/**
+ * Horizontally scrollable product row: 2 items per row on mobile, 4 on
+ * desktop. The left/right arrow buttons scroll the row by one visible page.
+ */
+function ProductCarousel({ title, items }: { title: string; items: Product[] }) {
+  const trackRef = useRef<HTMLDivElement | null>(null);
+  const slide = (dir: -1 | 1) => {
+    const el = trackRef.current;
+    if (el) el.scrollBy({ left: dir * el.clientWidth, behavior: "smooth" });
+  };
+
+  if (items.length === 0) return null;
+
+  return (
+    <section className="mx-auto max-w-7xl px-4 py-14 sm:py-20">
+      <div className="flex flex-wrap items-end justify-between gap-4">
+        <div className="max-w-2xl">
+          <p className="eyebrow">In the catalogue</p>
+          <h2 className="rule-red mt-4 font-display text-3xl font-extrabold sm:text-4xl">
+            {title}
+          </h2>
+        </div>
+        <div className="flex gap-2">
+          <Button
+            size="icon"
+            variant="outline"
+            aria-label={`Previous ${title}`}
+            onClick={() => slide(-1)}
+          >
+            <ArrowLeft className="size-4" />
+          </Button>
+          <Button
+            size="icon"
+            variant="outline"
+            aria-label={`Next ${title}`}
+            onClick={() => slide(1)}
+          >
+            <ArrowRight className="size-4" />
+          </Button>
+        </div>
+      </div>
+
+      <div ref={trackRef} className="no-scrollbar mt-8 flex gap-6 overflow-x-auto scroll-smooth">
+        {items.map((p) => (
+          <div
+            key={p.slug}
+            className="flex w-1/2 shrink-0 flex-col border border-border bg-card p-4 shadow-card transition-shadow hover:shadow-lift lg:w-1/4"
+          >
+            <Link
+              to="/products/$slug"
+              params={{ slug: p.slug }}
+              className="group block overflow-hidden"
+            >
+              <img
+                src={p.image}
+                alt={`${p.name} — sold by Ceylon Platinum Trading, Matara`}
+                loading="lazy"
+                className="aspect-square w-full object-contain transition-transform duration-700 group-hover:scale-[1.05]"
+              />
+            </Link>
+            <p className="mt-3 text-xs font-semibold tracking-wide text-primary uppercase">
+              {p.brand}
+            </p>
+            <h3 className="mt-1 break-words font-display text-base leading-snug font-extrabold">
+              <Link to="/products/$slug" params={{ slug: p.slug }}>
+                {p.name}
+              </Link>
+            </h3>
+            <p className="mt-2 text-sm font-semibold">
+              {p.price ? `Rs. ${p.price.toLocaleString("en-LK")}` : "Price on request"}
+            </p>
+          </div>
+        ))}
+      </div>
+    </section>
+  );
+}
 
 function Home() {
   // Raw hero banners. The track prepends a clone of the last banner before the
@@ -84,6 +171,17 @@ function Home() {
   const goNext = () => setIndex((i) => Math.min(i + 1, n + 1));
   const goPrev = () => setIndex((i) => Math.max(i - 1, 0));
 
+  // Curated rows for the homepage carousels: "$category" products ordered from
+  // lowest price upwards, capped to show the most affordable options first.
+  const cheapest = (cat: string, limit: number) =>
+    products
+      .filter((p) => p.category === cat && p.price)
+      .sort((a, b) => (a.price ?? 0) - (b.price ?? 0))
+      .slice(0, limit);
+  const powerTools = cheapest("power-tools", 16);
+  const waterPumps = cheapest("motors-pumps", 12);
+  const machinery = cheapest("machinery-compressors", 12);
+
   // Brand logo strip used twice in the marquee (two copies make the -50%
   // translate loop seamless). Each logo links to that brand's products.
   const brandStrip = (ariaHidden: boolean) => (
@@ -127,7 +225,10 @@ function Home() {
             style={{ transform: `translateX(${-index * 100}%)` }}
           >
             {trackSlides.map((src, i) => {
-              const meta = heroSlides[(((i - 1) % heroSlides.length) + heroSlides.length) % heroSlides.length]!;
+              const meta =
+                heroSlides[
+                  (((i - 1) % heroSlides.length) + heroSlides.length) % heroSlides.length
+                ]!;
               return (
                 <Link
                   key={`${meta.image}-${i}`}
@@ -169,45 +270,10 @@ function Home() {
         </div>
       </section>
 
-      {/* Featured products */}
-      <section className="bg-surface py-16 sm:py-24">
-        <div className="mx-auto max-w-7xl px-4">
-          <Reveal className="flex flex-wrap items-end justify-between gap-4">
-            <div className="max-w-2xl">
-              <p className="eyebrow">In the catalogue</p>
-              <h2 className="rule-red mt-4 font-display text-3xl font-extrabold sm:text-4xl">
-                Featured products
-              </h2>
-            </div>
-            <Button asChild variant="outline">
-              <Link to="/products">View all products</Link>
-            </Button>
-          </Reveal>
-          <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {products.map((p, i) => (
-              <Reveal key={p.slug} delay={(i % 3) * 90}>
-                <Link
-                  to="/products/$slug"
-                  params={{ slug: p.slug }}
-                  className="group flex h-full flex-col border border-border bg-card p-5 shadow-card transition-shadow hover:shadow-lift"
-                >
-                  <img
-                    src={p.image}
-                    alt={`${p.name} — sold by Ceylon Platinum Trading, Matara`}
-                    loading="lazy"
-                    className="aspect-square w-full object-contain transition-transform duration-700 group-hover:scale-[1.05]"
-                  />
-                  <p className="mt-4 text-xs font-semibold tracking-wide text-primary uppercase">
-                    {p.brand}
-                  </p>
-                  <h3 className="mt-1 font-display text-lg font-extrabold">{p.name}</h3>
-                  <p className="mt-2 text-sm text-muted-foreground">{p.summary}</p>
-                </Link>
-              </Reveal>
-            ))}
-          </div>
-        </div>
-      </section>
+      {/* Shop by category — scrollable product rows with arrow navigation */}
+      <ProductCarousel title="Power Tools" items={powerTools} />
+      <ProductCarousel title="Water Pumps & Motors" items={waterPumps} />
+      <ProductCarousel title="Machinery & Compressors" items={machinery} />
 
       {/* Brands */}
       <section className="bg-charcoal py-16 text-charcoal-foreground sm:py-20">

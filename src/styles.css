@@ -160,6 +160,14 @@
   }
 }
 
+@utility no-scrollbar {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
 /* Auto-scrolling brand logo marquee that moves right to left continuously.
    The track duplicates the logo strip once so translating to -50% loops
    seamlessly. Animation pauses on hover so logos are easy to click. */
