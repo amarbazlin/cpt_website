@@ -275,20 +275,22 @@ function Products() {
                           className="aspect-square w-full object-contain transition-transform duration-700 group-hover:scale-[1.05]"
                         />
                       </Link>
-                      <div className="flex flex-1 flex-col px-5 pb-5">
+                      <div className="flex min-w-0 flex-1 flex-col px-5 pb-5">
                         <p className="text-xs font-semibold tracking-wide text-primary uppercase">
                           {p.brand}
                         </p>
-                        <h3 className="mt-1 font-display text-lg leading-snug font-extrabold">
+                        <h3 className="mt-1 break-words font-display text-lg leading-snug font-extrabold">
                           <Link to="/products/$slug" params={{ slug: p.slug }}>
                             {p.name}
                           </Link>
                         </h3>
-                        <p className="mt-2 flex-1 text-sm text-muted-foreground">{p.summary}</p>
+                        <p className="mt-2 flex-1 break-words text-sm text-muted-foreground">
+                          {p.summary}
+                        </p>
                         <p className="mt-3 text-sm font-semibold">
                           {p.price ? `Rs. ${p.price.toLocaleString("en-LK")}` : "Price on request"}
                         </p>
-                        <div className="mt-4 grid grid-cols-[minmax(0,1fr)_auto] gap-2">
+                        <div className="mt-4 grid gap-2 sm:grid-cols-[minmax(0,1fr)_auto]">
                           <Button
                             onClick={() => {
                               add(p.slug);
@@ -317,7 +319,10 @@ function Products() {
                       size="icon"
                       disabled={safePage <= 1}
                       aria-label="Previous page"
-                      onClick={() => setPage(safePage - 1)}
+                      onClick={() => {
+                        setPage(safePage - 1);
+                        window.scrollTo({ top: 0, behavior: "smooth" });
+                      }}
                     >
                       <ChevronLeft className="size-4" />
                     </Button>
@@ -329,7 +334,10 @@ function Products() {
                       size="icon"
                       disabled={safePage >= pageCount}
                       aria-label="Next page"
-                      onClick={() => setPage(safePage + 1)}
+                      onClick={() => {
+                        setPage(safePage + 1);
+                        window.scrollTo({ top: 0, behavior: "smooth" });
+                      }}
                     >
                       <ChevronRight className="size-4" />
                     </Button>
