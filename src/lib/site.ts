@@ -954,6 +954,56 @@ export const products: Product[] = [
     ],
   },
   {
+    slug: "wokin-flexible-diamond-polishing-pad-pads-wokin-00785",
+    name: "Wokin Flexible Diamond Polishing Pad 4\" PADS-WOKIN-00785",
+    brand: "Wokin",
+    category: "hand-tools",
+    image: "/products/wokin/PADS-WOKIN-00785.jpeg",
+    price: 935,
+    summary: "4\" (100mm) flexible diamond polishing pad for stone and marble.",
+    description:
+      "The Wokin PADS-WOKIN-00785 is a 4\" (100mm) flexible diamond polishing pad for polishing stone, marble, granite and tile edges. Available for counter collection or island-wide delivery.",
+    specs: [
+      { label: "Model", value: "PADS-WOKIN-00785" },
+      { label: "Type", value: "Diamond polishing pad" },
+      { label: "Pad size", value: "4\" (100mm)" },
+      { label: "Colour", value: "Navy blue" },
+    ],
+  },
+  {
+    slug: "wokin-heavy-duty-tile-cutter-cutt-wokin-00672",
+    name: "Wokin Heavy Duty Tile Cutter 600mm CUTT-WOKIN-00672",
+    brand: "Wokin",
+    category: "hand-tools",
+    image: "/products/wokin/CUTT-WOKIN-00672.jpeg",
+    price: 14850,
+    summary: "600mm industrial heavy-duty tile cutter for straight cuts.",
+    description:
+      "The Wokin CUTT-WOKIN-00672 is a 600mm industrial heavy-duty tile cutter for clean, straight cuts in ceramic, porcelain and vitrified tiles. Available for counter collection or island-wide delivery.",
+    specs: [
+      { label: "Model", value: "CUTT-WOKIN-00672" },
+      { label: "Type", value: "Tile cutter" },
+      { label: "Cutting length", value: "600mm" },
+      { label: "Grade", value: "Heavy duty (industrial)" },
+    ],
+  },
+  {
+    slug: "wokin-hatchet-253206",
+    name: "Wokin Hatchet 253206",
+    brand: "Wokin",
+    category: "hand-tools",
+    image: "/products/wokin/253206.jpeg",
+    price: 2805,
+    summary: "Hatchet for chopping wood, splitting and site work.",
+    description:
+      "The Wokin 253206 is a hatchet for chopping wood, splitting kindling and general site and garden work. Available for counter collection or island-wide delivery.",
+    specs: [
+      { label: "Model", value: "253206" },
+      { label: "Type", value: "Hatchet" },
+      { label: "Category", value: "Hand tool" },
+    ],
+  },
+  {
     slug: "humhon-sliding-miter-saw-cm10s",
     name: "Humhon Sliding Miter Saw CM10S",
     brand: "Humhon",
