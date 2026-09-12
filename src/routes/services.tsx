@@ -11,7 +11,7 @@ export const Route = createFileRoute("/services")({
       {
         name: "description",
         content:
-          "Bulk and project supply, island-wide delivery, distributor partnerships, custom orders, colour mixing and trade advice from Ceylon Platinum Trading in Matara, Sri Lanka.",
+          "Bulk and project supply, island-wide delivery, distributor partnerships, custom orders and colour mixing from Ceylon Platinum Trading in Matara, Sri Lanka.",
       },
       { property: "og:title", content: "Our Services | Ceylon Platinum Trading (PVT) Ltd" },
       {
@@ -86,13 +86,6 @@ function Services() {
             </Reveal>
           ))}
         </div>
-
-        <Reveal className="mt-12 border-l-4 border-primary bg-surface p-6">
-          <p className="text-sm text-muted-foreground">
-            Need a service that isn't listed here? Call {business.phone} or message{" "}
-            {business.whatsappDisplay} on WhatsApp and our Matara team will advise.
-          </p>
-        </Reveal>
       </section>
 
       <section className="bg-primary py-16 text-primary-foreground">

@@ -2106,13 +2106,6 @@ export const services = [
       "Custom paint colour mixing on our in-store machine, matched while you wait at the Matara showroom.",
     image: photos.paintMixing,
   },
-  {
-    slug: "trade-advice",
-    title: "Trade & Technical Advice",
-    blurb:
-      "Practical guidance from a team with hands-on construction knowledge — the right tool for the job, first time.",
-    image: photos.hardware,
-  },
 ];
 
 export const faqs = [

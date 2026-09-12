@@ -63,7 +63,7 @@ function ProductCarousel({ title, items }: { title: string; items: Product[] }) 
   if (items.length === 0) return null;
 
   return (
-    <section className="mx-auto max-w-7xl px-4 py-14 sm:py-20">
+    <section className="mx-auto max-w-7xl px-4 py-8 sm:py-10">
       <div className="flex flex-wrap items-end justify-between gap-4">
         <div className="max-w-2xl">
           <p className="eyebrow">In the catalogue</p>
@@ -302,7 +302,7 @@ function Home() {
       <ProductCarousel title="Machinery & Compressors" items={machinery} />
 
       {/* Brands */}
-      <section className="bg-charcoal py-16 text-charcoal-foreground sm:py-20">
+      <section className="bg-charcoal py-10 text-charcoal-foreground sm:py-12">
         <div className="mx-auto max-w-7xl px-4">
           <Reveal className="mx-auto max-w-2xl text-center">
             <p className="eyebrow">Brands we carry</p>
@@ -324,7 +324,7 @@ function Home() {
       </section>
 
       {/* Overview */}
-      <section className="mx-auto max-w-7xl px-4 py-16 sm:py-24">
+      <section className="mx-auto max-w-7xl px-4 py-10 sm:py-14">
         <div className="grid gap-12 lg:grid-cols-2 lg:items-center">
           <Reveal>
             <p className="eyebrow">Who we are</p>
@@ -368,7 +368,7 @@ function Home() {
       </section>
 
       {/* Categories */}
-      <section className="mx-auto max-w-7xl px-4 py-16 sm:py-24">
+      <section className="mx-auto max-w-7xl px-4 py-10 sm:py-14">
         <Reveal className="max-w-2xl">
           <p className="eyebrow">What we stock</p>
           <h2 className="rule-red mt-4 font-display text-3xl font-extrabold sm:text-4xl">
@@ -413,7 +413,7 @@ function Home() {
       </section>
 
       {/* FAQ */}
-      <section className="bg-surface py-16 sm:py-24">
+      <section className="bg-surface py-10 sm:py-14">
         <div className="mx-auto grid max-w-7xl gap-10 px-4 lg:grid-cols-[0.9fr_1.4fr]">
           <Reveal>
             <p className="eyebrow">Questions</p>
@@ -441,7 +441,7 @@ function Home() {
       </section>
 
       {/* CTA */}
-      <section className="bg-primary py-16 text-primary-foreground sm:py-20">
+      <section className="bg-primary py-10 text-primary-foreground sm:py-12">
         <div className="mx-auto grid max-w-7xl gap-8 px-4 lg:grid-cols-[1.3fr_1fr] lg:items-center">
           <Reveal>
             <h2 className="font-display text-3xl font-extrabold sm:text-4xl">
