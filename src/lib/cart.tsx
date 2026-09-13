@@ -91,17 +91,47 @@ export function useCart() {
   return ctx;
 }
 
-export function buildWhatsAppMessage(
-  lines: CartLine[],
-  location: string,
-  name: string,
-  contact: string,
-  nic: string,
-  note: string,
-) {
+export type OrderDetails = {
+  contact: string;
+  country: string;
+  firstName: string;
+  lastName: string;
+  address: string;
+  apartment: string;
+  city: string;
+  postalCode: string;
+  paymentMethod: string;
+  saveInfo: boolean;
+};
+
+export type SavedDeliveryInfo = Pick<
+  OrderDetails,
+  "contact" | "firstName" | "lastName" | "address" | "apartment" | "city" | "postalCode"
+>;
+
+const SAVED_INFO_KEY = "cpt-delivery-info-v1";
+
+export function loadSavedDeliveryInfo(): SavedDeliveryInfo | null {
+  try {
+    const raw = localStorage.getItem(SAVED_INFO_KEY);
+    return raw ? (JSON.parse(raw) as SavedDeliveryInfo) : null;
+  } catch {
+    return null;
+  }
+}
+
+export function saveDeliveryInfo(info: SavedDeliveryInfo) {
+  try {
+    localStorage.setItem(SAVED_INFO_KEY, JSON.stringify(info));
+  } catch {
+    /* ignore */
+  }
+}
+
+export function buildOrderMessage(lines: CartLine[], d: OrderDetails) {
   const items = lines.map((l, i) => {
     const p = products.find((x) => x.slug === l.slug);
-    const productName = p ? `${p.name}${p.brand !== "To be confirmed" ? ` (${p.brand})` : ""}` : l.slug;
+    const productName = p ? p.name : l.slug;
     const price = p?.price ? ` @ Rs. ${p.price.toLocaleString("en-LK")}` : "";
     return `${i + 1}. ${productName}${price} — Qty: ${l.qty}`;
   });
@@ -112,14 +142,23 @@ export function buildWhatsAppMessage(
     "*Items:*",
     ...items,
     "",
-    "*Customer details:*",
-    `*Name:* ${name.trim() || "Not provided"}`,
-    `*Contact No.:* ${contact.trim() || "Not provided"}`,
-    `*NIC No.:* ${nic.trim() || "Not provided"}`,
-    `*Delivery location:* ${location.trim() || "Not provided"}`,
+    "*Contact:*",
+    `*Contact No.:* ${d.contact.trim() || "Not provided"}`,
+    "",
+    "*Delivery details:*",
+    `*Country:* ${d.country || "Sri Lanka"}`,
+    `*First name:* ${d.firstName.trim() || "Not provided"}`,
+    `*Last name:* ${d.lastName.trim() || "Not provided"}`,
+    `*Address:* ${d.address.trim() || "Not provided"}`,
+    `*Apartment, suite, etc.:* ${d.apartment.trim() || "-"}`,
+    `*City:* ${d.city.trim() || "Not provided"}`,
+    `*Postal Code:* ${d.postalCode.trim() || "Not provided"}`,
+    `*Save this information for next time:* ${d.saveInfo ? "Yes" : "No"}`,
+    "",
+    `*Payment method:* ${d.paymentMethod}`,
+    "",
+    "Please confirm availability, price and delivery. Thank you.",
   ];
-  if (note.trim()) parts.push(`*Notes:* ${note.trim()}`);
-  parts.push("", "Please confirm availability, price and delivery. Thank you.");
   return parts.join("\n");
 }
 
