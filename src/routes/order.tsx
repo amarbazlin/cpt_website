@@ -11,6 +11,7 @@ import {
   useCart,
   whatsappUrl,
 } from "@/lib/cart";
+import { logWhatsappLead, saveOrder } from "@/lib/orders";
 import { business, products } from "@/lib/site";
 
 export const Route = createFileRoute("/order")({
@@ -49,6 +50,8 @@ function OrderPage() {
   const [saveInfo, setSaveInfo] = useState(false);
   const [payment, setPayment] = useState(PAYMENT_METHOD);
   const [touched, setTouched] = useState(false);
+  const [sending, setSending] = useState(false);
+  const [dbError, setDbError] = useState<string | null>(null);
 
   // Prefill from the details the customer chose to save last time.
   useEffect(() => {
@@ -84,14 +87,31 @@ function OrderPage() {
     cityMissing ||
     postalMissing;
 
-  function send() {
+  async function send() {
     setTouched(true);
-    if (empty || invalid) return;
+    if (empty || invalid || sending) return;
+    setSending(true);
+    setDbError(null);
     if (saveInfo) {
       saveDeliveryInfo({ contact, firstName, lastName, address, apartment, city, postalCode });
     }
-    const url = whatsappUrl(
-      buildOrderMessage(lines, {
+    const message = buildOrderMessage(lines, {
+      contact,
+      country,
+      firstName,
+      lastName,
+      address,
+      apartment,
+      city,
+      postalCode,
+      paymentMethod: payment,
+      saveInfo,
+    });
+
+    // Persist the order to Supabase first (best-effort — never blocks WhatsApp).
+    const saved = await saveOrder(
+      lines,
+      {
         contact,
         country,
         firstName,
@@ -102,9 +122,18 @@ function OrderPage() {
         postalCode,
         paymentMethod: payment,
         saveInfo,
-      }),
+      },
+      undefined,
     );
+    if (!saved.ok) {
+      setDbError(saved.error);
+    } else {
+      await logWhatsappLead(lines, contact, message);
+    }
+
+    const url = whatsappUrl(message);
     window.open(url, "_blank", "noopener,noreferrer");
+    setSending(false);
   }
 
   const error = (show: boolean, text: string) =>
@@ -383,9 +412,16 @@ function OrderPage() {
                 </p>
               )}
 
-              <Button className="mt-5 w-full" size="lg" onClick={send}>
-                <MessageCircle className="size-4" /> Send order on WhatsApp
+              <Button className="mt-5 w-full" size="lg" onClick={send} disabled={sending}>
+                <MessageCircle className="size-4" />
+                {sending ? "Sending…" : "Send order on WhatsApp"}
               </Button>
+              {dbError && (
+                <p className="mt-2 text-center text-xs text-destructive">
+                  We couldn't save your order to our system ({dbError}) — your WhatsApp order was
+                  still opened, so our team has it.
+                </p>
+              )}
               <p className="mt-2 text-center text-xs text-muted-foreground">
                 No online payment. Your order opens in WhatsApp ({business.whatsappDisplay}) and our
                 team confirms stock, price and delivery.
