@@ -22,7 +22,9 @@ if (!supabaseUrl || !supabaseKey) {
 export const supabase = createClient(
   supabaseUrl ?? "https://placeholder.supabase.co",
   supabaseKey ?? "placeholder-key",
-  { auth: { persistSession: false } },
+  // Sessions are persisted so the private admin panel can keep admins logged
+  // in. The customer flow is anonymous and unaffected.
+  { auth: { persistSession: true, autoRefreshToken: true } },
 );
 
 /** True when real Supabase credentials are configured. */

@@ -11,7 +11,7 @@ import {
   useCart,
   whatsappUrl,
 } from "@/lib/cart";
-import { logWhatsappLead, saveOrder } from "@/lib/orders";
+import { saveCustomerDetails, saveOrder } from "@/lib/orders";
 import { business, products } from "@/lib/site";
 
 export const Route = createFileRoute("/order")({
@@ -40,6 +40,7 @@ function OrderPage() {
   const { lines, setQty, remove } = useCart();
 
   const [contact, setContact] = useState("");
+  const [email, setEmail] = useState("");
   const [country, setCountry] = useState<string>(COUNTRIES[0]);
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
@@ -52,6 +53,7 @@ function OrderPage() {
   const [touched, setTouched] = useState(false);
   const [sending, setSending] = useState(false);
   const [dbError, setDbError] = useState<string | null>(null);
+  const [savedOk, setSavedOk] = useState(false);
 
   // Prefill from the details the customer chose to save last time.
   useEffect(() => {
@@ -108,7 +110,9 @@ function OrderPage() {
       saveInfo,
     });
 
-    // Persist the order to Supabase first (best-effort — never blocks WhatsApp).
+    // Persist everything to Supabase first: customer → address → order →
+    // order_items → WhatsApp lead. The WhatsApp window opens afterwards.
+    const url_ = whatsappUrl(message);
     const saved = await saveOrder(
       lines,
       {
@@ -125,14 +129,27 @@ function OrderPage() {
       },
       undefined,
     );
+
     if (!saved.ok) {
+      // Do NOT pretend the order was recorded. Friendly message; technical
+      // detail stays in the browser console only.
       setDbError(saved.error);
-    } else {
-      await logWhatsappLead(lines, contact, message);
+      setSavedOk(false);
+      setSending(false);
+      window.open(url_, "_blank", "noopener,noreferrer");
+      return;
     }
 
-    const url = whatsappUrl(message);
-    window.open(url, "_blank", "noopener,noreferrer");
+    if (saveInfo) {
+      await saveCustomerDetails({ contact, firstName, lastName, email, city });
+    }
+    setDbError(
+      saved.orderNumber
+        ? `Order #${saved.orderNumber} created successfully. Opening WhatsApp…`
+        : "Order created successfully. Opening WhatsApp…",
+    );
+    setSavedOk(true);
+    window.open(url_, "_blank", "noopener,noreferrer");
     setSending(false);
   }
 
@@ -187,6 +204,17 @@ function OrderPage() {
                     className="mt-1.5"
                   />
                   {error(touched && contactMissing, "Please enter a valid contact number.")}
+                </div>
+                <div className="mt-4">
+                  <Label htmlFor="order-email">Email (optional)</Label>
+                  <Input
+                    id="order-email"
+                    type="email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    placeholder="e.g. you@example.com"
+                    className="mt-1.5"
+                  />
                 </div>
               </div>
               {/* 2. Delivery */}
@@ -417,9 +445,12 @@ function OrderPage() {
                 {sending ? "Sending…" : "Send order on WhatsApp"}
               </Button>
               {dbError && (
-                <p className="mt-2 text-center text-xs text-destructive">
-                  We couldn't save your order to our system ({dbError}) — your WhatsApp order was
-                  still opened, so our team has it.
+                <p
+                  className={`mt-2 text-center text-xs ${
+                    savedOk ? "font-semibold text-green-700" : "text-destructive"
+                  }`}
+                >
+                  {dbError}
                 </p>
               )}
               <p className="mt-2 text-center text-xs text-muted-foreground">
