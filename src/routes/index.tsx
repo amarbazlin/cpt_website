@@ -1,5 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { ArrowLeft, ArrowRight, Clock, MapPin, Phone } from "lucide-react";
+import { ArrowRight, Clock, MapPin, Phone } from "lucide-react";
 import {
   useEffect,
   useRef,
@@ -59,13 +59,15 @@ export const Route = createFileRoute("/")({
  * Horizontally scrollable product row: 2 items per row on mobile, 4 on
  * desktop. The left/right arrow buttons scroll the row by one visible page.
  */
-function ProductCarousel({ title, items }: { title: string; items: Product[] }) {
-  const trackRef = useRef<HTMLDivElement | null>(null);
-  const slide = (dir: -1 | 1) => {
-    const el = trackRef.current;
-    if (el) el.scrollBy({ left: dir * el.clientWidth, behavior: "smooth" });
-  };
-
+function ProductCarousel({
+  title,
+  category,
+  items,
+}: {
+  title: string;
+  category: string;
+  items: Product[];
+}) {
   if (items.length === 0) return null;
 
   return (
@@ -73,35 +75,24 @@ function ProductCarousel({ title, items }: { title: string; items: Product[] }) 
       <div className="flex flex-wrap items-end justify-between gap-4">
         <div className="max-w-2xl">
           <p className="eyebrow">In the catalogue</p>
-          <h2 className="rule-red mt-4 font-display text-3xl font-extrabold sm:text-4xl">
-            {title}
-          </h2>
+          <h2 className="rule-red mt-4 font-display text-xl font-extrabold sm:text-3xl">{title}</h2>
         </div>
-        <div className="flex gap-2">
-          <Button
-            size="icon"
-            variant="outline"
-            aria-label={`Previous ${title}`}
-            onClick={() => slide(-1)}
+        <Button asChild>
+          <Link
+            to="/products"
+            search={{ q: "", category, brand: "all" }}
+            aria-label={`View all ${title}`}
           >
-            <ArrowLeft className="size-4" />
-          </Button>
-          <Button
-            size="icon"
-            variant="outline"
-            aria-label={`Next ${title}`}
-            onClick={() => slide(1)}
-          >
-            <ArrowRight className="size-4" />
-          </Button>
-        </div>
+            View All
+          </Link>
+        </Button>
       </div>
 
-      <div ref={trackRef} className="no-scrollbar mt-8 flex gap-6 overflow-x-auto scroll-smooth">
+      <div className="no-scrollbar mt-5 flex gap-3 overflow-x-auto scroll-smooth sm:mt-8 sm:gap-6">
         {items.map((p) => (
           <div
             key={p.slug}
-            className="flex w-1/2 shrink-0 flex-col border border-border bg-card p-4 shadow-card transition-shadow hover:shadow-lift lg:w-1/4"
+            className="flex w-1/2 shrink-0 flex-col border border-border bg-card p-2.5 shadow-card transition-shadow hover:shadow-lift sm:p-4 lg:w-1/4"
           >
             <Link
               to="/products/$slug"
@@ -115,15 +106,15 @@ function ProductCarousel({ title, items }: { title: string; items: Product[] }) 
                 className="aspect-square w-full object-contain transition-transform duration-700 group-hover:scale-[1.05]"
               />
             </Link>
-            <p className="mt-3 text-xs font-semibold tracking-wide text-primary uppercase">
+            <p className="mt-2 text-[10px] font-semibold tracking-wide text-primary uppercase sm:mt-3 sm:text-xs">
               {p.brand}
             </p>
-            <h3 className="mt-1 break-words font-display text-base leading-snug font-extrabold">
+            <h3 className="mt-1 line-clamp-2 break-words font-display text-xs leading-snug font-extrabold sm:text-base">
               <Link to="/products/$slug" params={{ slug: p.slug }}>
                 {p.name}
               </Link>
             </h3>
-            <p className="mt-2 text-sm font-semibold">
+            <p className="mt-1.5 text-xs font-semibold sm:mt-2 sm:text-sm">
               {p.price ? `Rs. ${p.price.toLocaleString("en-LK")}` : "Price on request"}
             </p>
           </div>
@@ -347,9 +338,13 @@ function Home() {
       </section>
 
       {/* Shop by category — scrollable product rows with arrow navigation */}
-      <ProductCarousel title="Power Tools" items={powerTools} />
-      <ProductCarousel title="Water Pumps & Motors" items={waterPumps} />
-      <ProductCarousel title="Machinery & Compressors" items={machinery} />
+      <ProductCarousel title="Power Tools" category="power-tools" items={powerTools} />
+      <ProductCarousel title="Water Pumps & Motors" category="motors-pumps" items={waterPumps} />
+      <ProductCarousel
+        title="Machinery & Compressors"
+        category="machinery-compressors"
+        items={machinery}
+      />
 
       {/* Brands */}
       <section className="bg-charcoal py-10 text-charcoal-foreground sm:py-12">

@@ -136,6 +136,12 @@ export function buildOrderMessage(lines: CartLine[], d: OrderDetails) {
     return `${i + 1}. ${productName}${price} — Qty: ${l.qty}`;
   });
 
+  const allPriced = lines.every((l) => products.find((x) => x.slug === l.slug)?.price);
+  const total = lines.reduce((n, l) => {
+    const p = products.find((x) => x.slug === l.slug);
+    return n + (p?.price ?? 0) * l.qty;
+  }, 0);
+
   const parts = [
     `*New Order — ${business.name}*`,
     "",
@@ -156,6 +162,10 @@ export function buildOrderMessage(lines: CartLine[], d: OrderDetails) {
     `*Save this information for next time:* ${d.saveInfo ? "Yes" : "No"}`,
     "",
     `*Payment method:* ${d.paymentMethod}`,
+    "",
+    allPriced
+      ? `*Delivery:* Free\n*Total:* Rs. ${total.toLocaleString("en-LK")}`
+      : "*Delivery:* Free (total to be confirmed)",
     "",
     "Please confirm availability, price and delivery. Thank you.",
   ];

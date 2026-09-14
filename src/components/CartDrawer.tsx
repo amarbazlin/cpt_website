@@ -102,13 +102,7 @@ export function CartDrawer() {
             </div>
 
             <div className="space-y-2 border-t border-border p-5">
-              <Button
-                asChild
-                variant="destructive"
-                size="lg"
-                className="w-full"
-                onClick={() => setOpen(false)}
-              >
+              <Button asChild size="lg" className="w-full" onClick={() => setOpen(false)}>
                 <Link to="/order">Proceed to order</Link>
               </Button>
               <Button variant="outline" className="w-full" onClick={clear}>

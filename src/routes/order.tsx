@@ -358,11 +358,24 @@ function OrderPage() {
                 )}
               </ul>
 
-              <div className="mt-4 flex items-center justify-between border-t border-border pt-4">
-                <p className="font-display text-sm font-bold">Subtotal</p>
-                <p className="font-display text-lg font-extrabold">
-                  {allPriced ? `Rs. ${subtotal.toLocaleString("en-LK")}` : "Price on request"}
-                </p>
+              <div className="mt-4 space-y-2 border-t border-border pt-4">
+                <div className="flex items-center justify-between">
+                  <p className="font-display text-sm font-bold">Subtotal</p>
+                  <p className="text-sm font-bold">
+                    {allPriced ? `Rs. ${subtotal.toLocaleString("en-LK")}` : "Price on request"}
+                  </p>
+                </div>
+                <div className="flex items-center justify-between">
+                  <p className="font-display text-sm font-bold">Delivery</p>
+                  <p className="text-sm font-bold text-primary">Free</p>
+                </div>
+                <div className="flex items-center justify-between border-t border-border pt-2">
+                  <p className="font-display text-base font-extrabold">Total</p>
+                  <p className="font-display text-lg font-extrabold">
+                    {allPriced ? `Rs. ${subtotal.toLocaleString("en-LK")}` : "Price on request"}
+                  </p>
+                </div>
+                <p className="text-xs text-muted-foreground">Enjoy free delivery on every order.</p>
               </div>
               {!allPriced && (
                 <p className="mt-1 text-xs text-muted-foreground">
