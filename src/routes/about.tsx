@@ -1,7 +1,9 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { Compass, HeartHandshake, ShieldCheck, Target } from "lucide-react";
 import { Reveal } from "@/components/Reveal";
+import { SmartImage } from "@/components/SmartImage";
 import { Button } from "@/components/ui/button";
+import { absoluteUrl, socialImageMeta } from "@/lib/seo";
 import { business, photos } from "@/lib/site";
 
 export const Route = createFileRoute("/about")({
@@ -19,10 +21,14 @@ export const Route = createFileRoute("/about")({
         content:
           "A family-built hardware enterprise in Matara, Sri Lanka, committed to quality tools, materials and equipment for Southern Province builders.",
       },
-      { property: "og:url", content: "/about" },
+      { property: "og:url", content: absoluteUrl("/about") },
       { property: "og:type", content: "website" },
+      ...socialImageMeta(
+        photos.whoWeAre,
+        "The Ceylon Platinum Trading team and facility at the Matara showroom",
+      ),
     ],
-    links: [{ rel: "canonical", href: "/about" }],
+    links: [{ rel: "canonical", href: absoluteUrl("/about") }],
   }),
   component: About,
 });
@@ -88,7 +94,7 @@ function About() {
           </Reveal>
           <Reveal delay={120}>
             <figure>
-              <img
+              <SmartImage
                 src={photos.whoWeAre}
                 alt="The Ceylon Platinum Trading team and facility at the Matara showroom"
                 loading="lazy"

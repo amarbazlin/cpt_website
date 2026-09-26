@@ -3,6 +3,7 @@ import { Menu, Phone, ShoppingCart, X } from "lucide-react";
 import { useState } from "react";
 import { business } from "@/lib/site";
 import { useCart } from "@/lib/cart";
+import { SmartImage } from "@/components/SmartImage";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 
@@ -37,7 +38,7 @@ export function SiteHeader() {
 
       <div className="mx-auto grid max-w-7xl grid-cols-[minmax(0,1fr)_auto] items-center gap-3 px-4 py-3 lg:flex lg:justify-between">
         <Link to="/" className="flex min-w-0 items-center gap-3">
-          <img
+          <SmartImage
             src="/brands/company-logo.png"
             alt="Ceylon Platinum Trading (PVT) Ltd logo"
             className="h-11 w-auto shrink-0"

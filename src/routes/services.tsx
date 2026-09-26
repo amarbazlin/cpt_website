@@ -1,8 +1,10 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { MessageCircle, Phone } from "lucide-react";
 import { Reveal } from "@/components/Reveal";
+import { SmartImage } from "@/components/SmartImage";
 import { Button } from "@/components/ui/button";
-import { business, services } from "@/lib/site";
+import { absoluteUrl, socialImageMeta } from "@/lib/seo";
+import { business, photos, services } from "@/lib/site";
 
 export const Route = createFileRoute("/services")({
   head: () => ({
@@ -19,10 +21,14 @@ export const Route = createFileRoute("/services")({
         content:
           "Hardware distribution services from Matara: bulk supply, island-wide delivery, distributor partnerships and custom orders.",
       },
-      { property: "og:url", content: "/services" },
+      { property: "og:url", content: absoluteUrl("/services") },
       { property: "og:type", content: "website" },
+      ...socialImageMeta(
+        photos.showroom,
+        "Bulk & Project Supply — Ceylon Platinum Trading, Matara, Sri Lanka",
+      ),
     ],
-    links: [{ rel: "canonical", href: "/services" }],
+    links: [{ rel: "canonical", href: absoluteUrl("/services") }],
   }),
   component: Services,
 });
@@ -57,7 +63,7 @@ function Services() {
               }`}
             >
               <figure className="overflow-hidden">
-                <img
+                <SmartImage
                   src={s.image}
                   alt={`${s.title} — Ceylon Platinum Trading, Matara, Sri Lanka`}
                   loading="lazy"

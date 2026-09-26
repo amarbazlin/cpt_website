@@ -15,7 +15,15 @@ import { CartProvider } from "@/lib/cart";
 import { CartDrawer } from "@/components/CartDrawer";
 import { SiteHeader } from "@/components/SiteHeader";
 import { SiteFooter } from "@/components/SiteFooter";
-import { business, faqs } from "@/lib/site";
+import { business } from "@/lib/site";
+import {
+  faqSchema,
+  jsonLdScripts,
+  organizationSchema,
+  SITE_NAME,
+  socialImageMeta,
+  websiteSchema,
+} from "@/lib/seo";
 
 function NotFoundComponent() {
   return (
@@ -77,75 +85,36 @@ function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
   );
 }
 
-const localBusinessSchema = {
-  "@context": "https://schema.org",
-  "@type": ["LocalBusiness", "HardwareStore", "Organization"],
-  name: business.name,
-  alternateName: "CPT Matara",
-  description:
-    "Ceylon Platinum Trading (PVT) Ltd is a hardware distribution company in Matara, Sri Lanka, supplying power tools, hand tools, paints and coatings, door and window hardware, machinery, compressors, motors and pumps to homeowners, contractors, builders and hardware retailers island-wide.",
-  slogan: business.tagline,
-  telephone: business.phoneIntl,
-  email: business.email,
-  address: {
-    "@type": "PostalAddress",
-    streetAddress: business.street,
-    addressLocality: business.city,
-    postalCode: business.postalCode,
-    addressRegion: "Southern Province",
-    addressCountry: "LK",
-  },
-  areaServed: "Sri Lanka",
-  openingHoursSpecification: [
-    {
-      "@type": "OpeningHoursSpecification",
-      dayOfWeek: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
-      opens: "09:00",
-      closes: "17:00",
-    },
-  ],
-  brand: [
-    "Bosch",
-    "Tolsen",
-    "Humhon",
-    "Asian Paints",
-    "Causeway",
-    "Bellucci",
-    "OMAC",
-    "Giant",
-    "Wipro",
-    "Multibond",
-    "As-Ron",
-  ].map((b) => ({ "@type": "Brand", name: b })),
-};
-
-const faqSchema = {
-  "@context": "https://schema.org",
-  "@type": "FAQPage",
-  mainEntity: faqs.map((f) => ({
-    "@type": "Question",
-    name: f.q,
-    acceptedAnswer: { "@type": "Answer", text: f.a },
-  })),
-};
+/*
+ * Site-wide structured data lives in `src/lib/seo.ts`:
+ *   organizationSchema — HardwareStore / LocalBusiness / Organization
+ *   websiteSchema      — WebSite + SearchAction (catalogue search)
+ *   faqSchema          — FAQPage built from the site's existing FAQ copy
+ */
 
 export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()({
   head: () => ({
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Ceylon Platinum Trading (PVT) Ltd" },
+      { title: SITE_NAME },
       {
         name: "description",
         content:
           "Power tools, paints, hardware, machinery and pumps from Bosch, Tolsen, Humhon and more.",
       },
       { name: "author", content: business.name },
+      {
+        name: "robots",
+        content: "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1",
+      },
       { property: "og:site_name", content: business.name },
       { property: "og:type", content: "website" },
       { property: "og:locale", content: "en_LK" },
       { name: "twitter:card", content: "summary_large_image" },
       { name: "theme-color", content: "#A61C1C" },
+      // Default link preview (overridden per page, e.g. with the product image).
+      ...socialImageMeta("/hero01.png", "Ceylon Platinum Trading promotion banner"),
     ],
     links: [
       { rel: "stylesheet", href: appCss },
@@ -159,10 +128,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
         href: "https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700;800;900&family=Barlow:wght@400;500;600;700&display=swap",
       },
     ],
-    scripts: [
-      { type: "application/ld+json", children: JSON.stringify(localBusinessSchema) },
-      { type: "application/ld+json", children: JSON.stringify(faqSchema) },
-    ],
+    scripts: jsonLdScripts([organizationSchema, websiteSchema, faqSchema]),
   }),
   shellComponent: RootShell,
   component: RootComponent,
@@ -172,7 +138,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
 
 function RootShell({ children }: { children: ReactNode }) {
   return (
-    <html lang="en">
+    <html lang="en-LK">
       <head>
         <HeadContent />
       </head>

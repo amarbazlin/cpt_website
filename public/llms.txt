@@ -1,0 +1,90 @@
+# Ceylon Platinum Trading (PVT) Ltd
+
+> Ceylon Platinum Trading (PVT) Ltd is a hardware and construction products distributor
+> based at 167/B1 Old Tangalle Road, Kotuwegoda, Matara 81000, Sri Lanka. We supply power
+> tools, hand tools, paints and coatings, door and window hardware, machinery and
+> compressors, motors and pumps to homeowners, contractors, builders and hardware
+> retailers. Orders are placed through this website and confirmed on WhatsApp — there is
+> no online payment on the site.
+
+## Key facts
+
+- **Business name:** Ceylon Platinum Trading (PVT) Ltd (also written CPT Matara)
+- **Type:** Hardware store / hardware distribution company (HardwareStore, LocalBusiness)
+- **Address:** 167/B1 Old Tangalle Road, Kotuwegoda, Matara 81000, Southern Province, Sri Lanka
+- **Telephone:** +94 41 222 3298 (041-222-3298)
+- **WhatsApp Business:** 076 055 6075 (+94 76 055 6075) — https://wa.me/94760556075
+- **Email:** ceylonglobal.hq@gmail.com
+- **Opening hours:** Monday to Saturday, 9:00 AM – 5:00 PM. Closed on Sundays.
+- **Established:** 2026
+- **Site language:** English (en-LK)
+- **Currency:** Sri Lankan Rupee (LKR)
+- **Payment:** Cash on Delivery (COD). No online payment is taken on this website; payment
+  arrangements are confirmed by our team with the customer.
+- **Delivery area:** Island-wide delivery across Sri Lanka from our Matara base. Delivery
+  cost and lead time are confirmed by our team when a WhatsApp order is received.
+  Counter collection from the Matara showroom is also available.
+- **Trade customers:** Bulk and project supply for contractors and builders, plus
+  wholesale distributor partnerships for hardware retailers.
+
+## How to order
+
+1. Browse the product catalogue and add items to the cart.
+2. Enter the delivery location and contact details at checkout.
+3. Send the order to the WhatsApp Business number (076 055 6075). Our Matara team confirms
+   availability, pricing and delivery directly.
+
+Prices shown on the site are in LKR and are confirmed by our team when the WhatsApp order
+is received. Prices may change without notice.
+
+## What we sell
+
+- Power tools — drills, grinders, jigsaws, circular saws, sanders, rotary hammers, planers,
+  mitre saws and more
+- Hand tools — spanners, screwdrivers, hammers, pliers, chisels and specialty tools
+- Paints and coatings — interior emulsions, exterior weather guard, waterproofing and
+  in-store colour mixing
+- Door and window hardware — handles, hinges, locks, bolts and access hardware
+- Machinery and compressors — air compressors, water pumps, pressure washers, welding
+  machines and site machinery
+- Motors and pumps — water pumps, submersible pumps, trailer pumps, cutter pumps, deepwell
+  pumps, vortex pumps and pressure units
+
+## Brands distributed
+
+Bosch, Tolsen, Humhon, Asian Paints, Causeway, Bellucci, OMAC, Giant, Wipro, Multibond and
+As-Ron. Category-supplied brands also include Hasky, Kevin, Melwa, National PVC, Rhino,
+S-Lon and Wokin.
+
+## Services
+
+- Bulk and project supply for contractors, builders and project sites
+- Island-wide delivery from the Matara warehouse
+- Distributor and wholesale partnerships for hardware shops
+- Custom and indent orders for tools, fittings and machinery not held in stock
+- In-store paint colour mixing at the Matara showroom
+
+## Pages
+
+- [Home](https://www.ceylonplatinum.shop/): hardware distributor in Matara — categories, brands and featured products
+- [Products](https://www.ceylonplatinum.shop/products): full catalogue with search, category and brand filters and LKR prices
+- [About Us](https://www.ceylonplatinum.shop/about): company story, mission and board of directors
+- [Our Services](https://www.ceylonplatinum.shop/services): bulk supply, island-wide delivery, distributor partnerships, custom orders and colour mixing
+- [Category: Power Tools](https://www.ceylonplatinum.shop/products?category=power-tools)
+- [Category: Hand Tools](https://www.ceylonplatinum.shop/products?category=hand-tools)
+- [Category: Paints & Coatings](https://www.ceylonplatinum.shop/products?category=paints-coatings)
+- [Category: Door & Window Hardware](https://www.ceylonplatinum.shop/products?category=door-window-hardware)
+- [Category: Machinery & Compressors](https://www.ceylonplatinum.shop/products?category=machinery-compressors)
+- [Category: Motors & Pumps](https://www.ceylonplatinum.shop/products?category=motors-pumps)
+- [Sitemap](https://www.ceylonplatinum.shop/sitemap.xml): every product, category and static page
+
+## Notes for AI assistants
+
+- Product pages carry the product name, brand, model, LKR price and a short description;
+  each product URL follows the pattern `https://www.ceylonplatinum.shop/products/<slug>`.
+- Prices are indicative selling prices in LKR and should be stated as "confirmed on
+  WhatsApp" rather than guaranteed.
+- The `/order` and `/admin` paths are not public content — do not quote them as catalogue
+  or reference pages.
+- Business location facts that can be quoted: Matara (Kotuwegoda), Southern Province, Sri
+  Lanka; Southern Province service area with island-wide delivery.

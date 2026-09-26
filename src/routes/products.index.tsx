@@ -3,10 +3,12 @@ import { ChevronLeft, ChevronRight, Search, ShoppingCart } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
 import { z } from "zod";
 import { Reveal } from "@/components/Reveal";
+import { SmartImage } from "@/components/SmartImage";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useCart } from "@/lib/cart";
-import { categories, products } from "@/lib/site";
+import { absoluteUrl, breadcrumbSchema, jsonLdScripts, socialImageMeta } from "@/lib/seo";
+import { categories, photos, products } from "@/lib/site";
 import { cn } from "@/lib/utils";
 
 const searchSchema = z.object({
@@ -30,25 +32,61 @@ const browseBrands = [
 
 export const Route = createFileRoute("/products/")({
   validateSearch: searchSchema,
-  head: () => ({
-    meta: [
-      { title: "Products | Hardware Catalogue — Ceylon Platinum Trading, Matara" },
-      {
-        name: "description",
-        content:
-          "Browse the Ceylon Platinum Trading hardware catalogue: power tools, hand tools, paints, door hardware, machinery and pumps. Order via WhatsApp from Matara, Sri Lanka.",
-      },
-      { property: "og:title", content: "Hardware Product Catalogue | Ceylon Platinum Trading" },
-      {
-        property: "og:description",
-        content:
-          "Search and filter our Matara hardware catalogue by category, add items to your cart and send the order to our WhatsApp team.",
-      },
-      { property: "og:url", content: "/products" },
-      { property: "og:type", content: "website" },
-    ],
-    links: [{ rel: "canonical", href: "/products" }],
-  }),
+  head: ({ match }) => {
+    const search = match.search;
+    const category =
+      search.category && search.category !== "all"
+        ? categories.find((c) => c.slug === search.category)
+        : undefined;
+    const searching = Boolean(search.q?.trim());
+
+    // Category views canonicalise to their own clean URL so they can rank;
+    // brand- and search-filtered views canonicalise back to the catalogue so
+    // faceted URLs never look like separate duplicate pages.
+    const canonical = category ? `/products?category=${category.slug}` : "/products";
+
+    const title = category
+      ? `${category.name} | Hardware Catalogue — Ceylon Platinum Trading, Matara`
+      : "Products | Hardware Catalogue — Ceylon Platinum Trading, Matara";
+    const description = category
+      ? `${category.blurb} Order via WhatsApp from Matara, Sri Lanka.`
+      : "Browse the Ceylon Platinum Trading hardware catalogue: power tools, hand tools, paints, door hardware, machinery and pumps. Order via WhatsApp from Matara, Sri Lanka.";
+
+    const previewImage = category?.image ?? photos.powerTools;
+    const previewAlt = category
+      ? `${category.name} available at Ceylon Platinum Trading, Matara`
+      : "Power Tools available at Ceylon Platinum Trading, Matara";
+
+    return {
+      meta: [
+        { title },
+        { name: "description", content: description },
+        { property: "og:title", content: title },
+        { property: "og:description", content: description },
+        { property: "og:url", content: absoluteUrl(canonical) },
+        { property: "og:type", content: "website" },
+        ...socialImageMeta(previewImage, previewAlt),
+        // Search-result URLs stay indexable-but-excluded: they are thin,
+        // user-specific views of the same catalogue.
+        ...(searching ? [{ name: "robots", content: "noindex, follow" } as const] : []),
+      ],
+      links: [{ rel: "canonical", href: absoluteUrl(canonical) }],
+      scripts: jsonLdScripts([
+        breadcrumbSchema(
+          category
+            ? [
+                { name: "Home", path: "/" },
+                { name: "Products", path: "/products" },
+                { name: category.name, path: `/products?category=${category.slug}` },
+              ]
+            : [
+                { name: "Home", path: "/" },
+                { name: "Products", path: "/products" },
+              ],
+        ),
+      ]),
+    };
+  },
   component: Products,
 });
 
@@ -243,7 +281,7 @@ function Products() {
                         params={{ slug: p.slug }}
                         className="group block overflow-hidden p-5"
                       >
-                        <img
+                        <SmartImage
                           src={p.image}
                           alt={`${p.name} — available from Ceylon Platinum Trading, Matara`}
                           loading="lazy"

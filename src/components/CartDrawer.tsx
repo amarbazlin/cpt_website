@@ -1,5 +1,6 @@
 import { Link } from "@tanstack/react-router";
 import { Minus, Plus, ShoppingCart, Trash2 } from "lucide-react";
+import { SmartImage } from "@/components/SmartImage";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTitle } from "@/components/ui/sheet";
 import { useCart } from "@/lib/cart";
@@ -39,7 +40,7 @@ export function CartDrawer() {
                 {detailed.map(({ line, product }) =>
                   product ? (
                     <li key={line.slug} className="flex gap-3 border-b border-border pb-4">
-                      <img
+                      <SmartImage
                         src={product.image}
                         alt={product.name}
                         loading="lazy"

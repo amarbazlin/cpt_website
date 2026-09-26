@@ -1,5 +1,6 @@
 import { Link } from "@tanstack/react-router";
 import { Clock, Mail, MapPin, MessageCircle, Phone } from "lucide-react";
+import { SmartImage } from "@/components/SmartImage";
 import { business, categories } from "@/lib/site";
 
 export function SiteFooter() {
@@ -8,9 +9,10 @@ export function SiteFooter() {
       <div className="mx-auto grid max-w-7xl gap-10 px-4 py-14 sm:grid-cols-2 lg:grid-cols-4">
         <div>
           <div className="flex items-center gap-3">
-            <img
+            <SmartImage
               src="/brands/company-logo.png"
               alt="Ceylon Platinum Trading (PVT) Ltd logo"
+              loading="lazy"
               className="h-11 w-auto shrink-0"
             />
             <span className="font-display text-lg font-extrabold">Ceylon Platinum Trading</span>

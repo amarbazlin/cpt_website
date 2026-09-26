@@ -8,7 +8,9 @@ import {
   type PointerEvent as ReactPointerEvent,
 } from "react";
 import { Reveal } from "@/components/Reveal";
+import { SmartImage } from "@/components/SmartImage";
 import { Button } from "@/components/ui/button";
+import { absoluteUrl, socialImageMeta } from "@/lib/seo";
 import {
   Accordion,
   AccordionContent,
@@ -31,7 +33,7 @@ export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
       {
-        title: "Ceylon Platinum Trading (PVT) Ltd",
+        title: "Ceylon Platinum Trading (PVT) Ltd | Hardware Distributors in Matara",
       },
       {
         name: "description",
@@ -47,10 +49,11 @@ export const Route = createFileRoute("/")({
         content:
           "Complete hardware solutions under one roof. Bosch, Tolsen, Humhon, Asian Paints and more, distributed island-wide from Matara, Sri Lanka.",
       },
-      { property: "og:url", content: "/" },
+      { property: "og:url", content: absoluteUrl("/") },
       { property: "og:type", content: "website" },
+      ...socialImageMeta("/hero01.png", "Ceylon Platinum Trading promotion banner"),
     ],
-    links: [{ rel: "canonical", href: "/" }],
+    links: [{ rel: "canonical", href: absoluteUrl("/") }],
   }),
   component: Home,
 });
@@ -99,7 +102,7 @@ function ProductCarousel({
               params={{ slug: p.slug }}
               className="group block overflow-hidden"
             >
-              <img
+              <SmartImage
                 src={p.image}
                 alt={`${p.name} — sold by Ceylon Platinum Trading, Matara`}
                 loading="lazy"
@@ -271,7 +274,7 @@ function Home() {
           title={`Shop ${b.name} products`}
           className="flex h-20 w-40 shrink-0 items-center justify-center rounded-xl border border-charcoal-muted/15 bg-card px-4 shadow-card transition hover:border-primary/50 hover:shadow-lift focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none"
         >
-          <img
+          <SmartImage
             src={b.logo}
             alt={`${b.name} logo`}
             loading="lazy"
@@ -322,11 +325,15 @@ function Home() {
                   draggable={false}
                   className="block h-full w-full shrink-0"
                 >
-                  <img
+                  <SmartImage
                     src={src}
                     alt={meta.alt}
-                    fetchPriority={i === 0 ? "high" : undefined}
-                    loading={i === 0 ? undefined : "lazy"}
+                    sizes="100vw"
+                    // The visible first slide (track index 1) is the LCP element:
+                    // load it eagerly with high priority. Everything else — the
+                    // cloned edge slides included — stays lazy.
+                    fetchPriority={i === 1 ? "high" : undefined}
+                    loading={i === 1 ? undefined : "lazy"}
                     draggable={false}
                     className="h-full w-full object-cover object-center"
                   />
@@ -398,7 +405,7 @@ function Home() {
             </div>
           </Reveal>
           <Reveal delay={120} className="relative">
-            <img
+            <SmartImage
               src={photos.handTools}
               alt="Hand tools and spanners displayed on the wall of the Ceylon Platinum Trading showroom in Matara"
               loading="lazy"
@@ -434,7 +441,7 @@ function Home() {
                 className="group block h-full overflow-hidden border border-border bg-card shadow-card transition-shadow hover:shadow-lift"
               >
                 <div className="overflow-hidden">
-                  <img
+                  <SmartImage
                     src={c.image}
                     alt={`${c.name} available at Ceylon Platinum Trading, Matara`}
                     loading="lazy"

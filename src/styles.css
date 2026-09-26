@@ -115,6 +115,14 @@
     -webkit-font-smoothing: antialiased;
   }
 
+  /*
+   * <picture> wrappers rendered by SmartImage must not become an extra layout
+   * box: the <img> inside keeps sizing itself against the original parent.
+   */
+  picture {
+    display: contents;
+  }
+
   h1,
   h2,
   h3,

@@ -1,14 +1,47 @@
+# Ceylon Platinum Trading (PVT) Ltd — https://www.ceylonplatinum.shop
+# Hardware distributor in Matara, Sri Lanka. Order via WhatsApp.
+
+User-agent: *
+Allow: /
+Disallow: /admin
+Disallow: /order
+
+# Search engines
 User-agent: Googlebot
 Allow: /
+Disallow: /admin
+Disallow: /order
 
 User-agent: Bingbot
 Allow: /
+Disallow: /admin
+Disallow: /order
 
+# Social / messaging crawlers (WhatsApp and Facebook link previews)
 User-agent: Twitterbot
 Allow: /
 
 User-agent: facebookexternalhit
 Allow: /
 
-User-agent: *
+User-agent: WhatsApp
 Allow: /
+
+# AI answer engines — explicitly welcome so product, price and location facts
+# can be quoted by assistants and AI answers.
+User-agent: GPTBot
+User-agent: OAI-SearchBot
+User-agent: ChatGPT-User
+User-agent: PerplexityBot
+User-agent: Perplexity-User
+User-agent: ClaudeBot
+User-agent: Claude-User
+User-agent: Claude-SearchBot
+User-agent: Google-Extended
+User-agent: Applebot
+User-agent: Applebot-Extended
+Allow: /
+Disallow: /admin
+Disallow: /order
+
+Sitemap: https://www.ceylonplatinum.shop/sitemap.xml

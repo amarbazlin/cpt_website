@@ -2,8 +2,17 @@ import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { ChevronRight, Minus, Plus, ShoppingCart } from "lucide-react";
 import { useState } from "react";
 import { Reveal } from "@/components/Reveal";
+import { SmartImage } from "@/components/SmartImage";
 import { Button } from "@/components/ui/button";
 import { useCart } from "@/lib/cart";
+import {
+  absoluteUrl,
+  breadcrumbSchema,
+  jsonLdScripts,
+  productCrumbs,
+  productSchema,
+  socialImageMeta,
+} from "@/lib/seo";
 import { business, categories, products } from "@/lib/site";
 
 export const Route = createFileRoute("/products/$slug")({
@@ -24,49 +33,23 @@ export const Route = createFileRoute("/products/$slug")({
     const p = loaderData.product;
     const title = `${p.name} | Ceylon Platinum Trading, Matara`;
     const description = `${p.summary} Available from Ceylon Platinum Trading (PVT) Ltd, ${business.addressFull}. Order via WhatsApp for island-wide delivery.`;
+    const url = absoluteUrl(`/products/${params.slug}`);
+    const imageAlt = `${p.name} — ${p.brand} product supplied by Ceylon Platinum Trading, Matara`;
     return {
       meta: [
         { title },
         { name: "description", content: description },
         { property: "og:title", content: title },
         { property: "og:description", content: description },
-        { property: "og:url", content: `/products/${params.slug}` },
+        { property: "og:url", content: url },
         { property: "og:type", content: "product" },
+        { name: "twitter:card", content: "summary_large_image" },
+        // WhatsApp renders a large preview only when og:image is an absolute
+        // URL under 600KB — supplied here by the ≤1200px JPEG from `npm run images`.
+        ...socialImageMeta(p.image, imageAlt),
       ],
-      links: [{ rel: "canonical", href: `/products/${params.slug}` }],
-      scripts: [
-        {
-          type: "application/ld+json",
-          children: JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "Product",
-            name: p.name,
-            image: p.image,
-            description: p.description,
-            sku: p.slug,
-            category: categories.find((c) => c.slug === p.category)?.name,
-            brand: { "@type": "Brand", name: p.brand },
-            offers: {
-              "@type": "Offer",
-              availability: "https://schema.org/InStock",
-              priceCurrency: "LKR",
-              url: `/products/${p.slug}`,
-              seller: {
-                "@type": "Organization",
-                name: business.name,
-                telephone: business.phoneIntl,
-                address: {
-                  "@type": "PostalAddress",
-                  streetAddress: business.street,
-                  addressLocality: business.city,
-                  postalCode: business.postalCode,
-                  addressCountry: "LK",
-                },
-              },
-            },
-          }),
-        },
-      ],
+      links: [{ rel: "canonical", href: url }],
+      scripts: jsonLdScripts([productSchema(p), breadcrumbSchema(productCrumbs(p))]),
     };
   },
   component: ProductDetail,
@@ -119,7 +102,7 @@ function ProductDetail() {
       <section className="mx-auto max-w-7xl px-4 py-10 sm:py-16">
         <div className="grid gap-10 lg:grid-cols-2">
           <Reveal className="border border-border bg-surface p-6 sm:p-10">
-            <img
+            <SmartImage
               src={product.image}
               alt={`${product.name} — ${product.brand} product supplied by Ceylon Platinum Trading, Matara`}
               className="mx-auto aspect-square w-full max-w-lg object-contain"
@@ -207,7 +190,7 @@ function ProductDetail() {
                     params={{ slug: p.slug }}
                     className="group flex h-full flex-col border border-border bg-card p-5 shadow-card transition-shadow hover:shadow-lift"
                   >
-                    <img
+                    <SmartImage
                       src={p.image}
                       alt={`${p.name} at Ceylon Platinum Trading, Matara`}
                       loading="lazy"

@@ -1,6 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { MessageCircle, Minus, Plus, ShoppingCart, Trash2 } from "lucide-react";
 import { useEffect, useState } from "react";
+import { SmartImage } from "@/components/SmartImage";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -12,6 +13,7 @@ import {
   whatsappUrl,
 } from "@/lib/cart";
 import { saveCustomerDetails, saveOrder } from "@/lib/orders";
+import { absoluteUrl } from "@/lib/seo";
 import { business, products } from "@/lib/site";
 
 export const Route = createFileRoute("/order")({
@@ -25,10 +27,10 @@ export const Route = createFileRoute("/order")({
       },
       { name: "robots", content: "noindex, nofollow" },
       { property: "og:title", content: "Your Order | Ceylon Platinum Trading (PVT) Ltd" },
-      { property: "og:url", content: "/order" },
+      { property: "og:url", content: absoluteUrl("/order") },
       { property: "og:type", content: "website" },
     ],
-    links: [{ rel: "canonical", href: "/order" }],
+    links: [{ rel: "canonical", href: absoluteUrl("/order") }],
   }),
   component: OrderPage,
 });
@@ -366,7 +368,7 @@ function OrderPage() {
                 {detailed.map(({ line, product }) =>
                   product ? (
                     <li key={line.slug} className="flex gap-3 border-b border-border pb-4">
-                      <img
+                      <SmartImage
                         src={product.image}
                         alt={product.name}
                         loading="lazy"
