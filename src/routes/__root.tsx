@@ -7,14 +7,18 @@ import {
   HeadContent,
   Scripts,
 } from "@tanstack/react-router";
-import { useEffect, type ReactNode } from "react";
+import { useEffect, type CSSProperties, type ReactNode } from "react";
 
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 import { CartProvider } from "@/lib/cart";
 import { CartDrawer } from "@/components/CartDrawer";
+import { FloatingWhatsApp } from "@/components/FloatingWhatsApp";
+import { MobileBottomNav } from "@/components/MobileBottomNav";
+import { MobileSearchSheet } from "@/components/MobileSearchSheet";
 import { SiteHeader } from "@/components/SiteHeader";
 import { SiteFooter } from "@/components/SiteFooter";
+import { MobileUiProvider, MOBILE_BOTTOM_INSET } from "@/lib/mobile-ui";
 import { business } from "@/lib/site";
 import {
   faqSchema,
@@ -155,17 +159,25 @@ function RootComponent() {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <CartProvider>
-        <div className="flex min-h-screen flex-col">
-          <SiteHeader />
-          <main className="flex-1">
-            {/* Required: nested routes render here. */}
-            <Outlet />
-          </main>
-          <SiteFooter />
-        </div>
-        <CartDrawer />
-      </CartProvider>
+      <MobileUiProvider>
+        <CartProvider>
+          <div className="flex min-h-screen flex-col overflow-x-hidden">
+            <SiteHeader />
+            <main
+              className="flex-1 max-md:pb-[var(--main-bottom-pad)]"
+              style={{ "--main-bottom-pad": MOBILE_BOTTOM_INSET } as CSSProperties}
+            >
+              {/* Required: nested routes render here. */}
+              <Outlet />
+            </main>
+            <SiteFooter />
+          </div>
+          <CartDrawer />
+          <MobileSearchSheet />
+          <MobileBottomNav />
+          <FloatingWhatsApp />
+        </CartProvider>
+      </MobileUiProvider>
     </QueryClientProvider>
   );
 }

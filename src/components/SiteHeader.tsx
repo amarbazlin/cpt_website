@@ -1,8 +1,9 @@
 import { Link } from "@tanstack/react-router";
-import { Menu, Phone, ShoppingCart, X } from "lucide-react";
+import { Menu, Phone, Search, ShoppingCart } from "lucide-react";
 import { useState } from "react";
 import { business } from "@/lib/site";
 import { useCart } from "@/lib/cart";
+import { useMobileUi } from "@/lib/mobile-ui";
 import { SmartImage } from "@/components/SmartImage";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
@@ -16,6 +17,7 @@ const nav = [
 
 export function SiteHeader() {
   const { count, setOpen } = useCart();
+  const { setSearchOpen } = useMobileUi();
   const [mobile, setMobile] = useState(false);
 
   return (
@@ -36,18 +38,18 @@ export function SiteHeader() {
         </div>
       </div>
 
-      <div className="mx-auto grid max-w-7xl grid-cols-[minmax(0,1fr)_auto] items-center gap-3 px-4 py-3 lg:flex lg:justify-between">
-        <Link to="/" className="flex min-w-0 items-center gap-3">
+      <div className="mx-auto grid max-w-7xl grid-cols-[minmax(0,1fr)_auto] items-center gap-2 px-3 py-2 sm:px-4 sm:py-3 lg:flex lg:justify-between">
+        <Link to="/" className="flex min-w-0 items-center gap-2 sm:gap-3">
           <SmartImage
             src="/brands/company-logo.png"
             alt="Ceylon Platinum Trading (PVT) Ltd logo"
-            className="h-11 w-auto shrink-0"
+            className="h-9 w-auto shrink-0 sm:h-11"
           />
-          <span className="min-w-0">
-            <span className="block truncate font-display text-base leading-tight font-extrabold sm:text-lg">
+          <span className="min-w-0 leading-tight">
+            <span className="block truncate font-display text-[13px] font-extrabold sm:text-lg">
               Ceylon Platinum Trading
             </span>
-            <span className="block truncate text-[11px] tracking-wide text-muted-foreground uppercase">
+            <span className="hidden truncate text-[10px] tracking-wide text-muted-foreground uppercase min-[380px]:block sm:text-[11px]">
               {business.tagline}
             </span>
           </span>
@@ -67,7 +69,17 @@ export function SiteHeader() {
           ))}
         </nav>
 
-        <div className="flex items-center gap-2">
+        <div className="flex shrink-0 items-center gap-0.5 sm:gap-2">
+          <Button
+            variant="ghost"
+            size="icon"
+            className="size-10 shrink-0 lg:hidden"
+            aria-label="Search products"
+            onClick={() => setSearchOpen(true)}
+          >
+            <Search className="size-5" />
+          </Button>
+
           <Button asChild variant="outline" size="sm" className="hidden xl:inline-flex">
             <a href={`tel:${business.phoneIntl}`}>
               <Phone className="size-4" /> {business.phone}
@@ -76,30 +88,29 @@ export function SiteHeader() {
           <Button
             variant="default"
             size="sm"
+            className="relative h-10 min-w-10 shrink-0 gap-1.5 px-2.5 sm:h-9 sm:min-w-0 sm:px-3"
             onClick={() => setOpen(true)}
             aria-label={`Open cart, ${count} items`}
           >
-            <ShoppingCart className="size-4" />
-            <span className="hidden sm:inline">Cart</span>
-            <span className="ml-1 inline-grid min-w-5 place-items-center rounded-full bg-primary-foreground/20 px-1.5 text-xs font-bold">
-              {count}
-            </span>
+            <ShoppingCart className="size-[1.125rem] shrink-0 sm:size-4" />
+            <span className="hidden font-display text-sm font-semibold sm:inline">Cart</span>
+            {count > 0 ? (
+              <span className="inline-grid min-h-5 min-w-5 place-items-center rounded-full bg-primary-foreground/25 px-1 text-[11px] font-bold leading-none sm:ml-0.5">
+                {count > 99 ? "99+" : count}
+              </span>
+            ) : null}
           </Button>
 
           <Sheet open={mobile} onOpenChange={setMobile}>
             <SheetTrigger asChild>
-              <Button variant="outline" size="icon" className="lg:hidden" aria-label="Open menu">
+              <Button variant="outline" size="icon" className="size-10 shrink-0 lg:hidden" aria-label="Open menu">
                 <Menu className="size-5" />
               </Button>
             </SheetTrigger>
             <SheetContent side="right" className="w-[86vw] max-w-sm p-0">
-              <SheetTitle className="sr-only">Menu</SheetTitle>
-              <div className="flex items-center justify-between border-b border-border px-5 py-4">
-                <span className="font-display font-extrabold">Menu</span>
-                <Button variant="ghost" size="icon" onClick={() => setMobile(false)}>
-                  <X className="size-5" />
-                </Button>
-              </div>
+              <SheetTitle className="border-b border-border px-5 py-4 pr-12 font-display font-extrabold">
+                Menu
+              </SheetTitle>
               <nav className="flex flex-col p-2" aria-label="Mobile">
                 {nav.map((n) => (
                   <Link
@@ -108,20 +119,23 @@ export function SiteHeader() {
                     onClick={() => setMobile(false)}
                     activeOptions={{ exact: n.to === "/" }}
                     activeProps={{ className: "text-primary" }}
-                    className="border-b border-border/60 px-4 py-4 font-display text-lg font-semibold"
+                    className="min-h-12 border-b border-border/60 px-4 py-3 font-display text-lg font-semibold"
                   >
                     {n.label}
                   </Link>
                 ))}
               </nav>
               <div className="space-y-2 p-5 text-sm">
-                <a className="block font-semibold" href={`tel:${business.phoneIntl}`}>
+                <a className="block min-h-11 py-2 font-semibold" href={`tel:${business.phoneIntl}`}>
                   {business.phone}
                 </a>
-                <a className="block text-muted-foreground" href={`mailto:${business.email}`}>
+                <a className="block min-h-11 py-2 text-muted-foreground" href={`mailto:${business.email}`}>
                   {business.email}
                 </a>
                 <p className="text-muted-foreground">{business.addressFull}</p>
+                <p className="text-xs font-bold tracking-wide text-primary uppercase">
+                  Free islandwide delivery on all products
+                </p>
               </div>
             </SheetContent>
           </Sheet>

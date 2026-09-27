@@ -11,9 +11,9 @@ import {
   Store,
   Truck,
 } from "lucide-react";
+import { ProductCard } from "@/components/ProductCard";
 import { Reveal } from "@/components/Reveal";
 import { SmartImage } from "@/components/SmartImage";
-import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
   Accordion,
@@ -22,7 +22,6 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { absoluteUrl, socialImageMeta } from "@/lib/seo";
-import { useCart } from "@/lib/cart";
 import {
   brands,
   business,
@@ -183,10 +182,12 @@ const featuredSlugs = [
   "wokin-heavy-duty-tile-cutter-cutt-wokin-00672",
 ];
 
-/** Percent-based hit areas aligned to 1920×768 mainheroimage.png artwork. */
+/**
+ * Hit areas on 1920×768 mainheroimage.png (Shop Products ≈ 140,395 280×52px; WhatsApp ≈ 140,458 305×52px).
+ */
 const heroHotspots = {
-  shopProducts: { left: "3%", top: "52%", width: "22%", height: "10%" },
-  whatsapp: { left: "3%", top: "63%", width: "23%", height: "10%" },
+  shopProducts: { left: "7.3%", top: "51.4%", width: "14.6%", height: "6.8%" },
+  whatsapp: { left: "7.3%", top: "59.6%", width: "15.9%", height: "6.8%" },
 } as const;
 
 function MainHeroBanner() {
@@ -262,63 +263,9 @@ function MainHeroBanner() {
               </a>
             </Button>
           </div>
-          <ul className="mt-6 grid gap-2">
-            {heroTrustPoints.map((point) => (
-              <li key={point} className="flex items-center gap-2 text-sm">
-                <Check className="size-4 shrink-0 text-primary" aria-hidden />
-                {point}
-              </li>
-            ))}
-          </ul>
         </div>
       </div>
     </div>
-  );
-}
-
-function FeaturedProductCard({ product }: { product: Product }) {
-  const { add, setOpen } = useCart();
-
-  return (
-    <article className="flex h-full flex-col border border-border bg-card shadow-card transition-shadow hover:shadow-lift">
-      <Link
-        to="/products/$slug"
-        params={{ slug: product.slug }}
-        className="group block overflow-hidden p-4 sm:p-5"
-      >
-        <SmartImage
-          src={product.image}
-          alt={`${product.name} — sold by Ceylon Platinum Trading, Matara`}
-          loading="lazy"
-          className="aspect-square w-full object-contain transition-transform duration-300 group-hover:scale-[1.03]"
-        />
-      </Link>
-      <div className="flex min-w-0 flex-1 flex-col px-4 pb-4 sm:px-5 sm:pb-5">
-        <p className="text-xs font-semibold tracking-wide text-primary uppercase">{product.brand}</p>
-        <h3 className="mt-1 line-clamp-2 break-words font-display text-sm leading-snug font-extrabold sm:text-base">
-          <Link to="/products/$slug" params={{ slug: product.slug }}>
-            {product.name}
-          </Link>
-        </h3>
-        <p className="mt-2 text-sm font-semibold">
-          {product.price ? `Rs. ${product.price.toLocaleString("en-LK")}` : "Price on request"}
-        </p>
-        <Badge variant="secondary" className="mt-2 w-fit text-[10px] sm:text-xs">
-          FREE ISLANDWIDE DELIVERY
-        </Badge>
-        <Button
-          className="mt-4 w-full"
-          size="sm"
-          onClick={() => {
-            add(product.slug);
-            setOpen(true);
-          }}
-        >
-          <ShoppingCart className="size-4" />
-          Add to Cart
-        </Button>
-      </div>
-    </article>
   );
 }
 
@@ -348,20 +295,23 @@ function Home() {
         </div>
       </section>
 
-      {/* Trust / benefits strip */}
-      <section className="border-b border-border bg-charcoal text-charcoal-foreground" aria-label="Why customers choose CPT">
-        <div className="mx-auto grid max-w-7xl gap-px bg-charcoal-muted/20 sm:grid-cols-2 lg:grid-cols-4">
+      {/* Trust / benefits strip (compact on mobile — hero already mentions delivery) */}
+      <section
+        className="border-b border-border bg-charcoal text-charcoal-foreground"
+        aria-label="Why customers choose CPT"
+      >
+        <div className="mx-auto grid max-w-3xl gap-px bg-charcoal-muted/20 grid-cols-2 sm:max-w-7xl sm:grid-cols-2 lg:max-w-7xl lg:grid-cols-4">
           {trustStrip.map((item) => (
             <div
               key={item.title}
               className={cn(
-                "flex flex-col gap-2 bg-charcoal px-5 py-6 sm:px-6 sm:py-8",
+                "flex flex-col gap-1.5 bg-charcoal px-3 py-4 sm:gap-2 sm:px-6 sm:py-8",
                 item.highlight && "lg:border-b-2 lg:border-b-primary",
               )}
             >
-              <item.icon className="size-6 text-primary" aria-hidden />
-              <p className="font-display text-sm font-extrabold tracking-wide sm:text-base">{item.title}</p>
-              <p className="text-sm text-charcoal-foreground/80">{item.text}</p>
+              <item.icon className="size-5 text-primary sm:size-6" aria-hidden />
+              <p className="font-display text-xs font-extrabold tracking-wide sm:text-base">{item.title}</p>
+              <p className="text-xs text-charcoal-foreground/80 sm:text-sm">{item.text}</p>
             </div>
           ))}
         </div>
@@ -378,7 +328,7 @@ function Home() {
             Browse hardware and tools by category — every product includes free islandwide delivery.
           </p>
         </Reveal>
-        <div className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="mt-8 grid grid-cols-2 gap-2.5 sm:mt-10 sm:gap-5 lg:grid-cols-3">
           {sortedCategories.map((c, i) => (
             <Reveal key={c.slug} delay={(i % 3) * 70}>
               <Link
@@ -391,18 +341,18 @@ function Home() {
                     src={c.image}
                     alt={`${c.name} available at Ceylon Platinum Trading, Matara`}
                     loading="lazy"
-                    className="aspect-[16/10] w-full object-cover transition-transform duration-500 group-hover:scale-[1.03]"
+                    className="aspect-[4/3] w-full object-cover transition-transform duration-500 group-hover:scale-[1.03] sm:aspect-[16/10]"
                   />
                 </div>
-                <div className="flex flex-1 flex-col p-5">
-                  <h3 className="font-display text-lg font-extrabold uppercase tracking-wide sm:text-xl">
+                <div className="flex flex-1 flex-col p-2.5 sm:p-5">
+                  <h3 className="font-display text-xs font-extrabold tracking-wide uppercase sm:text-xl">
                     {c.name}
                   </h3>
-                  <p className="mt-2 flex-1 text-sm text-muted-foreground">
+                  <p className="mt-1 hidden flex-1 text-sm text-muted-foreground sm:mt-2 sm:block">
                     {categoryShortBlurb[c.slug] ?? c.blurb}
                   </p>
-                  <span className="mt-4 inline-flex items-center gap-1 font-display text-sm font-bold text-primary">
-                    View category <ArrowRight className="size-4" />
+                  <span className="mt-2 inline-flex items-center gap-0.5 font-display text-[11px] font-bold text-primary sm:mt-4 sm:gap-1 sm:text-sm">
+                    View <ArrowRight className="size-3 sm:size-4" />
                   </span>
                 </div>
               </Link>
@@ -425,7 +375,7 @@ function Home() {
           </Reveal>
           <div className="mt-10 grid grid-cols-2 gap-3 min-[480px]:gap-4 sm:gap-6 lg:grid-cols-4 xl:grid-cols-5">
             {featuredProducts.map((p) => (
-              <FeaturedProductCard key={p.slug} product={p} />
+              <ProductCard key={p.slug} product={p} />
             ))}
           </div>
           <div className="mt-10 text-center">
@@ -534,37 +484,40 @@ function Home() {
       </section>
 
       {/* How to order online */}
-      <section className="mx-auto max-w-7xl px-4 py-14 sm:py-16">
-        <Reveal className="mx-auto max-w-2xl text-center">
-          <p className="eyebrow">Simple ordering</p>
-          <h2 className="rule-red mt-4 font-display text-3xl font-extrabold uppercase sm:text-4xl">
-            How to Order Online
-          </h2>
-          <p className="mt-4 font-display text-sm font-extrabold tracking-wide text-primary uppercase sm:text-base">
-            Free islandwide delivery on all products
-          </p>
-        </Reveal>
-        <ol className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-          {orderSteps.map((step, i) => (
-            <Reveal
-              key={step.step}
-              delay={i * 70}
-              as="li"
-              className="relative h-full list-none border border-border bg-card p-6 shadow-card"
-            >
-              <span className="font-display text-3xl font-extrabold text-primary/20">{step.step}</span>
-              <div className="mt-3 flex size-10 items-center justify-center bg-surface text-primary">
-                <step.icon className="size-5" aria-hidden />
-              </div>
-              <h3 className="mt-4 font-display text-lg font-extrabold">{step.title}</h3>
-              <p className="mt-2 text-sm text-muted-foreground">{step.text}</p>
-            </Reveal>
-          ))}
-        </ol>
-        <div className="mt-10 text-center">
-          <Button asChild size="lg" className="font-display font-bold tracking-wide uppercase">
-            <Link to="/products">Start Shopping</Link>
-          </Button>
+      <section className="border-y border-border bg-surface/60 px-4 py-8 sm:py-12">
+        <div className="mx-auto max-w-3xl">
+          <Reveal className="text-center">
+            <p className="eyebrow text-[11px]">Simple ordering</p>
+            <h2 className="rule-red mt-3 font-display text-2xl font-extrabold uppercase sm:mt-4 sm:text-3xl">
+              How to Order Online
+            </h2>
+          </Reveal>
+          <ol className="mt-6 grid grid-cols-2 gap-2 sm:mt-8 sm:grid-cols-4 sm:gap-3">
+            {orderSteps.map((step, i) => (
+              <Reveal
+                key={step.step}
+                delay={i * 50}
+                as="li"
+                className="relative flex list-none flex-col border border-border bg-card p-3 shadow-card sm:p-4"
+              >
+                <div className="flex items-start justify-between gap-2">
+                  <span className="font-display text-xl font-extrabold text-primary/25 sm:text-2xl">
+                    {step.step}
+                  </span>
+                  <div className="flex size-8 shrink-0 items-center justify-center bg-surface text-primary sm:size-9">
+                    <step.icon className="size-4" aria-hidden />
+                  </div>
+                </div>
+                <h3 className="mt-2 font-display text-xs font-extrabold leading-snug sm:text-sm">{step.title}</h3>
+                <p className="mt-1 text-[11px] leading-snug text-muted-foreground sm:text-xs">{step.text}</p>
+              </Reveal>
+            ))}
+          </ol>
+          <div className="mt-6 text-center sm:mt-8">
+            <Button asChild size="default" className="min-h-11 font-display font-bold tracking-wide uppercase">
+              <Link to="/products">Start Shopping</Link>
+            </Button>
+          </div>
         </div>
       </section>
 

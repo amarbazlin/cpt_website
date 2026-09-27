@@ -444,7 +444,7 @@ function OrderPage() {
 
               <Button className="mt-5 w-full" size="lg" onClick={send} disabled={sending}>
                 <MessageCircle className="size-4" />
-                {sending ? "Sending…" : "Send order on WhatsApp"}
+                {sending ? "Sending…" : "Send Order via WhatsApp"}
               </Button>
               {dbError && (
                 <p

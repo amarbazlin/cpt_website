@@ -1,12 +1,19 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
-import { ChevronLeft, ChevronRight, Search, ShoppingCart } from "lucide-react";
+import { createFileRoute } from "@tanstack/react-router";
+import { ArrowDownUp, ChevronLeft, ChevronRight, Search, SlidersHorizontal } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
 import { z } from "zod";
+import { MobileProductFilters } from "@/components/MobileProductFilters";
+import { ProductCard } from "@/components/ProductCard";
 import { Reveal } from "@/components/Reveal";
-import { SmartImage } from "@/components/SmartImage";
 import { Button } from "@/components/ui/button";
+import {
+  Drawer,
+  DrawerClose,
+  DrawerContent,
+  DrawerTitle,
+} from "@/components/ui/drawer";
 import { Input } from "@/components/ui/input";
-import { useCart } from "@/lib/cart";
+import { productMatchesSearch } from "@/lib/product-display";
 import { absoluteUrl, breadcrumbSchema, jsonLdScripts, socialImageMeta } from "@/lib/seo";
 import { categories, photos, products } from "@/lib/site";
 import { cn } from "@/lib/utils";
@@ -28,7 +35,36 @@ const browseBrands = [
   "Wokin",
   "Wipro",
   "ZRM",
+] as const;
+
+type SortKey = "featured" | "name-asc" | "name-desc" | "price-asc" | "price-desc" | "brand-asc";
+
+const sortOptions: { key: SortKey; label: string }[] = [
+  { key: "featured", label: "Featured" },
+  { key: "name-asc", label: "Name (A–Z)" },
+  { key: "name-desc", label: "Name (Z–A)" },
+  { key: "price-asc", label: "Price (low to high)" },
+  { key: "price-desc", label: "Price (high to low)" },
+  { key: "brand-asc", label: "Brand (A–Z)" },
 ];
+
+function sortProducts(list: typeof products, sort: SortKey) {
+  const copy = [...list];
+  switch (sort) {
+    case "name-asc":
+      return copy.sort((a, b) => a.name.localeCompare(b.name));
+    case "name-desc":
+      return copy.sort((a, b) => b.name.localeCompare(a.name));
+    case "price-asc":
+      return copy.sort((a, b) => (a.price ?? Number.MAX_SAFE_INTEGER) - (b.price ?? Number.MAX_SAFE_INTEGER));
+    case "price-desc":
+      return copy.sort((a, b) => (b.price ?? 0) - (a.price ?? 0));
+    case "brand-asc":
+      return copy.sort((a, b) => a.brand.localeCompare(b.brand) || a.name.localeCompare(b.name));
+    default:
+      return copy;
+  }
+}
 
 export const Route = createFileRoute("/products/")({
   validateSearch: searchSchema,
@@ -96,18 +132,21 @@ function Products() {
   const category = search.category ?? "all";
   const brand = search.brand ?? "all";
   const navigate = Route.useNavigate();
-  const { add, setOpen } = useCart();
+
+  const [sort, setSort] = useState<SortKey>("featured");
+  const [filterOpen, setFilterOpen] = useState(false);
+  const [sortOpen, setSortOpen] = useState(false);
 
   const filtered = useMemo(() => {
-    const needle = q.trim().toLowerCase();
-    return products.filter((p) => {
+    const needle = q.trim();
+    const matched = products.filter((p) => {
       const inCat = category === "all" || p.category === category;
       const inBrand = brand === "all" || p.brand === brand;
-      const inSearch =
-        !needle || `${p.name} ${p.brand} ${p.summary}`.toLowerCase().includes(needle);
+      const inSearch = productMatchesSearch(p, needle);
       return inCat && inBrand && inSearch;
     });
-  }, [q, category, brand]);
+    return sortProducts(matched, sort);
+  }, [q, category, brand, sort]);
 
   const activeCategory = categories.find((c) => c.slug === category);
   const activeBrand = brand !== "all" ? brand : null;
@@ -126,83 +165,32 @@ function Products() {
       <section className="border-b border-border bg-surface">
         <div className="mx-auto max-w-7xl px-4 py-3 sm:py-5">
           <Reveal className="max-w-3xl">
-            <h1 className="font-display text-3xl font-extrabold sm:text-4xl">Catalogue</h1>
+            <h1 className="font-display text-2xl font-extrabold sm:text-4xl">Catalogue</h1>
+            <p className="mt-1 text-xs font-bold tracking-wide text-primary uppercase sm:mt-2 sm:text-sm">
+              Free islandwide delivery on all products
+            </p>
           </Reveal>
         </div>
       </section>
 
-      <section className="mx-auto max-w-7xl px-4 py-10 sm:py-14">
+      <section className="mx-auto max-w-7xl px-3 py-6 sm:px-4 sm:py-14">
         <div className="grid gap-8 lg:grid-cols-[260px_minmax(0,1fr)]">
           {/* Filters */}
           <aside className="lg:sticky lg:top-32 lg:self-start">
             <label htmlFor="product-search" className="sr-only">
               Search products
             </label>
-            <div className="relative">
+            <div className="relative hidden lg:block">
               <Search className="pointer-events-none absolute top-1/2 left-3 size-4 -translate-y-1/2 text-muted-foreground" />
               <Input
                 id="product-search"
                 value={q}
-                placeholder="Search products…"
-                className="pl-9"
+                placeholder="Search products, brands or models..."
+                className="min-h-10 pl-9"
                 onChange={(e) =>
                   navigate({ search: (prev) => ({ ...prev, q: e.target.value }), replace: true })
                 }
               />
-            </div>
-            <div className="mt-6 grid gap-3 md:grid-cols-2 lg:hidden">
-              <div>
-                <label
-                  htmlFor="mobile-category"
-                  className="mb-1 block text-sm font-semibold text-muted-foreground"
-                >
-                  Category
-                </label>
-                <select
-                  id="mobile-category"
-                  value={category}
-                  onChange={(e) =>
-                    navigate({
-                      search: (prev) => ({ ...prev, category: e.target.value }),
-                      replace: true,
-                    })
-                  }
-                  className="w-full rounded-md border border-input bg-card px-3 py-2 text-sm font-display font-semibold"
-                >
-                  <option value="all">All products</option>
-                  {categories.map((c) => (
-                    <option key={c.slug} value={c.slug}>
-                      {c.name}
-                    </option>
-                  ))}
-                </select>
-              </div>
-              <div>
-                <label
-                  htmlFor="mobile-brand"
-                  className="mb-1 block text-sm font-semibold text-muted-foreground"
-                >
-                  Brand
-                </label>
-                <select
-                  id="mobile-brand"
-                  value={brand}
-                  onChange={(e) =>
-                    navigate({
-                      search: (prev) => ({ ...prev, brand: e.target.value }),
-                      replace: true,
-                    })
-                  }
-                  className="w-full rounded-md border border-input bg-card px-3 py-2 text-sm font-display font-semibold"
-                >
-                  <option value="all">All brands</option>
-                  {browseBrands.map((b) => (
-                    <option key={b} value={b}>
-                      {b}
-                    </option>
-                  ))}
-                </select>
-              </div>
             </div>
 
             <h2 className="mt-6 hidden lg:block font-display text-sm font-bold tracking-widest uppercase">
@@ -252,7 +240,72 @@ function Products() {
 
           {/* Grid */}
           <div>
-            <p className="text-sm text-muted-foreground">
+            <div className="flex gap-2 lg:hidden">
+              <Button
+                type="button"
+                variant="outline"
+                className="min-h-11 flex-1 font-display font-bold"
+                onClick={() => setFilterOpen(true)}
+              >
+                <SlidersHorizontal className="size-4" aria-hidden />
+                Filter
+              </Button>
+              <Button
+                type="button"
+                variant="outline"
+                className="min-h-11 flex-1 font-display font-bold"
+                onClick={() => setSortOpen(true)}
+              >
+                <ArrowDownUp className="size-4" aria-hidden />
+                Sort
+              </Button>
+            </div>
+
+            <MobileProductFilters
+              open={filterOpen}
+              onOpenChange={setFilterOpen}
+              category={category}
+              brand={brand}
+              browseBrands={browseBrands}
+              onCategory={(slug) =>
+                navigate({ search: (prev) => ({ ...prev, category: slug }), replace: true })
+              }
+              onBrand={(value) =>
+                navigate({ search: (prev) => ({ ...prev, brand: value }), replace: true })
+              }
+              onClear={() =>
+                navigate({
+                  search: (prev) => ({ ...prev, category: "all", brand: "all" }),
+                  replace: true,
+                })
+              }
+            />
+
+            <Drawer open={sortOpen} onOpenChange={setSortOpen}>
+              <DrawerContent className="pb-[max(1rem,env(safe-area-inset-bottom))]">
+                <DrawerTitle className="px-4 pt-2 font-display text-lg font-extrabold">Sort by</DrawerTitle>
+                <div className="flex flex-col gap-1 p-4 pt-2">
+                  {sortOptions.map((opt) => (
+                    <DrawerClose asChild key={opt.key}>
+                      <button
+                        type="button"
+                        className={cn(
+                          "min-h-12 rounded-md px-3 text-left font-display text-sm font-semibold transition-colors",
+                          sort === opt.key
+                            ? "bg-primary text-primary-foreground"
+                            : "hover:bg-surface",
+                        )}
+                        onClick={() => setSort(opt.key)}
+                      >
+                        {opt.label}
+                      </button>
+                    </DrawerClose>
+                  ))}
+                </div>
+              </DrawerContent>
+            </Drawer>
+
+            <p className="mt-3 text-sm text-muted-foreground lg:mt-0">
               Showing {filtered.length} product{filtered.length === 1 ? "" : "s"}
               {activeCategory ? ` in ${activeCategory.name}` : ""}
               {activeBrand ? ` · ${activeBrand}` : ""}
@@ -269,52 +322,10 @@ function Products() {
               </div>
             ) : (
               <>
-                <div className="mt-6 grid grid-cols-2 gap-6 sm:grid-cols-2 xl:grid-cols-3">
+                <div className="mt-4 grid grid-cols-2 gap-2.5 min-[375px]:gap-3 sm:mt-6 sm:gap-6 xl:grid-cols-3">
                   {paged.map((p, i) => (
-                    <Reveal
-                      key={p.slug}
-                      delay={(i % 3) * 80}
-                      className="flex h-full flex-col border border-border bg-card shadow-card transition-shadow hover:shadow-lift"
-                    >
-                      <Link
-                        to="/products/$slug"
-                        params={{ slug: p.slug }}
-                        className="group block overflow-hidden p-5"
-                      >
-                        <SmartImage
-                          src={p.image}
-                          alt={`${p.name} — available from Ceylon Platinum Trading, Matara`}
-                          loading="lazy"
-                          className="aspect-square w-full object-contain transition-transform duration-700 group-hover:scale-[1.05]"
-                        />
-                      </Link>
-                      <div className="flex min-w-0 flex-1 flex-col px-5 pb-5">
-                        <p className="text-xs font-semibold tracking-wide text-primary uppercase">
-                          {p.brand}
-                        </p>
-                        <h3 className="mt-1 break-words font-display text-lg leading-snug font-extrabold">
-                          <Link to="/products/$slug" params={{ slug: p.slug }}>
-                            {p.name}
-                          </Link>
-                        </h3>
-                        <p className="mt-2 flex-1 break-words text-sm text-muted-foreground">
-                          {p.summary}
-                        </p>
-                        <p className="mt-3 text-sm font-semibold">
-                          {p.price ? `Rs. ${p.price.toLocaleString("en-LK")}` : "Price on request"}
-                        </p>
-                        <div className="mt-4">
-                          <Button
-                            className="w-full"
-                            onClick={() => {
-                              add(p.slug);
-                              setOpen(true);
-                            }}
-                          >
-                            <ShoppingCart className="size-4" /> Add to cart
-                          </Button>
-                        </div>
-                      </div>
+                    <Reveal key={p.slug} delay={(i % 3) * 80} className="h-full">
+                      <ProductCard product={p} />
                     </Reveal>
                   ))}
                 </div>

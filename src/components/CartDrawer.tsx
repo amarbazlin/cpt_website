@@ -1,9 +1,13 @@
 import { Link } from "@tanstack/react-router";
-import { Minus, Plus, ShoppingCart, Trash2 } from "lucide-react";
+import type { CSSProperties } from "react";
+import { MessageCircle, Minus, Plus, ShoppingCart, Trash2 } from "lucide-react";
 import { SmartImage } from "@/components/SmartImage";
+import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTitle } from "@/components/ui/sheet";
 import { useCart } from "@/lib/cart";
+import { MOBILE_BOTTOM_INSET } from "@/lib/mobile-ui";
+import { formatProductPrice } from "@/lib/product-display";
 import { products } from "@/lib/site";
 
 export function CartDrawer() {
@@ -18,8 +22,12 @@ export function CartDrawer() {
 
   return (
     <Sheet open={open} onOpenChange={setOpen}>
-      <SheetContent side="right" className="flex w-full flex-col gap-0 p-0 sm:max-w-md">
-        <SheetTitle className="border-b border-border px-5 py-4 font-display text-lg font-extrabold">
+      <SheetContent
+        side="right"
+        className="flex w-full flex-col gap-0 p-0 sm:max-w-md max-md:pb-[var(--cart-bottom-pad)]"
+        style={{ "--cart-bottom-pad": MOBILE_BOTTOM_INSET } as CSSProperties}
+      >
+        <SheetTitle className="border-b border-border px-5 py-4 pr-12 font-display text-lg font-extrabold">
           Your Cart
         </SheetTitle>
 
@@ -29,7 +37,7 @@ export function CartDrawer() {
             <p className="text-sm text-muted-foreground">
               Your cart is empty. Add products from our catalogue and proceed to order.
             </p>
-            <Button asChild onClick={() => setOpen(false)}>
+            <Button asChild className="min-h-11" onClick={() => setOpen(false)}>
               <Link to="/products">Browse products</Link>
             </Button>
           </div>
@@ -47,36 +55,37 @@ export function CartDrawer() {
                         className="size-16 shrink-0 rounded border border-border bg-surface object-contain p-1"
                       />
                       <div className="min-w-0 flex-1">
-                        <p className="truncate font-display text-sm font-bold">{product.name}</p>
-                        <p className="text-xs text-muted-foreground">
+                        <p className="line-clamp-2 font-display text-sm font-bold">{product.name}</p>
+                        <p className="mt-0.5 text-xs text-muted-foreground">
+                          Qty {line.qty} ·{" "}
                           {product.price
-                            ? `Rs. ${(product.price * line.qty).toLocaleString("en-LK")}`
+                            ? formatProductPrice(product.price * line.qty)
                             : "Price on request"}
                         </p>
                         <div className="mt-2 flex items-center gap-2">
                           <Button
                             variant="outline"
                             size="icon"
-                            className="size-8"
+                            className="size-10"
                             aria-label="Decrease quantity"
                             onClick={() => setQty(line.slug, line.qty - 1)}
                           >
-                            <Minus className="size-3.5" />
+                            <Minus className="size-4" />
                           </Button>
                           <span className="w-8 text-center text-sm font-bold">{line.qty}</span>
                           <Button
                             variant="outline"
                             size="icon"
-                            className="size-8"
+                            className="size-10"
                             aria-label="Increase quantity"
                             onClick={() => setQty(line.slug, line.qty + 1)}
                           >
-                            <Plus className="size-3.5" />
+                            <Plus className="size-4" />
                           </Button>
                           <Button
                             variant="ghost"
                             size="icon"
-                            className="ml-auto size-8 text-muted-foreground"
+                            className="ml-auto size-10 text-muted-foreground"
                             aria-label={`Remove ${product.name}`}
                             onClick={() => remove(line.slug)}
                           >
@@ -92,7 +101,7 @@ export function CartDrawer() {
               <div className="mt-5 flex items-center justify-between border-t border-border pt-4">
                 <p className="font-display text-sm font-bold">Subtotal</p>
                 <p className="font-display text-lg font-extrabold">
-                  {allPriced ? `Rs. ${subtotal.toLocaleString("en-LK")}` : "Price on request"}
+                  {allPriced ? formatProductPrice(subtotal) : "Price on request"}
                 </p>
               </div>
               {!allPriced && (
@@ -100,13 +109,28 @@ export function CartDrawer() {
                   Some items need price confirmation — our team will confirm on WhatsApp.
                 </p>
               )}
+
+              <Badge
+                variant="secondary"
+                className="mt-4 w-full justify-center border border-primary/20 bg-accent py-2 text-[10px] font-bold tracking-wide text-primary uppercase"
+              >
+                FREE ISLANDWIDE DELIVERY
+              </Badge>
             </div>
 
-            <div className="space-y-2 border-t border-border p-5">
-              <Button asChild size="lg" className="w-full" onClick={() => setOpen(false)}>
-                <Link to="/order">Proceed to order</Link>
+            <div className="space-y-2 border-t border-border p-5 pb-[max(1.25rem,env(safe-area-inset-bottom))]">
+              <Button asChild size="lg" className="min-h-12 w-full font-display font-bold" onClick={() => setOpen(false)}>
+                <Link to="/order">
+                  <MessageCircle className="size-5" />
+                  Send Order via WhatsApp
+                </Link>
               </Button>
-              <Button variant="outline" className="w-full" onClick={clear}>
+              <Button asChild variant="outline" className="min-h-11 w-full">
+                <Link to="/products" onClick={() => setOpen(false)}>
+                  Continue shopping
+                </Link>
+              </Button>
+              <Button variant="ghost" className="min-h-10 w-full text-muted-foreground" onClick={clear}>
                 Clear cart
               </Button>
             </div>
