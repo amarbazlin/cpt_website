@@ -162,16 +162,6 @@ export function buildOrderMessage(lines: CartLine[], d: OrderDetails) {
     `*Save this information for next time:* ${d.saveInfo ? "Yes" : "No"}`,
     "",
     `*Payment method:* ${d.paymentMethod}`,
-    ...(d.paymentMethod === "Bank Transfer"
-      ? [
-          "",
-          "*Bank transfer details:*",
-          `*Account name:* ${business.bankAccountName}`,
-          `*Bank:* ${business.bankName}`,
-          `*Account number:* ${business.bankAccountNumber}`,
-          `*Branch:* ${business.bankBranch}`,
-        ]
-      : []),
     "",
     allPriced
       ? `*Delivery:* Free\n*Total:* Rs. ${total.toLocaleString("en-LK")}`

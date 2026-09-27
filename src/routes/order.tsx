@@ -38,7 +38,6 @@ export const Route = createFileRoute("/order")({
 
 const COUNTRIES = ["Sri Lanka"] as const;
 const PAYMENT_METHOD = "Cash on Delivery (COD)";
-const PAYMENT_BANK = "Bank Transfer";
 
 function OrderPage() {
   const { lines, setQty, remove } = useCart();
@@ -189,7 +188,7 @@ function OrderPage() {
           </div>
         ) : (
           <div className="grid gap-8 lg:grid-cols-[1.4fr_1fr] lg:items-start">
-            <div className="order-form space-y-6">
+            <div className="order-form min-w-0 space-y-6">
               {/* 1. Contact */}
               <div className="border border-border bg-card p-4 shadow-card sm:p-6">
                 <p className="text-xs font-semibold tracking-widest text-primary uppercase">
@@ -336,87 +335,29 @@ function OrderPage() {
                 <h2 className="mt-2 font-display text-lg font-extrabold">
                   How would you like to pay?
                 </h2>
-                <div className="mt-4 space-y-3">
-                  <label
-                    className={cn(
-                      "flex cursor-pointer items-start gap-3 border p-4 transition-colors",
-                      payment === PAYMENT_METHOD
-                        ? "border-primary bg-surface"
-                        : "border-border bg-card hover:border-primary/50",
-                    )}
-                  >
-                    <input
-                      type="radio"
-                      name="payment"
-                      checked={payment === PAYMENT_METHOD}
-                      onChange={() => setPayment(PAYMENT_METHOD)}
-                      className="mt-0.5 size-4 shrink-0 cursor-pointer accent-primary"
-                    />
-                    <span className="min-w-0">
-                      <span className="block font-display text-sm font-bold">
-                        Cash on Delivery (COD)
-                      </span>
-                      <span className="block text-xs text-muted-foreground">
-                        Pay in cash when your order is delivered. Our team confirms the total on
-                        WhatsApp before dispatch.
-                      </span>
+                <label className="mt-4 flex cursor-pointer items-start gap-3 border border-primary bg-surface p-4">
+                  <input
+                    type="radio"
+                    name="payment"
+                    checked={payment === PAYMENT_METHOD}
+                    onChange={() => setPayment(PAYMENT_METHOD)}
+                    className="mt-0.5 size-4 shrink-0 cursor-pointer accent-primary"
+                  />
+                  <span className="min-w-0">
+                    <span className="block font-display text-sm font-bold">
+                      Cash on Delivery (COD)
                     </span>
-                  </label>
-
-                  <label
-                    className={cn(
-                      "flex cursor-pointer items-start gap-3 border p-4 transition-colors",
-                      payment === PAYMENT_BANK
-                        ? "border-primary bg-surface"
-                        : "border-border bg-card hover:border-primary/50",
-                    )}
-                  >
-                    <input
-                      type="radio"
-                      name="payment"
-                      checked={payment === PAYMENT_BANK}
-                      onChange={() => setPayment(PAYMENT_BANK)}
-                      className="mt-0.5 size-4 shrink-0 cursor-pointer accent-primary"
-                    />
-                    <span className="min-w-0">
-                      <span className="block font-display text-sm font-bold">Bank Transfer</span>
-                      <span className="block text-xs text-muted-foreground">
-                        Transfer the total to our bank account, then send the order. Our team
-                        confirms receipt and dispatches on WhatsApp.
-                      </span>
+                    <span className="block text-xs text-muted-foreground">
+                      Pay in cash when your order is delivered. Our team confirms the total on
+                      WhatsApp before dispatch.
                     </span>
-                  </label>
-                </div>
-
-                {payment === PAYMENT_BANK && (
-                  <div className="mt-4 border border-primary/25 bg-accent/50 p-4">
-                    <p className="font-display text-sm font-extrabold text-primary uppercase">
-                      Bank transfer details
-                    </p>
-                    <dl className="mt-3 space-y-2 text-sm">
-                      {[
-                        ["Account name", business.bankAccountName],
-                        ["Bank", business.bankName],
-                        ["Account number", business.bankAccountNumber],
-                        ["Branch", business.bankBranch],
-                      ].map(([label, value]) => (
-                        <div key={label} className="flex flex-wrap gap-x-2">
-                          <dt className="font-semibold text-muted-foreground">{label}:</dt>
-                          <dd className="font-semibold break-all text-foreground">{value}</dd>
-                        </div>
-                      ))}
-                    </dl>
-                    <p className="mt-3 text-xs text-muted-foreground">
-                      Please send the exact order total and include your contact number as the
-                      transfer reference so we can match your payment.
-                    </p>
-                  </div>
-                )}
+                  </span>
+                </label>
               </div>
             </div>
 
             {/* Order summary */}
-            <div className="border border-border bg-card p-6 shadow-card lg:sticky lg:top-24">
+            <div className="min-w-0 border border-border bg-card p-4 shadow-card sm:p-6 lg:sticky lg:top-24">
               <p className="text-xs font-semibold tracking-widest text-primary uppercase">
                 Your cart
               </p>
