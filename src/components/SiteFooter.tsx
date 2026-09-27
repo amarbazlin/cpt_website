@@ -92,6 +92,33 @@ export function SiteFooter() {
               <span>{business.hours}</span>
             </li>
           </ul>
+
+          {business.socials.length > 0 && (
+            <div className="mt-5">
+              <h3 className="font-display text-sm font-bold tracking-widest uppercase">Follow Us</h3>
+              <ul className="mt-4 flex items-center gap-3">
+                {business.socials.map((s) => (
+                  <li key={s.label}>
+                    <a
+                      href={s.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      aria-label={`Ceylon Platinum Trading on ${s.label}`}
+                      title={s.label}
+                      className="block rounded-full p-1 transition-transform duration-200 hover:scale-110 focus-visible:ring-2 focus-visible:ring-primary focus-visible:outline-none"
+                    >
+                      <SmartImage
+                        src={s.icon}
+                        alt=""
+                        loading="lazy"
+                        className="size-9 rounded-full"
+                      />
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
         </div>
       </div>
 

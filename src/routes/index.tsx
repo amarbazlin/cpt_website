@@ -681,40 +681,6 @@ function Home() {
           </Reveal>
         </div>
       </section>
-
-      {/* Final CTA */}
-      <section className="bg-primary py-14 text-primary-foreground sm:py-16">
-        <div className="mx-auto max-w-7xl px-4 text-center">
-          <Reveal>
-            <h2 className="font-display text-3xl font-extrabold uppercase sm:text-4xl">
-              Ready to Find What You Need?
-            </h2>
-            <p className="mx-auto mt-4 max-w-2xl opacity-90">
-              Browse our products and order directly through CPT with FREE islandwide delivery.
-            </p>
-            <div className="mt-8 flex flex-wrap justify-center gap-3">
-              <Button
-                asChild
-                size="lg"
-                variant="secondary"
-                className="font-display font-bold tracking-wide uppercase"
-              >
-                <Link to="/products">Shop Products</Link>
-              </Button>
-              <Button
-                asChild
-                size="lg"
-                variant="outline"
-                className="border-primary-foreground/40 bg-transparent font-display font-bold tracking-wide uppercase text-primary-foreground hover:bg-primary-foreground/10 hover:text-primary-foreground"
-              >
-                <a href={whatsappHref} target="_blank" rel="noopener noreferrer">
-                  WhatsApp CPT
-                </a>
-              </Button>
-            </div>
-          </Reveal>
-        </div>
-      </section>
     </>
   );
 }

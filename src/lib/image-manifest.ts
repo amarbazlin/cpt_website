@@ -160,5 +160,8 @@ export const imageManifest: Record<string, ImageMeta> = {
   "/products/zrm/V1500DF.png": {"width":390,"height":509,"webp":"/products/zrm/V1500DF.webp","og":{"url":"/products/zrm/V1500DF-og.jpg","width":919,"height":1200}},
   "/products/zrm/WQD1500A.png": {"width":390,"height":509,"webp":"/products/zrm/WQD1500A.webp","og":{"url":"/products/zrm/WQD1500A-og.jpg","width":919,"height":1200}},
   "/products/zrm/WQD750A.png": {"width":470,"height":470,"webp":"/products/zrm/WQD750A.webp","og":{"url":"/products/zrm/WQD750A-og.jpg","width":1200,"height":1200}},
+  "/social/facebook.png": {"width":512,"height":512,"webp":"/social/facebook.webp"},
+  "/social/instagram.png": {"width":512,"height":512,"webp":"/social/instagram.webp","avif":"/social/instagram.avif"},
+  "/social/tiktok.png": {"width":512,"height":512,"webp":"/social/tiktok.webp"},
   "/whatsapp-logo.png": {"width":512,"height":512,"webp":"/whatsapp-logo.webp"},
 };

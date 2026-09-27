@@ -8,6 +8,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { useCart } from "@/lib/cart";
+import { flashDealPrice } from "@/lib/flash-deals";
 import { MOBILE_BOTTOM_INSET } from "@/lib/mobile-ui";
 import {
   descriptionParagraphs,
@@ -101,6 +102,9 @@ function ProductDetail() {
   const category = categories.find((c) => c.slug === product.category);
   const model = productModelFromSpecs(product);
   const showWarranty = productHasWarranty(product);
+  // Flash Deal products show the offer price with the old price struck through,
+  // matching the price used on their product cards.
+  const deal = flashDealPrice(product);
   const related = getRelatedProducts(product, products, 6);
   const paragraphs = descriptionParagraphs(product.description);
   const whatsappHref = whatsappProductMessage(product.name);
@@ -207,15 +211,31 @@ function ProductDetail() {
                 </p>
               ) : null}
 
-              <p className="mt-5 font-display text-2xl font-extrabold tracking-tight sm:text-3xl">
-                {formatProductPrice(product.price)}
-              </p>
-              <Badge
-                variant="secondary"
-                className="mt-3 border border-primary/25 bg-accent px-2.5 py-1 text-[11px] font-bold tracking-wide text-primary uppercase sm:text-xs"
-              >
-                FREE ISLANDWIDE DELIVERY
-              </Badge>
+              {deal ? (
+                <p className="mt-5 flex flex-wrap items-baseline gap-x-3 gap-y-1">
+                  <span className="font-display text-2xl font-extrabold tracking-tight text-primary sm:text-3xl">
+                    {formatProductPrice(deal.offerPrice)}
+                  </span>
+                  <span className="text-base font-medium text-muted-foreground line-through sm:text-lg">
+                    {formatProductPrice(deal.wasPrice)}
+                  </span>
+                </p>
+              ) : (
+                <p className="mt-5 font-display text-2xl font-extrabold tracking-tight sm:text-3xl">
+                  {formatProductPrice(product.price)}
+                </p>
+              )}
+              <div className="mt-3 flex flex-wrap items-center gap-x-3 gap-y-1">
+                <Badge
+                  variant="secondary"
+                  className="border border-primary/25 bg-accent px-2.5 py-1 text-[11px] font-bold tracking-wide text-primary uppercase sm:text-xs"
+                >
+                  FREE ISLANDWIDE DELIVERY
+                </Badge>
+                <span className="text-xs font-semibold text-muted-foreground sm:text-sm">
+                  Delivered in 2-3 working days
+                </span>
+              </div>
 
               <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:items-stretch">
                 <div className="flex shrink-0 items-center self-start border border-border bg-card">
@@ -308,15 +328,16 @@ function ProductDetail() {
           )}
 
           <Reveal delay={80}>
-            <h2 className="rule-red font-display text-xl font-extrabold sm:text-2xl">Delivery</h2>
-            <div className="mt-4 max-w-2xl border border-primary/20 bg-accent/50 p-5 sm:p-6">
-              <p className="font-display text-lg font-extrabold text-primary uppercase">
-                FREE ISLANDWIDE DELIVERY
-              </p>
-              <p className="mt-2 text-sm leading-relaxed text-muted-foreground sm:text-base">
-                We deliver CPT products across Sri Lanka at no additional delivery charge.
-              </p>
-            </div>
+              <h2 className="rule-red font-display text-xl font-extrabold sm:text-2xl">Delivery</h2>
+              <div className="mt-4 max-w-2xl border border-primary/20 bg-accent/50 p-5 sm:p-6">
+                <p className="font-display text-lg font-extrabold text-primary uppercase">
+                  FREE ISLANDWIDE DELIVERY
+                </p>
+                <p className="mt-2 text-sm leading-relaxed text-muted-foreground sm:text-base">
+                  We deliver CPT products across Sri Lanka at no additional delivery charge. Orders
+                  are typically delivered within <strong className="text-foreground">2-3 working days</strong>.
+                </p>
+              </div>
           </Reveal>
 
           <Reveal delay={100}>

@@ -67,8 +67,24 @@ export const business = {
   hours: "Monday to Saturday, 9:00 AM – 5:00 PM",
   mapsUrl:
     "https://www.google.com/maps/dir/?api=1&destination=Ceylon+Platinum+Trading+(Pvt)+Ltd,+167%2FB1+Old+Tangalle+Rd,+Matara+81000",
-  // TODO: add social profile URLs here when available.
-  socials: [] as { label: string; url: string }[],
+  // TODO: replace the TikTok placeholder with the real profile link.
+  socials: [
+    {
+      label: "Facebook",
+      url: "https://www.facebook.com/people/Ceylon-Platinum-Trading-Pvt-Ltd/61574341798185/?mibextid=wwXIfr&rdid=YtcGMOdiroHkmbk1&share_url=https%3A%2F%2Fwww.facebook.com%2Fshare%2F1CSRs4W26r%2F%3Fmibextid%3DwwXIfr",
+      icon: "/social/facebook.png",
+    },
+    {
+      label: "Instagram",
+      url: "https://www.instagram.com/cpt_pvt_ltd?stkn=cXh0c3F3bW01b3V5",
+      icon: "/social/instagram.png",
+    },
+    {
+      label: "TikTok",
+      url: "TODO_TIKTOK_URL",
+      icon: "/social/tiktok.png",
+    },
+  ] as { label: string; url: string; icon: string }[],
 };
 
 export type Brand = {
