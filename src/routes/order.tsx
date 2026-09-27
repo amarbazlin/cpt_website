@@ -15,7 +15,6 @@ import {
 import { saveCustomerDetails, saveOrder } from "@/lib/orders";
 import { absoluteUrl } from "@/lib/seo";
 import { business, products } from "@/lib/site";
-import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/order")({
   head: () => ({
@@ -169,7 +168,7 @@ function OrderPage() {
           </h1>
           <p className="mt-3 text-muted-foreground">
             Fill in your contact and delivery details — your order is sent straight to our WhatsApp
-            team ({business.whatsappDisplay}). Pay cash on delivery or by bank transfer.
+            team ({business.whatsappDisplay}). Pay cash on delivery.
           </p>
         </div>
       </section>
