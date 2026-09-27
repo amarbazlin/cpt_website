@@ -1,7 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import {
   ArrowRight,
-  Check,
   MessageCircle,
   Package,
   Phone,
@@ -69,13 +68,6 @@ const whatsappHref = `https://wa.me/${business.whatsapp}?text=${encodeURICompone
 const whatsappProjectHref = `https://wa.me/${business.whatsapp}?text=${encodeURIComponent(
   "Hello, I'm buying tools or hardware for a project/business and would like to speak with the CPT team.",
 )}`;
-
-const heroTrustPoints = [
-  "Free Islandwide Delivery",
-  "Genuine Products",
-  "Warranty Support",
-  "Matara Showroom",
-] as const;
 
 const trustStrip = [
   {
@@ -283,16 +275,6 @@ function Home() {
       {/* Hero banner (mainheroimage.png with clickable Shop / WhatsApp areas on sm+) */}
       <section className="border-b border-border">
         <MainHeroBanner />
-        <div className="hidden border-t border-border bg-surface sm:block">
-          <div className="mx-auto flex max-w-7xl flex-wrap items-center justify-center gap-x-8 gap-y-3 px-4 py-4">
-            {heroTrustPoints.map((point) => (
-              <span key={point} className="flex items-center gap-2 text-sm font-medium text-foreground">
-                <Check className="size-4 shrink-0 text-primary" aria-hidden />
-                {point}
-              </span>
-            ))}
-          </div>
-        </div>
       </section>
 
       {/* Trust / benefits strip (compact on mobile — hero already mentions delivery) */}

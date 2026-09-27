@@ -22,22 +22,6 @@ export function SiteHeader() {
 
   return (
     <header className="sticky top-0 z-40 border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/80">
-      <div className="hidden bg-charcoal text-charcoal-foreground md:block">
-        <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 py-2 text-xs">
-          <p className="truncate">
-            {business.addressFull} · Open {business.hours}
-          </p>
-          <div className="flex shrink-0 items-center gap-4">
-            <a className="hover:text-primary-foreground/80" href={`tel:${business.phoneIntl}`}>
-              {business.phone}
-            </a>
-            <a className="hover:text-primary-foreground/80" href={`mailto:${business.email}`}>
-              {business.email}
-            </a>
-          </div>
-        </div>
-      </div>
-
       <div className="mx-auto grid max-w-7xl grid-cols-[minmax(0,1fr)_auto] items-center gap-2 px-3 py-2 sm:px-4 sm:py-3 lg:flex lg:justify-between">
         <Link to="/" className="flex min-w-0 items-center gap-2 sm:gap-3">
           <SmartImage
