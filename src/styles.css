@@ -236,3 +236,64 @@
     animation: none;
   }
 }
+
+/*
+ * Tighter vertical rhythm on phones.
+ *
+ * The layouts use generous section padding (`py-10` … `py-24`) and large stack
+ * steps (`space-y-10`+ / `gap-10`+). On a narrow screen that whitespace dominates
+ * the viewport and pushes useful content below the fold, so below the `sm`
+ * breakpoint (640px) each large step is capped.
+ *
+ * Every rule clamps with `max()` against the utility's own value, so an element
+ * can only ever shrink — a band that already has less padding than the cap (the
+ * hero, the marquee) is left alone. They are also scoped to `main`/`footer` so
+ * the fixed header, mobile bottom bar and sheet/drawer overlays keep their own
+ * spacing. The block is unlayered so it wins over the Tailwind utilities.
+ */
+@media (max-width: 639px) {
+  /*
+   * Each utility is mapped explicitly rather than clamped, so the result is
+   * monotonic (a larger utility always ends up at least as tight as a smaller
+   * one) and a band that already used a small value is never pushed wider.
+   */
+  main :where(.py-10) {
+    padding-block: 1.75rem;
+  }
+  main :where(.py-12) {
+    padding-block: 2rem;
+  }
+  main :where(.py-14) {
+    padding-block: 2.25rem;
+  }
+  main :where(.py-16, .py-20, .py-24) {
+    padding-block: 2.5rem;
+  }
+
+  /*
+   * Tailwind's `space-y-*` spaces siblings with `margin-block-start` on every
+   * child except the first, so the spacing has to be overridden on the children
+   * — setting `row-gap` on the parent has no effect.
+   */
+  main :where(.space-y-10, .space-y-12, .space-y-14) > :not(:first-child) {
+    margin-block-start: 2rem;
+  }
+
+  /* Grid gaps in stacked (single-column) layouts. */
+  main :where(.gap-8) {
+    gap: 1.75rem;
+  }
+  main :where(.gap-10, .gap-12) {
+    gap: 2rem;
+  }
+
+  /* Large top margins that follow a hero or breadcrumb. */
+  main :where(.mt-16, .mt-14, .mt-12) {
+    margin-top: 2.5rem;
+  }
+
+  /* Footer columns and its legal bar. */
+  footer > div {
+    padding-block: 1.75rem;
+  }
+}
