@@ -1,4 +1,5 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
+import { useState } from "react";
 import {
   ArrowRight,
   MessageCircle,
@@ -9,28 +10,23 @@ import {
   ShoppingCart,
   Store,
   Truck,
+  Zap,
 } from "lucide-react";
 import { ProductCard } from "@/components/ProductCard";
 import { Reveal } from "@/components/Reveal";
 import { SmartImage } from "@/components/SmartImage";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
+import { useCart } from "@/lib/cart";
+import { formatProductPrice } from "@/lib/product-display";
 import { absoluteUrl, socialImageMeta } from "@/lib/seo";
-import {
-  brands,
-  business,
-  categories,
-  faqs,
-  photos,
-  products,
-  type Product,
-} from "@/lib/site";
-import { cn } from "@/lib/utils";
+import { brands, business, categories, faqs, photos, products, type Product } from "@/lib/site";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -54,7 +50,10 @@ export const Route = createFileRoute("/")({
       },
       { property: "og:url", content: absoluteUrl("/") },
       { property: "og:type", content: "website" },
-      ...socialImageMeta("/mainheroimage.png", "Ceylon Platinum Trading — hardware and tools with free islandwide delivery"),
+      ...socialImageMeta(
+        "/mainheroimage.png",
+        "Ceylon Platinum Trading — hardware and tools with free islandwide delivery",
+      ),
     ],
     links: [{ rel: "canonical", href: absoluteUrl("/") }],
   }),
@@ -68,30 +67,6 @@ const whatsappHref = `https://wa.me/${business.whatsapp}?text=${encodeURICompone
 const whatsappProjectHref = `https://wa.me/${business.whatsapp}?text=${encodeURIComponent(
   "Hello, I'm buying tools or hardware for a project/business and would like to speak with the CPT team.",
 )}`;
-
-const trustStrip = [
-  {
-    icon: Truck,
-    title: "FREE ISLANDWIDE DELIVERY",
-    text: "All CPT products",
-    highlight: true,
-  },
-  {
-    icon: ShieldCheck,
-    title: "GENUINE PRODUCTS",
-    text: "Trusted brands",
-  },
-  {
-    icon: Package,
-    title: "WARRANTY SUPPORT",
-    text: "After-sales assistance",
-  },
-  {
-    icon: Store,
-    title: "MATARA SHOWROOM",
-    text: "Visit us in person",
-  },
-] as const;
 
 const whyShop = [
   {
@@ -175,6 +150,52 @@ const featuredSlugs = [
 ];
 
 /**
+ * The five products shown directly under the hero. Deliberately spread across
+ * the catalogue's main departments so the range is obvious before scrolling:
+ * three power tools, a water pump and a machine.
+ */
+const categoryMixSlugs = [
+  "bosch-percussion-drill-600w-gsb600", // power tool
+  "bosch-angle-grinder-4-5-710w-gws700-115", // power tool
+  "humhon-jigsaw-500w-js6003", // power tool
+  "zrm-water-pump-0-5hp-qb60", // pump
+  "giant-air-compressor-24l-24l", // machine
+];
+
+/** Products in the scrolling Flash Deals strip. All have a listed price. */
+const flashDealSlugs = [
+  "bosch-percussion-drill-600w-gsb600",
+  "humhon-jigsaw-500w-js6003",
+  "giant-air-compressor-24l-24l",
+  "zrm-water-pump-0-5hp-qb60",
+  "wokin-heavy-duty-tile-cutter-cutt-wokin-00672",
+  "humhon-rotary-hammer-800w-rh26",
+  "bosch-planer-650w-gho650",
+  "giant-cleaning-pressure-machine-ccm280",
+  "zrm-submersible-pump-1hp-qdx750hf",
+  "bosch-cordless-screwdriver-12v-gsr120",
+];
+
+/**
+ * Flash Deal pricing: the listed price is lifted by 10% to become the
+ * struck-through "was" price, and that same 10% is then taken back off again to
+ * give the offer price the customer actually pays. Both figures are rounded to
+ * the nearest 10 LKR so the strip reads cleanly.
+ */
+function flashDealPrices(price: number) {
+  const wasPrice = Math.round((price * 1.1) / 10) * 10;
+  const offerPrice = Math.round((wasPrice * 0.9) / 10) * 10;
+  return { wasPrice, offerPrice };
+}
+
+/** Resolves slugs to products, silently dropping any that no longer exist. */
+function productsBySlugs(slugs: string[]): Product[] {
+  return slugs
+    .map((slug) => products.find((p) => p.slug === slug))
+    .filter((p): p is Product => Boolean(p));
+}
+
+/**
  * The whole banner is a single link to /products: the artwork is clickable at
  * every width, so the call to action baked into the image behaves like a real
  * button without invisible hotspot overlays stacked on top of it.
@@ -186,6 +207,9 @@ function MainHeroBanner() {
       aria-label="Shop all products at Ceylon Platinum Trading"
       className="group block w-full cursor-pointer focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:outline-none"
     >
+      {/* The banner artwork carries the headline and calls to action, so the
+          visible copy is left to the image. These stay for screen readers and
+          search engines, which cannot read text out of a picture. */}
       <h1 className="sr-only">Hardware &amp; Tools for Every Project</h1>
       <p className="sr-only">
         Shop power tools, hand tools, machinery, pumps and hardware from trusted brands — with FREE
@@ -203,24 +227,176 @@ function MainHeroBanner() {
           decoding="async"
         />
       </div>
-
-      {/* Phones: the banner art is too small to read, so the copy is repeated as
-          real text. No buttons here — the whole hero is the link to /products. */}
-      <div className="border-t border-primary/30 bg-charcoal px-4 py-6 text-charcoal-foreground sm:hidden">
-        <p className="font-display text-2xl font-extrabold leading-tight tracking-tight">
-          Hardware &amp; Tools for Every Project
-        </p>
-        <p className="mt-3 text-sm leading-relaxed text-charcoal-foreground/90">
-          Shop power tools, hand tools, machinery, pumps and hardware from trusted brands — with{" "}
-          <span className="font-semibold text-primary-foreground">FREE islandwide delivery</span>{" "}
-          across Sri Lanka.
-        </p>
-        <p className="mt-4 inline-flex items-center gap-1.5 text-sm font-semibold text-primary-foreground">
-          Shop products
-          <ArrowRight className="size-4" aria-hidden />
-        </p>
-      </div>
     </Link>
+  );
+}
+
+/**
+ * Search bar pinned directly under the site header on every screen size.
+ * Submitting hands the query to the catalogue, which already owns the filtering.
+ */
+function HomeSearchBar() {
+  const [query, setQuery] = useState("");
+  const navigate = useNavigate();
+
+  return (
+    <section className="border-b border-border bg-background" aria-label="Search products">
+      <form
+        role="search"
+        className="mx-auto max-w-7xl px-4 py-3 sm:py-4"
+        onSubmit={(event) => {
+          event.preventDefault();
+          navigate({
+            to: "/products",
+            search: { q: query.trim(), category: "all", brand: "all" },
+          });
+        }}
+      >
+        <label htmlFor="home-search" className="sr-only">
+          Search products, brands or models
+        </label>
+        <div className="relative">
+          <Search
+            className="pointer-events-none absolute top-1/2 left-3 size-4 -translate-y-1/2 text-muted-foreground"
+            aria-hidden
+          />
+          <Input
+            id="home-search"
+            type="search"
+            value={query}
+            placeholder="Search products, brands or models..."
+            autoComplete="off"
+            className="min-h-11 pr-28 pl-9 sm:min-h-12"
+            onChange={(event) => setQuery(event.target.value)}
+          />
+          <Button
+            type="submit"
+            className="absolute top-1/2 right-1 min-h-9 -translate-y-1/2 px-4 font-display text-xs font-bold tracking-wide uppercase"
+          >
+            Search
+          </Button>
+        </div>
+      </form>
+    </section>
+  );
+}
+
+/**
+ * Continuously scrolling strip of deals. The card list is rendered twice so the
+ * -50% translate loops without a visible jump; the second copy is `inert` so
+ * screen readers and the tab order only ever meet each product once.
+ */
+function FlashDeals({ deals }: { deals: Product[] }) {
+  const { add, setOpen } = useCart();
+  const loop = [...deals, ...deals];
+
+  return (
+    <section
+      className="border-b border-border bg-brand-deep py-10 text-primary-foreground sm:py-12"
+      aria-labelledby="flash-deals-heading"
+    >
+      <div className="mx-auto max-w-7xl px-4">
+        <Reveal className="flex flex-wrap items-end justify-between gap-4">
+          <div>
+            <p className="inline-flex items-center gap-1.5 text-xs font-bold tracking-[0.18em] text-primary-foreground/85 uppercase">
+              <Zap className="size-4" aria-hidden />
+              Limited time
+            </p>
+            <h2
+              id="flash-deals-heading"
+              className="mt-3 font-display text-2xl font-extrabold uppercase sm:text-3xl"
+            >
+              Flash Deals
+            </h2>
+          </div>
+          <Link
+            to="/products"
+            className="inline-flex items-center gap-1 font-display text-sm font-bold underline-offset-4 hover:underline"
+          >
+            See all products
+            <ArrowRight className="size-4" aria-hidden />
+          </Link>
+        </Reveal>
+      </div>
+
+      <div className="flash-marquee no-scrollbar mt-7 overflow-x-auto pl-4 sm:pl-6 lg:pl-8">
+        <ul className="flash-marquee-track flex w-max gap-3 sm:gap-4">
+          {loop.map((product, index) => (
+            <FlashDealCard
+              key={`${product.slug}-${index}`}
+              product={product}
+              // Second copy is decoration only: hidden from assistive tech and
+              // removed from the tab order so nothing is announced twice.
+              inert={index >= deals.length}
+              onAdd={() => {
+                add(product.slug);
+                setOpen(true);
+              }}
+            />
+          ))}
+        </ul>
+      </div>
+    </section>
+  );
+}
+
+function FlashDealCard({
+  product,
+  inert,
+  onAdd,
+}: {
+  product: Product;
+  inert: boolean;
+  onAdd: () => void;
+}) {
+  const { wasPrice, offerPrice } = flashDealPrices(product.price ?? 0);
+
+  return (
+    <li inert={inert} className="w-[220px] shrink-0 sm:w-[250px]">
+      <article className="flex h-full flex-col border border-primary-foreground/20 bg-background text-foreground shadow-card">
+        <Link
+          to="/products/$slug"
+          params={{ slug: product.slug }}
+          className="block bg-surface/70 p-3"
+        >
+          <SmartImage
+            src={product.image}
+            alt={`${product.name} — ${product.brand}, available from Ceylon Platinum Trading`}
+            loading="lazy"
+            className="aspect-square w-full object-contain"
+          />
+        </Link>
+        <div className="flex flex-1 flex-col p-3">
+          <p className="text-[10px] font-semibold tracking-wider text-primary uppercase">
+            {product.brand}
+          </p>
+          <h3 className="mt-1 line-clamp-2 font-display text-sm leading-snug font-bold">
+            <Link
+              to="/products/$slug"
+              params={{ slug: product.slug }}
+              className="hover:text-primary"
+            >
+              {product.name}
+            </Link>
+          </h3>
+          <p className="mt-2 flex flex-wrap items-baseline gap-x-2 gap-y-0.5">
+            <span className="font-display text-lg font-extrabold text-primary">
+              {formatProductPrice(offerPrice)}
+            </span>
+            <span className="text-xs font-medium text-muted-foreground line-through">
+              {formatProductPrice(wasPrice)}
+            </span>
+          </p>
+          <Button
+            className="mt-3 min-h-10 w-full font-display text-xs font-bold tracking-wide uppercase"
+            onClick={onAdd}
+          >
+            <ShoppingCart className="size-4 shrink-0" aria-hidden />
+            Add to Cart
+          </Button>
+        </div>
+      </article>
+    </li>
   );
 }
 
@@ -233,34 +409,49 @@ function Home() {
     .map((slug) => products.find((p) => p.slug === slug))
     .filter((p): p is Product => Boolean(p));
 
+  const categoryMixProducts = productsBySlugs(categoryMixSlugs);
+  const flashDeals = productsBySlugs(flashDealSlugs).filter((p) => typeof p.price === "number");
+
   return (
     <>
+      <HomeSearchBar />
+
       {/* Hero banner (mainheroimage.png — the whole image links to /products) */}
-      <section className="border-b border-border">
+      <section>
         <MainHeroBanner />
       </section>
 
-      {/* Trust / benefits strip (compact on mobile — hero already mentions delivery) */}
-      <section
-        className="border-b border-border bg-charcoal text-charcoal-foreground"
-        aria-label="Why customers choose CPT"
-      >
-        <div className="mx-auto grid max-w-3xl gap-px bg-charcoal-muted/20 grid-cols-2 sm:max-w-7xl sm:grid-cols-2 lg:max-w-7xl lg:grid-cols-4">
-          {trustStrip.map((item) => (
-            <div
-              key={item.title}
-              className={cn(
-                "flex flex-col gap-1.5 bg-charcoal px-3 py-4 sm:gap-2 sm:px-6 sm:py-8",
-                item.highlight && "lg:border-b-2 lg:border-b-primary",
-              )}
+      {/* Category mix: five products spanning the main departments — three power
+          tools, a pump and a machine — so the range is clear straight after the
+          banner. Scroll-snap carousel on phones, plain grid from sm up. */}
+      <section className="border-b border-border bg-background py-10 sm:py-12">
+        <div className="mx-auto max-w-7xl px-4">
+          <Reveal className="flex flex-wrap items-end justify-between gap-4">
+            <div>
+              <p className="eyebrow">Shop the range</p>
+              <h2 className="rule-red mt-4 font-display text-2xl font-extrabold uppercase sm:text-3xl">
+                Tools, Pumps &amp; Machines
+              </h2>
+            </div>
+            <Link
+              to="/products"
+              className="inline-flex items-center gap-1 font-display text-sm font-bold text-primary underline-offset-4 hover:underline"
             >
-              <item.icon className="size-5 text-primary sm:size-6" aria-hidden />
-              <p className="font-display text-xs font-extrabold tracking-wide sm:text-base">{item.title}</p>
-              <p className="text-xs text-charcoal-foreground/80 sm:text-sm">{item.text}</p>
+              View all products
+              <ArrowRight className="size-4" aria-hidden />
+            </Link>
+          </Reveal>
+        </div>
+        <div className="mt-6 flex snap-x snap-mandatory gap-3 overflow-x-auto pb-2 sm:mx-auto sm:max-w-7xl sm:grid sm:grid-cols-3 sm:overflow-visible sm:px-4 sm:pb-0 sm:gap-5 lg:grid-cols-5">
+          {categoryMixProducts.map((p) => (
+            <div key={p.slug} className="w-[68%] shrink-0 snap-start sm:w-auto">
+              <ProductCard product={p} />
             </div>
           ))}
         </div>
       </section>
+
+      {flashDeals.length > 0 && <FlashDeals deals={flashDeals} />}
 
       {/* Shop by category */}
       <section className="mx-auto max-w-7xl px-4 py-14 sm:py-16">
@@ -341,7 +532,11 @@ function Home() {
         </Reveal>
         <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
           {whyShop.map((item, i) => (
-            <Reveal key={item.title} delay={i * 60} className="border border-border bg-card p-6 shadow-card">
+            <Reveal
+              key={item.title}
+              delay={i * 60}
+              className="border border-border bg-card p-6 shadow-card"
+            >
               <div className="flex size-11 items-center justify-center bg-primary/10 text-primary">
                 <item.icon className="size-5" aria-hidden />
               </div>
@@ -395,20 +590,28 @@ function Home() {
               Real Store. Real Products. Real Support.
             </h2>
             <p className="mt-5 text-muted-foreground">
-              Ceylon Platinum Trading is a hardware and power-tools business based in Matara, serving
-              homeowners, contractors, builders and businesses.
+              Ceylon Platinum Trading is a hardware and power-tools business based in Matara,
+              serving homeowners, contractors, builders and businesses.
             </p>
             <p className="mt-4 text-muted-foreground">
-              Prefer to visit us in person? Our Matara showroom is available for customers who want to see
-              and discuss products before purchasing.
+              Prefer to visit us in person? Our Matara showroom is available for customers who want
+              to see and discuss products before purchasing.
             </p>
             <div className="mt-7 flex flex-wrap gap-3">
-              <Button asChild variant="default" className="font-display font-bold tracking-wide uppercase">
+              <Button
+                asChild
+                variant="default"
+                className="font-display font-bold tracking-wide uppercase"
+              >
                 <a href={business.mapsUrl} target="_blank" rel="noopener noreferrer">
                   Get Directions
                 </a>
               </Button>
-              <Button asChild variant="outline" className="font-display font-bold tracking-wide uppercase">
+              <Button
+                asChild
+                variant="outline"
+                className="font-display font-bold tracking-wide uppercase"
+              >
                 <a href={`tel:${business.phoneIntl}`}>
                   <Phone className="size-4" />
                   Contact CPT
@@ -453,13 +656,21 @@ function Home() {
                     <step.icon className="size-4" aria-hidden />
                   </div>
                 </div>
-                <h3 className="mt-2 font-display text-xs font-extrabold leading-snug sm:text-sm">{step.title}</h3>
-                <p className="mt-1 text-[11px] leading-snug text-muted-foreground sm:text-xs">{step.text}</p>
+                <h3 className="mt-2 font-display text-xs font-extrabold leading-snug sm:text-sm">
+                  {step.title}
+                </h3>
+                <p className="mt-1 text-[11px] leading-snug text-muted-foreground sm:text-xs">
+                  {step.text}
+                </p>
               </Reveal>
             ))}
           </ol>
           <div className="mt-6 text-center sm:mt-8">
-            <Button asChild size="default" className="min-h-11 font-display font-bold tracking-wide uppercase">
+            <Button
+              asChild
+              size="default"
+              className="min-h-11 font-display font-bold tracking-wide uppercase"
+            >
               <Link to="/products">Start Shopping</Link>
             </Button>
           </div>
@@ -474,7 +685,8 @@ function Home() {
               Need Help Choosing the Right Product?
             </h2>
             <p className="mt-4 text-sm leading-relaxed opacity-95 sm:text-base">
-              Our team can help you choose the right tool, machine or hardware for your requirements.
+              Our team can help you choose the right tool, machine or hardware for your
+              requirements.
             </p>
             <Button
               asChild
@@ -499,10 +711,14 @@ function Home() {
               Buying for a Project or Business?
             </h2>
             <p className="mt-4 text-charcoal-foreground/90">
-              Need tools, machinery or hardware for a construction project or business? Talk to the CPT
-              team about your requirements.
+              Need tools, machinery or hardware for a construction project or business? Talk to the
+              CPT team about your requirements.
             </p>
-            <Button asChild size="lg" className="mt-8 font-display font-bold tracking-wide uppercase">
+            <Button
+              asChild
+              size="lg"
+              className="mt-8 font-display font-bold tracking-wide uppercase"
+            >
               <a href={whatsappProjectHref} target="_blank" rel="noopener noreferrer">
                 <MessageCircle className="size-4" />
                 Talk to CPT
@@ -528,7 +744,9 @@ function Home() {
             <Accordion type="single" collapsible className="w-full">
               {faqs.map((f, i) => (
                 <AccordionItem key={f.q} value={`faq-${i}`}>
-                  <AccordionTrigger className="text-left font-display font-bold">{f.q}</AccordionTrigger>
+                  <AccordionTrigger className="text-left font-display font-bold">
+                    {f.q}
+                  </AccordionTrigger>
                   <AccordionContent className="text-muted-foreground">{f.a}</AccordionContent>
                 </AccordionItem>
               ))}
