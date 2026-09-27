@@ -44,6 +44,7 @@ export const imageManifest: Record<string, ImageMeta> = {
   "/images/power-tools.jpg": {"width":1400,"height":933,"webp":"/images/power-tools.webp","avif":"/images/power-tools.avif","og":{"url":"/images/power-tools-og.jpg","width":1200,"height":799}},
   "/images/sealants.jpg": {"width":1400,"height":933,"webp":"/images/sealants.webp","avif":"/images/sealants.avif","og":{"url":"/images/sealants-og.jpg","width":1200,"height":799}},
   "/images/whoweare.jpg": {"width":1600,"height":1066,"webp":"/images/whoweare.webp","avif":"/images/whoweare.avif","og":{"url":"/images/whoweare-og.jpg","width":1200,"height":799}},
+  "/mainheroimage-mobile.png": {"width":1314,"height":1604,"webp":"/mainheroimage-mobile.webp","avif":"/mainheroimage-mobile.avif"},
   "/mainheroimage.png": {"width":1920,"height":768,"webp":"/mainheroimage.webp","webp1200":"/mainheroimage-1200.webp"},
   "/products/bench.png": {"width":500,"height":500,"webp":"/products/bench.webp","avif":"/products/bench.avif","og":{"url":"/products/bench-og.jpg","width":1200,"height":1200}},
   "/products/bosch/2608521042.jpeg": {"width":1000,"height":1000,"webp":"/products/bosch/2608521042.webp","avif":"/products/bosch/2608521042.avif","og":{"url":"/products/bosch/2608521042-og.jpg","width":1200,"height":1200}},

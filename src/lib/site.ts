@@ -2,6 +2,8 @@
 // served from /public so they resolve in dev, preview and production builds.
 export const photos = {
   mainHero: "/mainheroimage.png",
+  /** Portrait cut of the same banner, shown below the md breakpoint. */
+  mainHeroMobile: "/mainheroimage-mobile.png",
   hero: "/images/hero.jpg",
   showroom: "/images/hand-tools.jpg",
   whoWeAre: "/images/whoweare.jpg",
@@ -2125,22 +2127,6 @@ export const services = [
 ];
 
 export const faqs = [
-  {
-    q: "What is Ceylon Platinum Trading (PVT) Ltd?",
-    a: "Ceylon Platinum Trading (PVT) Ltd is a hardware and construction products distributor based at 167/B1 Old Tangalle Road, Kotuwegoda, Matara, Sri Lanka. We supply power tools, hand tools, paints and coatings, door and window hardware, machinery and compressors to homeowners, contractors, builders and hardware retailers.",
-  },
-  {
-    q: "Where is Ceylon Platinum Trading located?",
-    a: "Our showroom and office are at 167/B1 Old Tangalle Road, Kotuwegoda, Matara 81000, Sri Lanka, in the Southern Province. You can call 041-222-3298 or message 076 055 6075 on WhatsApp.",
-  },
-  {
-    q: "What are your opening hours?",
-    a: "Ceylon Platinum Trading is open Monday to Saturday, 9:00 AM to 5:00 PM. We are closed on Sundays.",
-  },
-  {
-    q: "Which brands does Ceylon Platinum Trading distribute?",
-    a: "We distribute Bosch, Tolsen, Humhon, Asian Paints, Causeway, Bellucci, OMAC, Giant, Wipro, Multibond and As-Ron.",
-  },
   {
     q: "How do I place an order?",
     a: "Browse the product catalogue on this site, add items to your cart, enter your delivery location at checkout and send the order straight to our WhatsApp Business number (076 055 6075). Our team confirms availability, pricing and delivery with you directly.",

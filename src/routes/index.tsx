@@ -8,7 +8,6 @@ import {
   Search,
   ShieldCheck,
   ShoppingCart,
-  Store,
   Truck,
   Zap,
 } from "lucide-react";
@@ -84,11 +83,6 @@ const whyShop = [
     icon: Package,
     title: "Warranty Support",
     text: "Warranty assistance and after-sales support.",
-  },
-  {
-    icon: Store,
-    title: "Physical Showroom",
-    text: "Visit our Matara showroom or contact our team for assistance.",
   },
 ] as const;
 
@@ -172,14 +166,24 @@ function MainHeroBanner() {
       </p>
 
       <div className="w-full overflow-hidden bg-charcoal">
-        <img
+        {/* Two banners, not one: the wide artwork is unreadable on a phone, so
+            a portrait cut takes over below `md`. Each lives in its own element
+            (hidden with `display: none`, so only the visible one is fetched)
+            because the two crops have very different aspect ratios and sharing
+            one <img> would reserve the wrong box. */}
+        <SmartImage
+          src={photos.mainHeroMobile}
+          alt="Ceylon Platinum Trading — hardware and industrial tools with free islandwide delivery in Sri Lanka"
+          sizes="100vw"
+          className="mx-auto block h-auto w-full md:hidden"
+          fetchPriority="high"
+        />
+        <SmartImage
           src={photos.mainHero}
           alt="Ceylon Platinum Trading — hardware and industrial tools with free islandwide delivery in Sri Lanka"
-          width={1920}
-          height={768}
-          className="mx-auto block h-auto w-full transition-transform duration-500 ease-out group-hover:scale-[1.02] group-focus-visible:scale-[1.02]"
+          sizes="100vw"
+          className="mx-auto hidden h-auto w-full transition-transform duration-500 ease-out group-hover:scale-[1.02] group-focus-visible:scale-[1.02] md:block"
           fetchPriority="high"
-          decoding="async"
         />
       </div>
     </Link>
@@ -247,7 +251,7 @@ function FlashDeals({ deals }: { deals: Product[] }) {
 
   return (
     <section
-      className="border-b border-border bg-brand-deep py-10 text-primary-foreground sm:py-12"
+      className="border-b border-border bg-brand-deep pt-7 pb-9 text-primary-foreground sm:pt-8 sm:pb-11"
       aria-labelledby="flash-deals-heading"
     >
       <div className="mx-auto max-w-7xl px-4">
@@ -259,7 +263,7 @@ function FlashDeals({ deals }: { deals: Product[] }) {
             </p>
             <h2
               id="flash-deals-heading"
-              className="mt-3 font-display text-2xl font-extrabold uppercase sm:text-3xl"
+              className="mt-2 font-display text-2xl font-extrabold uppercase sm:text-3xl"
             >
               Flash Deals
             </h2>
@@ -274,7 +278,7 @@ function FlashDeals({ deals }: { deals: Product[] }) {
         </Reveal>
       </div>
 
-      <div className="flash-marquee no-scrollbar mt-7 overflow-x-auto pl-4 sm:pl-6 lg:pl-8">
+      <div className="flash-marquee no-scrollbar mt-5 overflow-x-auto pl-4 sm:pl-6 lg:pl-8">
         <ul className="flash-marquee-track flex w-max gap-3 sm:gap-4">
           {loop.map((product, index) => (
             <FlashDealCard
@@ -457,7 +461,7 @@ function Home() {
             Why Shop With Ceylon Platinum Trading?
           </h2>
         </Reveal>
-        <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {whyShop.map((item, i) => (
             <Reveal
               key={item.title}
