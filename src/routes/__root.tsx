@@ -129,7 +129,9 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
       {
         rel: "stylesheet",
-        href: "https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700;800;900&family=Barlow:wght@400;500;600;700&display=swap",
+        // Inter variable font: one file covers 400-800 (body, labels, prices,
+        // sub-headings and hero headings) with optical sizing for display text.
+        href: "https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400..800&display=swap",
       },
     ],
     scripts: jsonLdScripts([organizationSchema, websiteSchema, faqSchema]),
