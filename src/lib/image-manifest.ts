@@ -32,9 +32,6 @@ export const imageManifest: Record<string, ImageMeta> = {
   "/brands/tolsen.png": {"width":770,"height":250,"webp":"/brands/tolsen.webp"},
   "/brands/wipro.png": {"width":336,"height":128,"webp":"/brands/wipro.webp"},
   "/brands/wokin.jpg": {"width":610,"height":206,"webp":"/brands/wokin.webp"},
-  "/hero01.png": {"width":2170,"height":725,"webp":"/hero01.webp","webp1200":"/hero01-1200.webp","og":{"url":"/hero01-og.jpg","width":1200,"height":401}},
-  "/hero02.png": {"width":2170,"height":725,"webp":"/hero02.webp","webp1200":"/hero02-1200.webp","og":{"url":"/hero02-og.jpg","width":1200,"height":401}},
-  "/hero03.png": {"width":2170,"height":725,"webp":"/hero03.webp","webp1200":"/hero03-1200.webp","og":{"url":"/hero03-og.jpg","width":1200,"height":401}},
   "/icon.png": {"width":256,"height":256,"webp":"/icon.webp"},
   "/images/hand-tools.jpg": {"width":1400,"height":933,"webp":"/images/hand-tools.webp","avif":"/images/hand-tools.avif","og":{"url":"/images/hand-tools-og.jpg","width":1200,"height":799}},
   "/images/hardware.jpg": {"width":933,"height":1400,"webp":"/images/hardware.webp","avif":"/images/hardware.avif","og":{"url":"/images/hardware-og.jpg","width":799,"height":1200}},
@@ -47,6 +44,7 @@ export const imageManifest: Record<string, ImageMeta> = {
   "/images/power-tools.jpg": {"width":1400,"height":933,"webp":"/images/power-tools.webp","avif":"/images/power-tools.avif","og":{"url":"/images/power-tools-og.jpg","width":1200,"height":799}},
   "/images/sealants.jpg": {"width":1400,"height":933,"webp":"/images/sealants.webp","avif":"/images/sealants.avif","og":{"url":"/images/sealants-og.jpg","width":1200,"height":799}},
   "/images/whoweare.jpg": {"width":1600,"height":1066,"webp":"/images/whoweare.webp","avif":"/images/whoweare.avif","og":{"url":"/images/whoweare-og.jpg","width":1200,"height":799}},
+  "/mainheroimage.png": {"width":1920,"height":768,"webp":"/mainheroimage.webp","webp1200":"/mainheroimage-1200.webp"},
   "/products/bench.png": {"width":500,"height":500,"webp":"/products/bench.webp","avif":"/products/bench.avif","og":{"url":"/products/bench-og.jpg","width":1200,"height":1200}},
   "/products/bosch/2608521042.jpeg": {"width":1000,"height":1000,"webp":"/products/bosch/2608521042.webp","avif":"/products/bosch/2608521042.avif","og":{"url":"/products/bosch/2608521042-og.jpg","width":1200,"height":1200}},
   "/products/bosch/2608572253.jpg": {"width":800,"height":800,"webp":"/products/bosch/2608572253.webp","og":{"url":"/products/bosch/2608572253-og.jpg","width":1200,"height":1200}},
@@ -162,4 +160,5 @@ export const imageManifest: Record<string, ImageMeta> = {
   "/products/zrm/V1500DF.png": {"width":390,"height":509,"webp":"/products/zrm/V1500DF.webp","og":{"url":"/products/zrm/V1500DF-og.jpg","width":919,"height":1200}},
   "/products/zrm/WQD1500A.png": {"width":390,"height":509,"webp":"/products/zrm/WQD1500A.webp","og":{"url":"/products/zrm/WQD1500A-og.jpg","width":919,"height":1200}},
   "/products/zrm/WQD750A.png": {"width":470,"height":470,"webp":"/products/zrm/WQD750A.webp","og":{"url":"/products/zrm/WQD750A-og.jpg","width":1200,"height":1200}},
+  "/whatsapp-logo.png": {"width":512,"height":512,"webp":"/whatsapp-logo.webp"},
 };
