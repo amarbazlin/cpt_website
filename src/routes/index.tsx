@@ -175,89 +175,52 @@ const featuredSlugs = [
 ];
 
 /**
- * Hit areas on 1920×768 mainheroimage.png (Shop Products ≈ 140,395 280×52px; WhatsApp ≈ 140,458 305×52px).
+ * The whole banner is a single link to /products: the artwork is clickable at
+ * every width, so the call to action baked into the image behaves like a real
+ * button without invisible hotspot overlays stacked on top of it.
  */
-const heroHotspots = {
-  shopProducts: { left: "7.3%", top: "51.4%", width: "14.6%", height: "6.8%" },
-  whatsapp: { left: "7.3%", top: "59.6%", width: "15.9%", height: "6.8%" },
-} as const;
-
 function MainHeroBanner() {
   return (
-    <div className="relative w-full overflow-hidden bg-charcoal">
+    <Link
+      to="/products"
+      aria-label="Shop all products at Ceylon Platinum Trading"
+      className="group block w-full cursor-pointer focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:outline-none"
+    >
       <h1 className="sr-only">Hardware &amp; Tools for Every Project</h1>
       <p className="sr-only">
         Shop power tools, hand tools, machinery, pumps and hardware from trusted brands — with FREE
         islandwide delivery across Sri Lanka.
       </p>
 
-      {/* sm+: clickable regions on the banner artwork */}
-      <div className="relative mx-auto hidden max-w-[1920px] sm:block">
+      <div className="w-full overflow-hidden bg-charcoal">
         <img
           src={photos.mainHero}
           alt="Ceylon Platinum Trading — hardware and industrial tools with free islandwide delivery in Sri Lanka"
           width={1920}
           height={768}
-          className="block h-auto w-full"
+          className="mx-auto block h-auto w-full transition-transform duration-500 ease-out group-hover:scale-[1.02] group-focus-visible:scale-[1.02]"
           fetchPriority="high"
           decoding="async"
-        />
-        <Link
-          to="/products"
-          className="absolute z-10 cursor-pointer rounded-sm ring-offset-background transition hover:ring-2 hover:ring-primary focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none"
-          style={heroHotspots.shopProducts}
-          aria-label="Shop products"
-        />
-        <a
-          href={whatsappHref}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="absolute z-10 cursor-pointer rounded-sm ring-offset-background transition hover:ring-2 hover:ring-primary focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none"
-          style={heroHotspots.whatsapp}
-          aria-label="Order via WhatsApp"
         />
       </div>
 
-      {/* Mobile: banner + accessible CTAs (touch-friendly) */}
-      <div className="sm:hidden">
-        <img
-          src={photos.mainHero}
-          alt=""
-          aria-hidden
-          width={1920}
-          height={768}
-          className="block h-auto w-full"
-          fetchPriority="high"
-          decoding="async"
-        />
-        <div className="border-t border-primary/30 bg-charcoal px-4 py-6 text-charcoal-foreground">
-          <p className="font-display text-2xl font-extrabold leading-tight tracking-tight">
-            Hardware &amp; Tools for Every Project
-          </p>
-          <p className="mt-3 text-sm leading-relaxed text-charcoal-foreground/90">
-            Shop power tools, hand tools, machinery, pumps and hardware from trusted brands — with{" "}
-            <span className="font-semibold text-primary-foreground">FREE islandwide delivery</span> across
-            Sri Lanka.
-          </p>
-          <div className="mt-5 flex flex-col gap-3">
-            <Button asChild size="lg" className="w-full font-display font-bold tracking-wide uppercase">
-              <Link to="/products">Shop Products</Link>
-            </Button>
-            <Button
-              asChild
-              size="lg"
-              variant="outline"
-              className="w-full border-charcoal-foreground/40 bg-transparent font-display font-bold tracking-wide uppercase text-charcoal-foreground hover:bg-charcoal-foreground/10 hover:text-charcoal-foreground"
-            >
-              <a href={whatsappHref} target="_blank" rel="noopener noreferrer">
-                <MessageCircle className="size-4" />
-                Order via WhatsApp
-              </a>
-            </Button>
-          </div>
-        </div>
+      {/* Phones: the banner art is too small to read, so the copy is repeated as
+          real text. No buttons here — the whole hero is the link to /products. */}
+      <div className="border-t border-primary/30 bg-charcoal px-4 py-6 text-charcoal-foreground sm:hidden">
+        <p className="font-display text-2xl font-extrabold leading-tight tracking-tight">
+          Hardware &amp; Tools for Every Project
+        </p>
+        <p className="mt-3 text-sm leading-relaxed text-charcoal-foreground/90">
+          Shop power tools, hand tools, machinery, pumps and hardware from trusted brands — with{" "}
+          <span className="font-semibold text-primary-foreground">FREE islandwide delivery</span>{" "}
+          across Sri Lanka.
+        </p>
+        <p className="mt-4 inline-flex items-center gap-1.5 text-sm font-semibold text-primary-foreground">
+          Shop products
+          <ArrowRight className="size-4" aria-hidden />
+        </p>
       </div>
-    </div>
+    </Link>
   );
 }
 
@@ -272,7 +235,7 @@ function Home() {
 
   return (
     <>
-      {/* Hero banner (mainheroimage.png with clickable Shop / WhatsApp areas on sm+) */}
+      {/* Hero banner (mainheroimage.png — the whole image links to /products) */}
       <section className="border-b border-border">
         <MainHeroBanner />
       </section>
