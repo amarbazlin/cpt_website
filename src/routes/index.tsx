@@ -24,6 +24,7 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { useCart } from "@/lib/cart";
+import { flashDealPrice, getFlashDeals } from "@/lib/flash-deals";
 import { formatProductPrice } from "@/lib/product-display";
 import { absoluteUrl, socialImageMeta } from "@/lib/seo";
 import { brands, business, categories, faqs, photos, products, type Product } from "@/lib/site";
@@ -148,52 +149,6 @@ const featuredSlugs = [
   "zrm-submersible-pump-1hp-qdx750hf",
   "wokin-heavy-duty-tile-cutter-cutt-wokin-00672",
 ];
-
-/**
- * The five products shown directly under the hero. Deliberately spread across
- * the catalogue's main departments so the range is obvious before scrolling:
- * three power tools, a water pump and a machine.
- */
-const categoryMixSlugs = [
-  "bosch-percussion-drill-600w-gsb600", // power tool
-  "bosch-angle-grinder-4-5-710w-gws700-115", // power tool
-  "humhon-jigsaw-500w-js6003", // power tool
-  "zrm-water-pump-0-5hp-qb60", // pump
-  "giant-air-compressor-24l-24l", // machine
-];
-
-/** Products in the scrolling Flash Deals strip. All have a listed price. */
-const flashDealSlugs = [
-  "bosch-percussion-drill-600w-gsb600",
-  "humhon-jigsaw-500w-js6003",
-  "giant-air-compressor-24l-24l",
-  "zrm-water-pump-0-5hp-qb60",
-  "wokin-heavy-duty-tile-cutter-cutt-wokin-00672",
-  "humhon-rotary-hammer-800w-rh26",
-  "bosch-planer-650w-gho650",
-  "giant-cleaning-pressure-machine-ccm280",
-  "zrm-submersible-pump-1hp-qdx750hf",
-  "bosch-cordless-screwdriver-12v-gsr120",
-];
-
-/**
- * Flash Deal pricing: the listed price is lifted by 10% to become the
- * struck-through "was" price, and that same 10% is then taken back off again to
- * give the offer price the customer actually pays. Both figures are rounded to
- * the nearest 10 LKR so the strip reads cleanly.
- */
-function flashDealPrices(price: number) {
-  const wasPrice = Math.round((price * 1.1) / 10) * 10;
-  const offerPrice = Math.round((wasPrice * 0.9) / 10) * 10;
-  return { wasPrice, offerPrice };
-}
-
-/** Resolves slugs to products, silently dropping any that no longer exist. */
-function productsBySlugs(slugs: string[]): Product[] {
-  return slugs
-    .map((slug) => products.find((p) => p.slug === slug))
-    .filter((p): p is Product => Boolean(p));
-}
 
 /**
  * The whole banner is a single link to /products: the artwork is clickable at
@@ -349,7 +304,10 @@ function FlashDealCard({
   inert: boolean;
   onAdd: () => void;
 }) {
-  const { wasPrice, offerPrice } = flashDealPrices(product.price ?? 0);
+  const { wasPrice, offerPrice } = flashDealPrice(product) ?? {
+    wasPrice: product.price ?? 0,
+    offerPrice: product.price ?? 0,
+  };
 
   return (
     <li inert={inert} className="w-[220px] shrink-0 sm:w-[250px]">
@@ -409,8 +367,7 @@ function Home() {
     .map((slug) => products.find((p) => p.slug === slug))
     .filter((p): p is Product => Boolean(p));
 
-  const categoryMixProducts = productsBySlugs(categoryMixSlugs);
-  const flashDeals = productsBySlugs(flashDealSlugs).filter((p) => typeof p.price === "number");
+  const flashDeals = getFlashDeals();
 
   return (
     <>
@@ -419,36 +376,6 @@ function Home() {
       {/* Hero banner (mainheroimage.png — the whole image links to /products) */}
       <section>
         <MainHeroBanner />
-      </section>
-
-      {/* Category mix: five products spanning the main departments — three power
-          tools, a pump and a machine — so the range is clear straight after the
-          banner. Scroll-snap carousel on phones, plain grid from sm up. */}
-      <section className="border-b border-border bg-background py-10 sm:py-12">
-        <div className="mx-auto max-w-7xl px-4">
-          <Reveal className="flex flex-wrap items-end justify-between gap-4">
-            <div>
-              <p className="eyebrow">Shop the range</p>
-              <h2 className="rule-red mt-4 font-display text-2xl font-extrabold uppercase sm:text-3xl">
-                Tools, Pumps &amp; Machines
-              </h2>
-            </div>
-            <Link
-              to="/products"
-              className="inline-flex items-center gap-1 font-display text-sm font-bold text-primary underline-offset-4 hover:underline"
-            >
-              View all products
-              <ArrowRight className="size-4" aria-hidden />
-            </Link>
-          </Reveal>
-        </div>
-        <div className="mt-6 flex snap-x snap-mandatory gap-3 overflow-x-auto pb-2 sm:mx-auto sm:max-w-7xl sm:grid sm:grid-cols-3 sm:overflow-visible sm:px-4 sm:pb-0 sm:gap-5 lg:grid-cols-5">
-          {categoryMixProducts.map((p) => (
-            <div key={p.slug} className="w-[68%] shrink-0 snap-start sm:w-auto">
-              <ProductCard product={p} />
-            </div>
-          ))}
-        </div>
       </section>
 
       {flashDeals.length > 0 && <FlashDeals deals={flashDeals} />}
@@ -526,7 +453,7 @@ function Home() {
       <section className="mx-auto max-w-7xl px-4 py-14 sm:py-16">
         <Reveal className="mx-auto max-w-3xl text-center">
           <p className="eyebrow">Why shop with us</p>
-          <h2 className="rule-red mt-4 font-display text-3xl font-extrabold sm:text-4xl">
+          <h2 className="mt-4 font-display text-3xl font-extrabold sm:text-4xl">
             Why Shop With Ceylon Platinum Trading?
           </h2>
         </Reveal>
@@ -552,7 +479,7 @@ function Home() {
         <div className="mx-auto max-w-7xl px-4">
           <Reveal className="mx-auto max-w-2xl text-center">
             <p className="eyebrow">Partners</p>
-            <h2 className="rule-red mt-4 font-display text-2xl font-extrabold uppercase sm:text-3xl">
+            <h2 className="mt-4 font-display text-2xl font-extrabold uppercase sm:text-3xl">
               Trusted Brands
             </h2>
             <p className="mt-3 text-sm text-muted-foreground sm:text-base">
@@ -636,7 +563,7 @@ function Home() {
         <div className="mx-auto max-w-3xl">
           <Reveal className="text-center">
             <p className="eyebrow text-[11px]">Simple ordering</p>
-            <h2 className="rule-red mt-3 font-display text-2xl font-extrabold uppercase sm:mt-4 sm:text-3xl">
+            <h2 className="mt-3 font-display text-2xl font-extrabold uppercase sm:mt-4 sm:text-3xl">
               How to Order Online
             </h2>
           </Reveal>

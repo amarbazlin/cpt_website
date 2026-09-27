@@ -1,9 +1,10 @@
 import { Link } from "@tanstack/react-router";
-import { ShoppingCart } from "lucide-react";
+import { ShoppingCart, Zap } from "lucide-react";
 import { SmartImage } from "@/components/SmartImage";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { useCart } from "@/lib/cart";
+import { flashDealPrice } from "@/lib/flash-deals";
 import { formatProductPrice } from "@/lib/product-display";
 import type { Product } from "@/lib/site";
 import { cn } from "@/lib/utils";
@@ -22,6 +23,9 @@ export function ProductCard({
   fetchPriority,
 }: ProductCardProps) {
   const { add, setOpen } = useCart();
+  // Flash Deal products advertise the offer price with the old price struck
+  // through, everywhere the card is used.
+  const deal = flashDealPrice(product);
 
   return (
     <article
@@ -43,6 +47,12 @@ export function ProductCard({
             fetchPriority={fetchPriority}
             className="size-full object-contain transition-transform duration-300 group-hover:scale-[1.04]"
           />
+          {deal && (
+            <span className="absolute top-1.5 left-1.5 z-10 inline-flex items-center gap-1 bg-primary px-1.5 py-0.5 font-display text-[9px] font-extrabold tracking-wide text-primary-foreground uppercase sm:top-2 sm:left-2 sm:px-2 sm:text-[10px]">
+              <Zap className="size-2.5 fill-current" aria-hidden />
+              Flash Deal
+            </span>
+          )}
         </div>
       </Link>
 
@@ -60,9 +70,20 @@ export function ProductCard({
           </Link>
         </h3>
 
-        <p className="mt-1.5 font-display text-base font-extrabold tracking-tight sm:mt-2 sm:text-lg">
-          {formatProductPrice(product.price)}
-        </p>
+        {deal ? (
+          <p className="mt-1.5 flex flex-wrap items-baseline gap-x-2 gap-y-0.5 sm:mt-2">
+            <span className="font-display text-base font-extrabold tracking-tight text-primary sm:text-lg">
+              {formatProductPrice(deal.offerPrice)}
+            </span>
+            <span className="text-xs font-medium text-muted-foreground line-through">
+              {formatProductPrice(deal.wasPrice)}
+            </span>
+          </p>
+        ) : (
+          <p className="mt-1.5 font-display text-base font-extrabold tracking-tight sm:mt-2 sm:text-lg">
+            {formatProductPrice(product.price)}
+          </p>
+        )}
 
         <Badge
           variant="secondary"
