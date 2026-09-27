@@ -1,6 +1,7 @@
 // All photography and brand logos below are the client's original images,
 // served from /public so they resolve in dev, preview and production builds.
 export const photos = {
+  mainHero: "/mainheroimage.png",
   hero: "/images/hero.jpg",
   showroom: "/images/hand-tools.jpg",
   whoWeAre: "/images/whoweare.jpg",

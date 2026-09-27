@@ -56,7 +56,7 @@ export const Route = createFileRoute("/")({
       },
       { property: "og:url", content: absoluteUrl("/") },
       { property: "og:type", content: "website" },
-      ...socialImageMeta("/hero01.png", "Ceylon Platinum Trading promotion banner"),
+      ...socialImageMeta("/mainheroimage.png", "Ceylon Platinum Trading — hardware and tools with free islandwide delivery"),
     ],
     links: [{ rel: "canonical", href: absoluteUrl("/") }],
   }),
@@ -106,22 +106,22 @@ const whyShop = [
   {
     icon: Truck,
     title: "Free Islandwide Delivery",
-    text: "Get your CPT order delivered anywhere in Sri Lanka at no additional delivery charge.",
+    text: "Get your order delivered anywhere in Sri Lanka at no additional delivery charge.",
   },
   {
     icon: ShieldCheck,
     title: "Genuine Products",
-    text: "Shop products from trusted brands.",
+    text: "Quality products from trusted brands.",
   },
   {
     icon: Package,
     title: "Warranty Support",
-    text: "Get assistance with applicable product warranties and after-sales support.",
+    text: "Warranty assistance and after-sales support.",
   },
   {
     icon: Store,
-    title: "Matara Showroom",
-    text: "Visit our physical showroom or contact our team for assistance.",
+    title: "Physical Showroom",
+    text: "Visit our Matara showroom or contact our team for assistance.",
   },
 ] as const;
 
@@ -140,8 +140,8 @@ const orderSteps = [
   },
   {
     step: "3",
-    title: "Send Order via WhatsApp",
-    text: "Submit your cart directly to CPT through WhatsApp.",
+    title: "Send Your Order on WhatsApp",
+    text: "Submit your cart through WhatsApp.",
     icon: MessageCircle,
   },
   {
@@ -170,14 +170,6 @@ const categoryShortBlurb: Record<string, string> = {
   "door-window-hardware": "Handles, hinges, locks & more",
 };
 
-const heroProductSlugs = [
-  "bosch-percussion-drill-600w-gsb600",
-  "humhon-rotary-hammer-800w-rh26",
-  "giant-air-compressor-24l-24l",
-  "zrm-water-pump-0-5hp-qb60",
-  "bosch-angle-grinder-4-5-710w-gws700-115",
-];
-
 const featuredSlugs = [
   "bosch-percussion-drill-600w-gsb600",
   "bosch-angle-grinder-4-5-710w-gws700-115",
@@ -191,47 +183,95 @@ const featuredSlugs = [
   "wokin-heavy-duty-tile-cutter-cutt-wokin-00672",
 ];
 
-function HeroProductCollage({ items }: { items: Product[] }) {
-  if (items.length === 0) return null;
+/** Percent-based hit areas aligned to 1920×768 mainheroimage.png artwork. */
+const heroHotspots = {
+  shopProducts: { left: "3%", top: "52%", width: "22%", height: "10%" },
+  whatsapp: { left: "3%", top: "63%", width: "23%", height: "10%" },
+} as const;
 
+function MainHeroBanner() {
   return (
-    <div className="relative grid grid-cols-2 gap-3 bg-surface p-4 sm:gap-4 sm:p-6">
-      {items.slice(0, 4).map((p, i) => (
+    <div className="relative w-full overflow-hidden bg-charcoal">
+      <h1 className="sr-only">Hardware &amp; Tools for Every Project</h1>
+      <p className="sr-only">
+        Shop power tools, hand tools, machinery, pumps and hardware from trusted brands — with FREE
+        islandwide delivery across Sri Lanka.
+      </p>
+
+      {/* sm+: clickable regions on the banner artwork */}
+      <div className="relative mx-auto hidden max-w-[1920px] sm:block">
+        <img
+          src={photos.mainHero}
+          alt="Ceylon Platinum Trading — hardware and industrial tools with free islandwide delivery in Sri Lanka"
+          width={1920}
+          height={768}
+          className="block h-auto w-full"
+          fetchPriority="high"
+          decoding="async"
+        />
         <Link
-          key={p.slug}
-          to="/products/$slug"
-          params={{ slug: p.slug }}
-          className={cn(
-            "group flex items-center justify-center border border-border bg-card p-3 shadow-card transition-shadow hover:shadow-lift sm:p-4",
-            i === 0 && "col-span-2 sm:row-span-1",
-          )}
-        >
-          <SmartImage
-            src={p.image}
-            alt={`${p.name} — ${p.brand}, available from Ceylon Platinum Trading`}
-            loading={i === 0 ? "eager" : "lazy"}
-            fetchPriority={i === 0 ? "high" : undefined}
-            className={cn(
-              "w-full object-contain transition-transform duration-300 group-hover:scale-[1.02]",
-              i === 0 ? "aspect-[2/1] max-h-40" : "aspect-square max-h-32",
-            )}
-          />
-        </Link>
-      ))}
-      {items[4] ? (
-        <Link
-          to="/products/$slug"
-          params={{ slug: items[4].slug }}
-          className="col-span-2 group flex items-center justify-center border border-border bg-card p-3 shadow-card transition-shadow hover:shadow-lift sm:col-span-2 sm:p-4"
-        >
-          <SmartImage
-            src={items[4].image}
-            alt={`${items[4].name} — ${items[4].brand}, available from Ceylon Platinum Trading`}
-            loading="lazy"
-            className="aspect-[3/1] max-h-28 w-full object-contain transition-transform duration-300 group-hover:scale-[1.02]"
-          />
-        </Link>
-      ) : null}
+          to="/products"
+          className="absolute z-10 cursor-pointer rounded-sm ring-offset-background transition hover:ring-2 hover:ring-primary focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none"
+          style={heroHotspots.shopProducts}
+          aria-label="Shop products"
+        />
+        <a
+          href={whatsappHref}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="absolute z-10 cursor-pointer rounded-sm ring-offset-background transition hover:ring-2 hover:ring-primary focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none"
+          style={heroHotspots.whatsapp}
+          aria-label="Order via WhatsApp"
+        />
+      </div>
+
+      {/* Mobile: banner + accessible CTAs (touch-friendly) */}
+      <div className="sm:hidden">
+        <img
+          src={photos.mainHero}
+          alt=""
+          aria-hidden
+          width={1920}
+          height={768}
+          className="block h-auto w-full"
+          fetchPriority="high"
+          decoding="async"
+        />
+        <div className="border-t border-primary/30 bg-charcoal px-4 py-6 text-charcoal-foreground">
+          <p className="font-display text-2xl font-extrabold leading-tight tracking-tight">
+            Hardware &amp; Tools for Every Project
+          </p>
+          <p className="mt-3 text-sm leading-relaxed text-charcoal-foreground/90">
+            Shop power tools, hand tools, machinery, pumps and hardware from trusted brands — with{" "}
+            <span className="font-semibold text-primary-foreground">FREE islandwide delivery</span> across
+            Sri Lanka.
+          </p>
+          <div className="mt-5 flex flex-col gap-3">
+            <Button asChild size="lg" className="w-full font-display font-bold tracking-wide uppercase">
+              <Link to="/products">Shop Products</Link>
+            </Button>
+            <Button
+              asChild
+              size="lg"
+              variant="outline"
+              className="w-full border-charcoal-foreground/40 bg-transparent font-display font-bold tracking-wide uppercase text-charcoal-foreground hover:bg-charcoal-foreground/10 hover:text-charcoal-foreground"
+            >
+              <a href={whatsappHref} target="_blank" rel="noopener noreferrer">
+                <MessageCircle className="size-4" />
+                Order via WhatsApp
+              </a>
+            </Button>
+          </div>
+          <ul className="mt-6 grid gap-2">
+            {heroTrustPoints.map((point) => (
+              <li key={point} className="flex items-center gap-2 text-sm">
+                <Check className="size-4 shrink-0 text-primary" aria-hidden />
+                {point}
+              </li>
+            ))}
+          </ul>
+        </div>
+      </div>
     </div>
   );
 }
@@ -275,7 +315,7 @@ function FeaturedProductCard({ product }: { product: Product }) {
           }}
         >
           <ShoppingCart className="size-4" />
-          Add to cart
+          Add to Cart
         </Button>
       </div>
     </article>
@@ -291,49 +331,20 @@ function Home() {
     .map((slug) => products.find((p) => p.slug === slug))
     .filter((p): p is Product => Boolean(p));
 
-  const heroProducts = heroProductSlugs
-    .map((slug) => products.find((p) => p.slug === slug))
-    .filter((p): p is Product => Boolean(p));
-
   return (
     <>
-      {/* Hero */}
-      <section className="border-b border-border bg-background">
-        <div className="mx-auto grid max-w-7xl gap-10 px-4 py-12 sm:py-16 lg:grid-cols-2 lg:items-center lg:gap-14 lg:py-20">
-          <Reveal className="order-1 lg:order-none">
-            <p className="eyebrow">Ceylon Platinum Trading · Matara</p>
-            <h1 className="mt-4 font-display text-3xl font-extrabold tracking-tight sm:text-4xl lg:text-[2.75rem] lg:leading-[1.1]">
-              Quality Hardware &amp; Tools
-              <span className="mt-1 block">for Every Project</span>
-            </h1>
-            <p className="mt-5 max-w-xl text-base leading-relaxed text-muted-foreground sm:text-lg">
-              Shop power tools, hand tools, machinery, pumps and hardware from trusted brands — with{" "}
-              <span className="font-semibold text-foreground">FREE islandwide delivery</span> across Sri
-              Lanka.
-            </p>
-            <div className="mt-8 flex flex-wrap gap-3">
-              <Button asChild size="lg" className="font-display font-bold tracking-wide uppercase">
-                <Link to="/products">Shop Products</Link>
-              </Button>
-              <Button asChild size="lg" variant="outline" className="font-display font-bold tracking-wide uppercase">
-                <a href={whatsappHref} target="_blank" rel="noopener noreferrer">
-                  <MessageCircle className="size-4" />
-                  Order via WhatsApp
-                </a>
-              </Button>
-            </div>
-            <ul className="mt-8 grid gap-2 sm:grid-cols-2">
-              {heroTrustPoints.map((point) => (
-                <li key={point} className="flex items-center gap-2 text-sm text-foreground sm:text-base">
-                  <Check className="size-4 shrink-0 text-primary" aria-hidden />
-                  {point}
-                </li>
-              ))}
-            </ul>
-          </Reveal>
-          <Reveal delay={80} className="order-2 lg:order-none">
-            <HeroProductCollage items={heroProducts} />
-          </Reveal>
+      {/* Hero banner (mainheroimage.png with clickable Shop / WhatsApp areas on sm+) */}
+      <section className="border-b border-border">
+        <MainHeroBanner />
+        <div className="hidden border-t border-border bg-surface sm:block">
+          <div className="mx-auto flex max-w-7xl flex-wrap items-center justify-center gap-x-8 gap-y-3 px-4 py-4">
+            {heroTrustPoints.map((point) => (
+              <span key={point} className="flex items-center gap-2 text-sm font-medium text-foreground">
+                <Check className="size-4 shrink-0 text-primary" aria-hidden />
+                {point}
+              </span>
+            ))}
+          </div>
         </div>
       </section>
 
@@ -412,7 +423,7 @@ function Home() {
               A curated selection from our catalogue — add to cart and send your order on WhatsApp.
             </p>
           </Reveal>
-          <div className="mt-10 grid grid-cols-2 gap-4 sm:gap-6 lg:grid-cols-4 xl:grid-cols-5">
+          <div className="mt-10 grid grid-cols-2 gap-3 min-[480px]:gap-4 sm:gap-6 lg:grid-cols-4 xl:grid-cols-5">
             {featuredProducts.map((p) => (
               <FeaturedProductCard key={p.slug} product={p} />
             ))}
@@ -421,40 +432,6 @@ function Home() {
             <Button asChild size="lg" className="font-display font-bold tracking-wide uppercase">
               <Link to="/products">View All Products</Link>
             </Button>
-          </div>
-        </div>
-      </section>
-
-      {/* Trusted brands */}
-      <section className="border-b border-border bg-background py-12 sm:py-14">
-        <div className="mx-auto max-w-7xl px-4">
-          <Reveal className="mx-auto max-w-2xl text-center">
-            <p className="eyebrow">Partners</p>
-            <h2 className="rule-red mt-4 font-display text-2xl font-extrabold uppercase sm:text-3xl">
-              Trusted Brands
-            </h2>
-            <p className="mt-3 text-sm text-muted-foreground sm:text-base">
-              Recognized hardware and tool brands available from Ceylon Platinum Trading.
-            </p>
-          </Reveal>
-          <div className="mt-8 grid grid-cols-3 gap-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6">
-            {brands.map((b) => (
-              <Link
-                key={b.name}
-                to="/products"
-                search={{ q: "", category: "all", brand: b.name }}
-                aria-label={`Shop ${b.name} products`}
-                title={`Shop ${b.name} products`}
-                className="flex aspect-[5/3] items-center justify-center border border-border bg-card px-3 py-2 shadow-card transition hover:border-primary/50 hover:shadow-lift focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none"
-              >
-                <SmartImage
-                  src={b.logo}
-                  alt={`${b.name} logo`}
-                  loading="lazy"
-                  className="max-h-10 max-w-full object-contain sm:max-h-12"
-                />
-              </Link>
-            ))}
           </div>
         </div>
       </section>
@@ -477,6 +454,40 @@ function Home() {
               <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{item.text}</p>
             </Reveal>
           ))}
+        </div>
+      </section>
+
+      {/* Trusted brands */}
+      <section className="border-y border-border bg-background py-12 sm:py-14">
+        <div className="mx-auto max-w-7xl px-4">
+          <Reveal className="mx-auto max-w-2xl text-center">
+            <p className="eyebrow">Partners</p>
+            <h2 className="rule-red mt-4 font-display text-2xl font-extrabold uppercase sm:text-3xl">
+              Trusted Brands
+            </h2>
+            <p className="mt-3 text-sm text-muted-foreground sm:text-base">
+              Recognized hardware and tool brands available from Ceylon Platinum Trading.
+            </p>
+          </Reveal>
+          <div className="mt-8 grid grid-cols-3 gap-2.5 sm:grid-cols-4 sm:gap-3 md:grid-cols-5 lg:grid-cols-6">
+            {brands.map((b) => (
+              <Link
+                key={b.name}
+                to="/products"
+                search={{ q: "", category: "all", brand: b.name }}
+                aria-label={`Shop ${b.name} products`}
+                title={`Shop ${b.name} products`}
+                className="flex aspect-[5/3] min-h-[52px] items-center justify-center border border-border bg-card px-2 py-2 shadow-card transition hover:border-primary/50 hover:shadow-lift focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none sm:px-3"
+              >
+                <SmartImage
+                  src={b.logo}
+                  alt={`${b.name} logo`}
+                  loading="lazy"
+                  className="max-h-9 max-w-full object-contain sm:max-h-12"
+                />
+              </Link>
+            ))}
+          </div>
         </div>
       </section>
 
@@ -554,6 +565,31 @@ function Home() {
           <Button asChild size="lg" className="font-display font-bold tracking-wide uppercase">
             <Link to="/products">Start Shopping</Link>
           </Button>
+        </div>
+      </section>
+
+      {/* WhatsApp help CTA */}
+      <section className="border-y border-border bg-brand-deep py-12 text-primary-foreground sm:py-14">
+        <div className="mx-auto max-w-7xl px-4">
+          <Reveal className="mx-auto max-w-2xl text-center">
+            <h2 className="font-display text-2xl font-extrabold sm:text-3xl">
+              Need Help Choosing the Right Product?
+            </h2>
+            <p className="mt-4 text-sm leading-relaxed opacity-95 sm:text-base">
+              Our team can help you choose the right tool, machine or hardware for your requirements.
+            </p>
+            <Button
+              asChild
+              size="lg"
+              variant="secondary"
+              className="mt-8 font-display font-bold tracking-wide uppercase"
+            >
+              <a href={whatsappHref} target="_blank" rel="noopener noreferrer">
+                <MessageCircle className="size-4" />
+                Chat with CPT on WhatsApp
+              </a>
+            </Button>
+          </Reveal>
         </div>
       </section>
 
