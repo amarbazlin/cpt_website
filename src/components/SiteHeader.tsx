@@ -1,9 +1,8 @@
 import { Link } from "@tanstack/react-router";
-import { Menu, Phone, Search, ShoppingCart } from "lucide-react";
+import { Menu, Phone, ShoppingCart } from "lucide-react";
 import { useState } from "react";
 import { business } from "@/lib/site";
 import { useCart } from "@/lib/cart";
-import { useMobileUi } from "@/lib/mobile-ui";
 import { SmartImage } from "@/components/SmartImage";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
@@ -17,7 +16,6 @@ const nav = [
 
 export function SiteHeader() {
   const { count, setOpen } = useCart();
-  const { setSearchOpen } = useMobileUi();
   const [mobile, setMobile] = useState(false);
 
   return (
@@ -54,16 +52,6 @@ export function SiteHeader() {
         </nav>
 
         <div className="flex shrink-0 items-center gap-0.5 sm:gap-2">
-          <Button
-            variant="ghost"
-            size="icon"
-            className="size-10 shrink-0 lg:hidden"
-            aria-label="Search products"
-            onClick={() => setSearchOpen(true)}
-          >
-            <Search className="size-5" />
-          </Button>
-
           <Button asChild variant="outline" size="sm" className="hidden xl:inline-flex">
             <a href={`tel:${business.phoneIntl}`}>
               <Phone className="size-4" /> {business.phone}
@@ -87,7 +75,12 @@ export function SiteHeader() {
 
           <Sheet open={mobile} onOpenChange={setMobile}>
             <SheetTrigger asChild>
-              <Button variant="outline" size="icon" className="size-10 shrink-0 lg:hidden" aria-label="Open menu">
+              <Button
+                variant="outline"
+                size="icon"
+                className="size-10 shrink-0 lg:hidden"
+                aria-label="Open menu"
+              >
                 <Menu className="size-5" />
               </Button>
             </SheetTrigger>
@@ -113,7 +106,10 @@ export function SiteHeader() {
                 <a className="block min-h-11 py-2 font-semibold" href={`tel:${business.phoneIntl}`}>
                   {business.phone}
                 </a>
-                <a className="block min-h-11 py-2 text-muted-foreground" href={`mailto:${business.email}`}>
+                <a
+                  className="block min-h-11 py-2 text-muted-foreground"
+                  href={`mailto:${business.email}`}
+                >
                   {business.email}
                 </a>
                 <p className="text-muted-foreground">{business.addressFull}</p>

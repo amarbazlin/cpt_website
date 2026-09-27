@@ -251,7 +251,7 @@ function FlashDeals({ deals }: { deals: Product[] }) {
 
   return (
     <section
-      className="border-b border-border bg-brand-deep pt-7 pb-9 text-primary-foreground sm:pt-8 sm:pb-11"
+      className="border-b border-border bg-brand-deep pt-5 pb-9 text-primary-foreground sm:pt-6 sm:pb-11"
       aria-labelledby="flash-deals-heading"
     >
       <div className="mx-auto max-w-7xl px-4">
@@ -659,8 +659,9 @@ function Home() {
         </div>
       </section>
 
-      {/* FAQ */}
-      <section className="mx-auto max-w-7xl px-4 py-14 sm:py-16">
+      {/* FAQ — bottom padding kept tight so the page doesn't trail off into
+          empty space before the footer. */}
+      <section className="mx-auto max-w-7xl px-4 pt-14 pb-6 sm:pt-16 sm:pb-8">
         <div className="grid gap-10 lg:grid-cols-[0.9fr_1.4fr]">
           <Reveal>
             <p className="eyebrow">Questions</p>
