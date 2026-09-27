@@ -1,10 +1,11 @@
-import { Link } from "@tanstack/react-router";
-import { Menu, Phone, ShoppingCart } from "lucide-react";
-import { useState } from "react";
+import { Link, useNavigate } from "@tanstack/react-router";
+import { Menu, Phone, Search, ShoppingCart } from "lucide-react";
+import { useState, type FormEvent } from "react";
 import { business } from "@/lib/site";
 import { useCart } from "@/lib/cart";
 import { SmartImage } from "@/components/SmartImage";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import { Sheet, SheetContent, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 
 const nav = [
@@ -17,27 +18,58 @@ const nav = [
 export function SiteHeader() {
   const { count, setOpen } = useCart();
   const [mobile, setMobile] = useState(false);
+  const [query, setQuery] = useState("");
+  const navigate = useNavigate();
+
+  function submitSearch(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    navigate({
+      to: "/products",
+      search: { q: query.trim() || undefined, category: "all", brand: "all" },
+    });
+  }
 
   return (
     <header className="sticky top-0 z-40 border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/80">
-      <div className="mx-auto grid max-w-7xl grid-cols-[minmax(0,1fr)_auto] items-center gap-2 px-3 py-2 sm:px-4 sm:py-3 lg:flex lg:justify-between">
-        <Link to="/" className="flex min-w-0 items-center gap-2 sm:gap-3">
+      <div className="mx-auto grid max-w-7xl grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-2 px-3 py-2 sm:px-4 sm:py-3 lg:flex lg:justify-between">
+        {/* Logo only — the company name and tagline moved out of the header to
+            make room for search. */}
+        <Link to="/" className="flex min-w-0 items-center lg:order-1">
           <SmartImage
             src="/brands/company-logo.png"
             alt="Ceylon Platinum Trading (PVT) Ltd logo"
             className="h-9 w-auto shrink-0 sm:h-11"
           />
-          <span className="min-w-0 leading-tight">
-            <span className="block truncate font-display text-[13px] font-extrabold sm:text-lg">
-              Ceylon Platinum Trading
-            </span>
-            <span className="hidden truncate text-[10px] tracking-wide text-muted-foreground uppercase min-[380px]:block sm:text-[11px]">
-              {business.tagline}
-            </span>
-          </span>
         </Link>
 
-        <nav className="hidden items-center gap-1 lg:flex" aria-label="Main">
+        <form
+          role="search"
+          onSubmit={submitSearch}
+          className="flex min-w-0 items-center gap-1.5 lg:order-3 lg:w-72"
+        >
+          <label htmlFor="header-search" className="sr-only">
+            Search products, brands or models
+          </label>
+          <div className="relative min-w-0 flex-1">
+            <Search
+              className="pointer-events-none absolute top-1/2 left-2.5 size-4 -translate-y-1/2 text-muted-foreground"
+              aria-hidden
+            />
+            <Input
+              id="header-search"
+              type="search"
+              value={query}
+              placeholder="Search products…"
+              className="h-10 min-w-0 pl-8"
+              onChange={(e) => setQuery(e.target.value)}
+            />
+          </div>
+          <Button type="submit" size="icon" className="size-10 shrink-0" aria-label="Search">
+            <Search className="size-4" />
+          </Button>
+        </form>
+
+        <nav className="hidden items-center gap-1 lg:flex lg:order-2" aria-label="Main">
           {nav.map((n) => (
             <Link
               key={n.to}
@@ -51,7 +83,7 @@ export function SiteHeader() {
           ))}
         </nav>
 
-        <div className="flex shrink-0 items-center gap-0.5 sm:gap-2">
+        <div className="flex shrink-0 items-center gap-0.5 sm:gap-2 lg:order-4">
           <Button asChild variant="outline" size="sm" className="hidden xl:inline-flex">
             <a href={`tel:${business.phoneIntl}`}>
               <Phone className="size-4" /> {business.phone}

@@ -1,5 +1,4 @@
-import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
-import { useState } from "react";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import {
   ArrowRight,
   MessageCircle,
@@ -15,7 +14,6 @@ import { ProductCard } from "@/components/ProductCard";
 import { Reveal } from "@/components/Reveal";
 import { SmartImage } from "@/components/SmartImage";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import {
   Accordion,
   AccordionContent,
@@ -191,56 +189,6 @@ function MainHeroBanner() {
 }
 
 /**
- * Search bar pinned directly under the site header on every screen size.
- * Submitting hands the query to the catalogue, which already owns the filtering.
- */
-function HomeSearchBar() {
-  const [query, setQuery] = useState("");
-  const navigate = useNavigate();
-
-  return (
-    <section className="border-b border-border bg-background" aria-label="Search products">
-      <form
-        role="search"
-        className="mx-auto max-w-7xl px-4 py-3 sm:py-4"
-        onSubmit={(event) => {
-          event.preventDefault();
-          navigate({
-            to: "/products",
-            search: { q: query.trim(), category: "all", brand: "all" },
-          });
-        }}
-      >
-        <label htmlFor="home-search" className="sr-only">
-          Search products, brands or models
-        </label>
-        <div className="relative">
-          <Search
-            className="pointer-events-none absolute top-1/2 left-3 size-4 -translate-y-1/2 text-muted-foreground"
-            aria-hidden
-          />
-          <Input
-            id="home-search"
-            type="search"
-            value={query}
-            placeholder="Search products, brands or models..."
-            autoComplete="off"
-            className="min-h-11 pr-28 pl-9 sm:min-h-12"
-            onChange={(event) => setQuery(event.target.value)}
-          />
-          <Button
-            type="submit"
-            className="absolute top-1/2 right-1 min-h-9 -translate-y-1/2 px-4 font-display text-xs font-bold tracking-wide uppercase"
-          >
-            Search
-          </Button>
-        </div>
-      </form>
-    </section>
-  );
-}
-
-/**
  * Continuously scrolling strip of deals. The card list is rendered twice so the
  * -50% translate loops without a visible jump; the second copy is `inert` so
  * screen readers and the tab order only ever meet each product once.
@@ -375,8 +323,6 @@ function Home() {
 
   return (
     <>
-      <HomeSearchBar />
-
       {/* Hero banner (mainheroimage.png — the whole image links to /products) */}
       <section>
         <MainHeroBanner />
