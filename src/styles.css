@@ -245,11 +245,11 @@
  * the viewport and pushes useful content below the fold, so below the `sm`
  * breakpoint (640px) each large step is capped.
  *
- * Every rule clamps with `max()` against the utility's own value, so an element
- * can only ever shrink — a band that already has less padding than the cap (the
- * hero, the marquee) is left alone. They are also scoped to `main`/`footer` so
- * the fixed header, mobile bottom bar and sheet/drawer overlays keep their own
- * spacing. The block is unlayered so it wins over the Tailwind utilities.
+ * Every rule is scoped to `main`/`footer` and maps a large step down to a
+ * smaller one, so spacing can only ever tighten — the hero and marquee bands,
+ * which carry no padding utility, are untouched. The fixed header, mobile
+ * bottom bar and sheet/drawer overlays keep their own spacing. The block is
+ * unlayered so it wins over the Tailwind utilities it overrides.
  */
 @media (max-width: 639px) {
   /*
