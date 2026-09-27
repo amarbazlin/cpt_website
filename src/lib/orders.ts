@@ -128,7 +128,7 @@ export function computeOrderTotals(lines: CartLine[]) {
   return { items, subtotal, deliveryFee, totalAmount: subtotal + deliveryFee };
 }
 
-/** Creates the order row (COD, Pending, New). */
+/** Creates the order row (Pending payment, New order). */
 export async function createOrder(input: {
   customerId: string;
   deliveryAddressId: string;
@@ -136,6 +136,7 @@ export async function createOrder(input: {
   subtotal: number;
   deliveryFee: number;
   totalAmount: number;
+  paymentMethod: string;
   notes?: string | undefined;
 }): Promise<{ id: string; orderNumber: number | null } | { error: unknown }> {
   const res = await supabase
@@ -147,7 +148,7 @@ export async function createOrder(input: {
       subtotal: input.subtotal,
       delivery_fee: input.deliveryFee,
       total_amount: input.totalAmount,
-      payment_method: "Cash on Delivery",
+      payment_method: input.paymentMethod,
       payment_status: "Pending",
       order_status: "New",
       notes: input.notes?.trim() ? input.notes.trim() : null,
@@ -306,6 +307,7 @@ export async function saveOrder(
       subtotal: totals.subtotal,
       deliveryFee: totals.deliveryFee,
       totalAmount: totals.totalAmount,
+      paymentMethod: d.paymentMethod,
       notes,
     });
     if ("error" in order) return friendlyError(order.error, "createOrder");

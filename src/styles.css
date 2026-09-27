@@ -296,4 +296,18 @@
   footer > div {
     padding-block: 1.75rem;
   }
+
+  /*
+   * Checkout form controls on phones.
+   *
+   * The shared `Input` is a 36px-tall control, which is fine for a dense filter
+   * bar but too small to tap reliably in a form (the 44px minimum touch target).
+   * The checkout fields are tagged `order-control` and grown to 48px here; text
+   * stays at 16px so iOS Safari does not zoom the page on focus.
+   */
+  .order-control {
+    min-height: 3rem;
+    height: 3rem;
+    font-size: 1rem;
+  }
 }

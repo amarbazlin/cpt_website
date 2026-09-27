@@ -65,6 +65,11 @@ export const business = {
   country: "Sri Lanka",
   addressFull: "167/B1 Old Tangalle Road, Kotuwegoda, Matara, Sri Lanka",
   hours: "Monday to Saturday, 9:00 AM – 5:00 PM",
+  // TODO: replace with the real bank details before launch.
+  bankAccountName: "Ceylon Platinum Trading (PVT) Ltd",
+  bankName: "TODO — bank name",
+  bankAccountNumber: "TODO — account number",
+  bankBranch: "Matara",
   mapsUrl:
     "https://www.google.com/maps/dir/?api=1&destination=Ceylon+Platinum+Trading+(Pvt)+Ltd,+167%2FB1+Old+Tangalle+Rd,+Matara+81000",
   // TODO: replace the TikTok placeholder with the real profile link.
