@@ -17,6 +17,7 @@ export const FLASH_DEAL_SLUGS = [
   "zrm-submersible-pump-1hp-qdx750hf",
   "bosch-cordless-screwdriver-12v-gsr120",
   "humhon-electric-mixer-em168",
+  "humhon-drywall-sander-ws180",
 ];
 
 const flashDealSlugSet = new Set<string>(FLASH_DEAL_SLUGS);
@@ -40,6 +41,10 @@ const flashDealOverrides: Record<string, { wasPrice: number; offerPrice: number 
   "humhon-electric-mixer-em168": {
     wasPrice: 17900,
     offerPrice: 16900,
+  },
+  "humhon-drywall-sander-ws180": {
+    wasPrice: 25950,
+    offerPrice: 23500,
   },
 };
 
