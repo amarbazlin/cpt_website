@@ -16,6 +16,7 @@ export const FLASH_DEAL_SLUGS = [
   "giant-cleaning-pressure-machine-ccm280",
   "zrm-submersible-pump-1hp-qdx750hf",
   "bosch-cordless-screwdriver-12v-gsr120",
+  "humhon-electric-mixer-em168",
 ];
 
 const flashDealSlugSet = new Set<string>(FLASH_DEAL_SLUGS);
@@ -35,6 +36,10 @@ const flashDealOverrides: Record<string, { wasPrice: number; offerPrice: number 
     // placeholder — replace with the genuine previous price before launch.
     wasPrice: 20900,
     offerPrice: 18900,
+  },
+  "humhon-electric-mixer-em168": {
+    wasPrice: 17900,
+    offerPrice: 16900,
   },
 };
 
