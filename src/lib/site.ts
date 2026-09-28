@@ -1797,6 +1797,23 @@ export const products: Product[] = [
     ],
   },
   {
+    slug: "wipro-electric-pump-wp8501b",
+    name: "Wipro Electric Pump (Mini Compressor) WP8501B",
+    brand: "Wipro",
+    category: "machinery-compressors",
+    image: "/products/wipro/WP8501B.png",
+    price: 8900,
+    summary: "12V DC electric pump with pressure gauge for vehicle and home use.",
+    description:
+      "The Wipro WP8501B is a 12V DC electric pump with a built-in pressure gauge, supplied with a cigarette-lighter power lead for inflating tyres and other small jobs. Available for counter collection or island-wide delivery.",
+    specs: [
+      { label: "Model", value: "WP8501B" },
+      { label: "Voltage", value: "DC 12V" },
+      { label: "Type", value: "Electric pump" },
+      { label: "Warranty", value: "6 months" },
+    ],
+  },
+  {
     slug: "zrm-water-pump-2hp-cpm180",
     name: "ZRM Water Pump 2HP CPM180",
     brand: "ZRM",

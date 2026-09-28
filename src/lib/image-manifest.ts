@@ -140,6 +140,7 @@ export const imageManifest: Record<string, ImageMeta> = {
   "/products/wipro/FRE400.png": {"width":560,"height":886,"webp":"/products/wipro/FRE400.webp","og":{"url":"/products/wipro/FRE400-og.jpg","width":758,"height":1200}},
   "/products/wipro/MK361.jpeg": {"width":474,"height":474,"webp":"/products/wipro/MK361.webp","og":{"url":"/products/wipro/MK361-og.jpg","width":1200,"height":1200}},
   "/products/wipro/W4935.png": {"width":600,"height":600,"webp":"/products/wipro/W4935.webp","og":{"url":"/products/wipro/W4935-og.jpg","width":1200,"height":1200}},
+  "/products/wipro/WP8501B.png": {"width":507,"height":492,"webp":"/products/wipro/WP8501B.webp","avif":"/products/wipro/WP8501B.avif","og":{"url":"/products/wipro/WP8501B-og.jpg","width":1200,"height":1164}},
   "/products/wipro/YL90LW23HP.png": {"width":706,"height":538,"webp":"/products/wipro/YL90LW23HP.webp","avif":"/products/wipro/YL90LW23HP.avif","og":{"url":"/products/wipro/YL90LW23HP-og.jpg","width":1200,"height":914}},
   "/products/wokin/253206.jpeg": {"width":1000,"height":1000,"webp":"/products/wokin/253206.webp","og":{"url":"/products/wokin/253206-og.jpg","width":1200,"height":1200}},
   "/products/wokin/CUTT-WOKIN-00672.jpeg": {"width":600,"height":600,"webp":"/products/wokin/CUTT-WOKIN-00672.webp","og":{"url":"/products/wokin/CUTT-WOKIN-00672-og.jpg","width":1200,"height":1200}},
