@@ -105,6 +105,8 @@ function ProductDetail() {
   // Flash Deal products show the offer price with the old price struck through,
   // matching the price used on their product cards.
   const deal = flashDealPrice(product);
+  // Single price used for both the visible figure and the Offer microdata.
+  const offerPrice = deal ? deal.offerPrice : product.price;
   const related = getRelatedProducts(product, products, 6);
   const paragraphs = descriptionParagraphs(product.description);
   const whatsappHref = whatsappProductMessage(product.name);
@@ -171,7 +173,13 @@ function ProductDetail() {
         </ol>
       </nav>
 
+      {/* Schema.org microdata wrapper (Meta's crawler + structured-data parsers).
+          The `itemProp`-annotated <meta>/<link> tags below are intentionally
+          rendered inline: React only hoists <meta>/<link> to <head> when they
+          are NOT annotated with `itemProp`. */}
       <section
+        itemScope
+        itemType="https://schema.org/Product"
         className={cn(
           "mx-auto max-w-7xl px-3 py-6 sm:px-4 sm:py-12",
           isMobile && showStickyBar && "pb-[calc(var(--sticky-extra)+var(--main-bottom-pad))]",
@@ -192,6 +200,7 @@ function ProductDetail() {
                 <SmartImage
                   src={product.image}
                   alt={`${product.name} — ${product.brand} product supplied by Ceylon Platinum Trading, Matara`}
+                  itemProp="image"
                   className="size-full object-contain"
                   fetchPriority="high"
                 />
@@ -202,7 +211,10 @@ function ProductDetail() {
           <Reveal delay={80}>
             <div ref={purchaseRef} className="min-w-0">
               <p className="text-xs font-semibold tracking-widest text-primary uppercase">{product.brand}</p>
-              <h1 className="mt-2 font-display text-2xl font-extrabold leading-tight sm:text-3xl lg:text-4xl">
+              <h1
+                itemProp="name"
+                className="mt-2 font-display text-2xl font-extrabold leading-tight sm:text-3xl lg:text-4xl"
+              >
                 {product.name}
               </h1>
               {model ? (
@@ -211,20 +223,29 @@ function ProductDetail() {
                 </p>
               ) : null}
 
-              {deal ? (
-                <p className="mt-5 flex flex-wrap items-baseline gap-x-3 gap-y-1">
-                  <span className="font-display text-2xl font-extrabold tracking-tight text-primary sm:text-3xl">
-                    {formatProductPrice(deal.offerPrice)}
-                  </span>
-                  <span className="text-base font-medium text-muted-foreground line-through sm:text-lg">
-                    {formatProductPrice(deal.wasPrice)}
-                  </span>
-                </p>
-              ) : (
-                <p className="mt-5 font-display text-2xl font-extrabold tracking-tight sm:text-3xl">
-                  {formatProductPrice(product.price)}
-                </p>
-              )}
+              {/* Offer microdata. `mt-5` moved from the price <p> onto this
+                  wrapper so the visible spacing is unchanged. */}
+              <div className="mt-5" itemProp="offers" itemScope itemType="https://schema.org/Offer">
+                {deal ? (
+                  <p className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
+                    <span className="font-display text-2xl font-extrabold tracking-tight text-primary sm:text-3xl">
+                      {formatProductPrice(offerPrice)}
+                    </span>
+                    <span className="text-base font-medium text-muted-foreground line-through sm:text-lg">
+                      {formatProductPrice(deal.wasPrice)}
+                    </span>
+                  </p>
+                ) : (
+                  <p className="font-display text-2xl font-extrabold tracking-tight sm:text-3xl">
+                    {formatProductPrice(offerPrice)}
+                  </p>
+                )}
+                <meta itemProp="priceCurrency" content="LKR" />
+                {typeof offerPrice === "number" ? (
+                  <meta itemProp="price" content={String(offerPrice)} />
+                ) : null}
+                <link itemProp="availability" href="https://schema.org/InStock" />
+              </div>
               <div className="mt-3 flex flex-wrap items-center gap-x-3 gap-y-1">
                 <Badge
                   variant="secondary"
@@ -292,7 +313,10 @@ function ProductDetail() {
         <div className="mt-12 space-y-10 sm:mt-16 sm:space-y-14">
           <Reveal>
             <h2 className="rule-red font-display text-xl font-extrabold sm:text-2xl">Product Description</h2>
-            <div className="mt-4 max-w-3xl space-y-3 text-sm leading-relaxed text-muted-foreground sm:text-base">
+            <div
+              itemProp="description"
+              className="mt-4 max-w-3xl space-y-3 text-sm leading-relaxed text-muted-foreground sm:text-base"
+            >
               {paragraphs.map((para, i) => (
                 <p key={i}>{para}</p>
               ))}

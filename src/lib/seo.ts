@@ -6,6 +6,7 @@
  * verbatim from `src/lib/site.ts`, and any new supporting text (alt text, image
  * descriptions) is written here rather than edited into the on-page content.
  */
+import { flashDealPrice } from "@/lib/flash-deals";
 import { imageManifest } from "@/lib/image-manifest";
 import { business, categories, faqs, type Product } from "@/lib/site";
 
@@ -243,6 +244,10 @@ export function productSchema(product: Product): JsonLd {
   const url = absoluteUrl(`/products/${product.slug}`);
   const category = categories.find((c) => c.slug === product.category);
   const model = product.specs.find((s) => s.label === "Model")?.value;
+  // Advertise the price actually shown on the page: Flash Deal items sell at
+  // their offer price, everything else at the listed price.
+  const deal = flashDealPrice(product);
+  const price = deal ? deal.offerPrice : product.price;
 
   return {
     "@context": "https://schema.org",
@@ -261,7 +266,7 @@ export function productSchema(product: Product): JsonLd {
       "@id": `${url}#offer`,
       url,
       priceCurrency: "LKR",
-      ...(product.price ? { price: product.price } : {}),
+      ...(price ? { price } : {}),
       availability: "https://schema.org/InStock",
       itemCondition: "https://schema.org/NewCondition",
       seller: {
