@@ -156,38 +156,7 @@ function About() {
         </div>
       </section>
 
-      <section className="bg-surface py-16 sm:py-24">
-        <div className="mx-auto max-w-7xl px-4">
-          <Reveal className="max-w-2xl">
-            <p className="eyebrow">Leadership</p>
-            <h2 className="rule-red mt-4 font-display text-3xl font-extrabold sm:text-4xl">
-              Board of Directors
-            </h2>
-            <p className="mt-4 text-muted-foreground">
-              CPT is led by a family team combining decades of hardware industry experience with
-              modern business thinking.
-            </p>
-          </Reveal>
-
-          <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {directors.map((d, i) => (
-              <Reveal
-                key={d.name}
-                delay={(i % 3) * 90}
-                className="flex h-full flex-col border border-border bg-card p-6 shadow-card"
-              >
-                <p className="text-xs font-semibold tracking-widest text-primary uppercase">
-                  {d.role}
-                </p>
-                <h3 className="mt-2 font-display text-xl font-extrabold">
-                  {d.name}
-                </h3>
-                <p className="mt-3 text-sm text-muted-foreground">{d.bio}</p>
-              </Reveal>
-            ))}
-          </div>
-        </div>
-      </section>
+      
     </>
   );
 }
