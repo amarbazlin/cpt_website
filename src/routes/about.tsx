@@ -1,3 +1,4 @@
+
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { Compass, HeartHandshake, ShieldCheck, Target } from "lucide-react";
 import { Reveal } from "@/components/Reveal";
@@ -15,7 +16,10 @@ export const Route = createFileRoute("/about")({
         content:
           "The story of Ceylon Platinum Trading (PVT) Ltd — a family-built hardware in Kotuwegoda, Matara, serving builders across Southern Sri Lanka.",
       },
-      { property: "og:title", content: "About Ceylon Platinum Trading (PVT) Ltd" },
+      {
+        property: "og:title",
+        content: "About Ceylon Platinum Trading (PVT) Ltd",
+      },
       {
         property: "og:description",
         content:
@@ -37,11 +41,14 @@ const directors = [
   {
     name: "Bazlin Salih",
     role: "Chairman",
-    },
+    bio: "Leading the company with experience and strategic direction.",
+  },
   {
     name: "Himaz Bazlin",
     role: "Director",
+    bio: "Contributing to the company's growth and business development.",
   },
+];
 
 function About() {
   return (
@@ -84,6 +91,7 @@ function About() {
               <Link to="/products">See what we stock</Link>
             </Button>
           </Reveal>
+
           <Reveal delay={120}>
             <figure>
               <SmartImage
@@ -108,6 +116,7 @@ function About() {
               Mission and values
             </h2>
           </Reveal>
+
           <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
             {[
               {
@@ -137,7 +146,9 @@ function About() {
                 className="border-t-2 border-primary bg-charcoal-foreground/5 p-6"
               >
                 <v.icon className="size-7 text-primary" />
-                <h3 className="mt-4 font-display text-lg font-extrabold">{v.t}</h3>
+                <h3 className="mt-4 font-display text-lg font-extrabold">
+                  {v.t}
+                </h3>
                 <p className="mt-2 text-sm text-charcoal-muted">{v.d}</p>
               </Reveal>
             ))}
@@ -157,7 +168,8 @@ function About() {
               modern business thinking.
             </p>
           </Reveal>
-          <div className="mt-10 grid gap-6 lg:grid-cols-3">
+
+          <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {directors.map((d, i) => (
               <Reveal
                 key={d.name}
@@ -167,7 +179,9 @@ function About() {
                 <p className="text-xs font-semibold tracking-widest text-primary uppercase">
                   {d.role}
                 </p>
-                <h3 className="mt-2 font-display text-xl font-extrabold">{d.name}</h3>
+                <h3 className="mt-2 font-display text-xl font-extrabold">
+                  {d.name}
+                </h3>
                 <p className="mt-3 text-sm text-muted-foreground">{d.bio}</p>
               </Reveal>
             ))}
